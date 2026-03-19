@@ -53,11 +53,14 @@ Dry Sage - #A6B07E
 Smoky Rose - #8B635C
 Firey Teracotta - #D1603D
 */
-#app {
-  max-width: none;
+html, body, #app{
   width: 100%;
   margin: 0;
   padding: 0;
+}
+
+#app {
+  max-width: none;
 }
 
 body {
@@ -68,7 +71,7 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh; /*__vh = percentage of viewport height*/
-  width: 95%;
+  width: 100%;
 	background-color: #14591D;
 }
 
