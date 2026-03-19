@@ -15,3 +15,9 @@ onMounted(async () => {
   message.value = data.message
 })
 </script>
+
+<style>
+body {
+  background-color: #5F464B/*#14591D;*/
+}
+</style>
