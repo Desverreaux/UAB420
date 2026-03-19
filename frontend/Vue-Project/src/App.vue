@@ -1,8 +1,12 @@
 <template> <!-- HTML -->
-	<div>
-		<h1>Thirsty Plant</h1>
-    <h2>{{ message }}</h2>
-		<button @click="changeMessage">Change Message</button>
+	<div class="page">
+    <header class="header">Thirsty Plant</header>
+		
+    <main class="content">
+      <section class="main">{{ message }}</section>
+		  <button @click="changeMessage">Change Message</button>
+      <aside class="sidebar">Your Ad Here!</aside>
+    </main>
 	</div>
 </template>
 
@@ -31,18 +35,55 @@ export default { // JavaScript
 </script>
 
 <style> /* CSS */
-body {
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page {
+  display: grid;
+  grid-template-rows: auto 1fr auto; /*auto = distributes columns automatically, _fr sets a fixed size element*/
+  height: 100vh; /*__vh = percentage of viewport height*/
 	background-color: #5f464b;
 }
 
-h1 {
+.main {
+  padding: 25px;
+  /*
+  gap --> space between grid items
+  padding --> space inside elements
+  margin --> space outside elements
+  */
+}
+
+.content {
+  gap: 20px;
+  display: grid;
+  grid-template-columns: 250px 1fr;
+}
+
+
+.header {
+  position: sticky;
+  top: 0;
+  text-align: left;
+
   font-family: "Merriweather";
   font-size: 4em; /* pm = pixels, em/% = relative to parent element (default is 1em = 16px), rem = relative to html element --> Can also use xx-small to xx-large*/
   font-weight: bold; /*lighter, normal, bold, bolder*/
   font-style: oblique 10deg; /*normal, italic, etc*/
-  text-align: left;
   text-decoration: underline; /*Can be customized*/
 
   color: #a6b07e
 }
+
+/*
+TO-DO:
+
+Stretch:
+ - Add scalability for smaller devices
+*/
 </style>
+
+
