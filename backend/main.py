@@ -58,5 +58,5 @@ async def lorem_ipsum(wordCount: int = 20):
     text = response.json().get("text", "") # Get the generated text from the API response, defaulting to an empty string if not found
     words = text.split()[:wordCount] # Split the text into words and take the specified number of words
     trimmed_text = " ".join(words) # Join the selected words back into a string
-   
+   print(f"Generated Lorem Ipsum: {trimmed_text}") # Log the generated text for debugging
     return {"loremIpsum": trimmed_text}
