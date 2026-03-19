@@ -60,6 +60,10 @@ Firey Teracotta - #D1603D
   padding: 0;
 }
 
+body {
+  margin: 0;
+}
+
 .page {
   display: flex;
   flex-direction: column;
@@ -106,6 +110,7 @@ textarea {
   width: 65%;
   height: 200px;
   font-size: 1rem;
+  resize: none;
 }
 
 /*
