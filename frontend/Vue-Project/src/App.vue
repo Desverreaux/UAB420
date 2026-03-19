@@ -20,7 +20,7 @@ export default { // JavaScript
 	},
 
 	async mounted() {
-		const res = await fetch ("http://uab420.desverreaux.com:8000/api/loremIpsom?wordCount=30")
+		const res = await fetch ("http://uab420.desverreaux.com:8000/api/loremIpsum?wordCount=30")
 		const data = await res.json()
 		this.message = data.message
 	},
