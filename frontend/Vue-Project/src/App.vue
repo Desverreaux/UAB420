@@ -35,9 +35,17 @@ export default { // JavaScript
 </script>
 
 <style> /* CSS */
+/*
+Evergreen - #0E2F15
+Dark Spruce - #14591D
+Dry Sage - #A6B07E
+Smoky Rose - #8B635C
+Firey Teracotta - #D1603D
+
+*/
 .container {
   width: 100%;
-  max-width: 1200px;
+  /*max-width: 1200px;*/
   margin: 0 auto;
 }
 
@@ -45,7 +53,7 @@ export default { // JavaScript
   display: grid;
   grid-template-rows: auto 1fr auto; /*auto = distributes columns automatically, _fr sets a fixed size element*/
   height: 100vh; /*__vh = percentage of viewport height*/
-	background-color: #5f464b;
+	background-color: #14591D;
 }
 
 .main {
