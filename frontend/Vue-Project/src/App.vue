@@ -58,6 +58,7 @@ Firey Teracotta - #D1603D
   display: flex;
   flex-direction: column;
   height: 100vh; /*__vh = percentage of viewport height*/
+  width: 95vh;
 	background-color: #14591D;
 }
 
