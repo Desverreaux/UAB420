@@ -11,7 +11,7 @@
     <button @click="guide">Guide</button>
 		
     <main class="main">
-      <textarea test={{ message }}></textarea>
+      <textarea :value="message"></textarea>
       <!--
       <section class="main">{{ message }}</section>
 		  <button @click="changeMessage">Change Message</button>
@@ -53,6 +53,12 @@ Dry Sage - #A6B07E
 Smoky Rose - #8B635C
 Firey Teracotta - #D1603D
 */
+#app {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
 
 .page {
   display: flex;
