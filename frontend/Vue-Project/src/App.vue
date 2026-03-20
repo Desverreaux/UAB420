@@ -8,7 +8,6 @@
         <span>PFP</span>
       </div>
     </header>
-    <button @click="guide">Guide</button>
 		
     <main class="main">
       <textarea :value="message"></textarea>
@@ -26,7 +25,7 @@
 export default { // JavaScript
 	data() {
 		return {
-			message: "Test Output"
+			/*message: "Test Output"*/
 		}
 	},
 
@@ -95,6 +94,11 @@ body {
 .UIElements {
   display: flex;
   gap: 1rem;
+}
+
+.Guide {
+  border-radius: 25px;
+  background-color: #A6B07E;
 }
 
 .main {
