@@ -3,7 +3,7 @@
     <header class="header">
       <div class="title">Thirsty Plant</div>
       <div class="UIElements">
-        <span>Guide</span>
+        <button @click="changeMessage">Guide</button>
         <span>Search</span>
         <span>PFP</span>
       </div>
@@ -38,7 +38,7 @@ export default { // JavaScript
  
 	methods: {
 		changeMessage() {
-			this.message = "Button Clicked"
+			this.textarea = "Button Clicked"
 		}
 	}
 }
