@@ -1,11 +1,20 @@
-import hmac
+import hmac 
 import os
 import hashlib
-import subprocess
-import requests
-from dotenv import load_dotenv
-from fastapi import FastAPI, Request, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
+import subprocess 
+import requests 
+from dotenv import load_dotenv 
+from fastapi import FastAPI, Request, HTTPException 
+from fastapi.middleware.cors import CORSMiddleware # Is required to allow cross-origin requests
+
+
+# Import packages information:
+# HMAC, hashlib: Used for verifying the authenticity of incoming webhook requests from GitHub by creating a hash of the request body and comparing it to the signature provided in the request headers.
+# OS: Used for accessing environment variables, such as API keys, which can be stored in a .env file for security and convenience.
+# subprocess: Used for running shell commands, such as "git pull", to update the server code when a webhook is received from GitHub.
+# requests: Used for making HTTP requests to external APIs, such as the lorem ipsum generator API, to fetch data that can be returned to the frontend.
+# dotenv: Used for loading environment variables from a .env file, which allows you to keep sensitive information like API keys out of your codebase and easily manage them in a separate file.
+# fastapi: Used for creating the FastAPI app, defining API endpoints, handling incoming requests, and raising HTTP exceptions when needed.              
 
 WEBHOOK_SECRET = "secret"
 REPO_PATH = "/sharedFiles/Server"
@@ -61,7 +70,14 @@ async def lorem_ipsum(wordCount: int = 20):
         
     return {"message": trimmed_text}
 
-
+@app.get("/api/db-test")
+async def db_test():
+    try:
+        db = Database()
+        version = db.connect_to_db()
+        return {"status": "success", "mysql_version": version}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database connection failed: {e}")
 
 
 # TODO:
