@@ -22,7 +22,7 @@ while True:
 
     sensor.power_off()
     print("power is off...")
-    time.sleep(5)
+    time.sleep(3)
 
 
 
