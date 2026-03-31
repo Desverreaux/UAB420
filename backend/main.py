@@ -78,9 +78,8 @@ async def lorem_ipsum(wordCount: int = 20):
 @app.get("/api/db-test")
 async def db_test():
     try:
-        db = Database()
-        version = db.connect()
-        return db.query("SELECT first_name FROM employees")
+        data = db.execute_query("SELECT first_name FROM employees")
+        return {"data": data}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database connection failed: {e}")
 
@@ -91,6 +90,8 @@ async def db_test():
 
 @app.on_event("startup")
 def startup():
+    global db
+    db = Database()
     db.connect()
 
 @app.on_event("shutdown")
