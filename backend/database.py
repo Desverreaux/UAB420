@@ -10,26 +10,30 @@ class Database:
         self.password = os.getenv("DB_PASSWORD")
         self.connection = None
 
-    def connect_to_db(self):
+    def connect(self):
         try:
             self.connection = mysql.connector.connect(
                 host='uab-420-database.crfsezwej2qz.us-east-1.rds.amazonaws.com',
                 port=3306,
-                database='mysql',
+                database='UAB420',
                 user='admin',
                 password=self.password,
                 ssl_disabled=False,
                 autocommit=True,
                 ssl_ca='../global-bundle.pem'
             )
-            cur = self.connection.cursor()
-            cur.execute('SELECT VERSION();')
-            version = cur.fetchone()[0]
-            cur.close()
-            return version
         except Exception as e:
             print(f"Database error: {e}")
             raise
-        finally:
-            if self.connection:
-                self.connection.close()
+
+    def disconnect(self):
+        if self.connection:
+            self.connection.close()
+
+    def execute_query(self, query, params=None):
+        """Reuses the open connection for each call"""
+        cur = self.connection.cursor()
+        cur.execute(query)
+        result = cur.fetchall()
+        cur.close()
+        return result            

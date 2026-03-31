@@ -30,6 +30,11 @@ app.add_middleware(
     allow_headers=["*"], # allows all headers, you can specify which headers are allowed if needed
 )
 
+################
+# API ENDPOINTS
+################
+
+
 @app.post("/webhook") # GitHub webhook endpoint
 async def webhook(request: Request):
     # Verify the request is actually from GitHub
@@ -74,11 +79,23 @@ async def lorem_ipsum(wordCount: int = 20):
 async def db_test():
     try:
         db = Database()
-        version = db.connect_to_db()
-        return {"status": "success", "mysql_version": version}
+        version = db.connect()
+        return db.query("SELECT first_name FROM employees")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database connection failed: {e}")
 
+
+#########
+# EVENTS
+#########
+
+@app.on_event("startup")
+def startup():
+    db.connect()
+
+@app.on_event("shutdown")
+def shutdown():
+    db.disconnect()
 
 # TODO:
 # get server connected to the database
