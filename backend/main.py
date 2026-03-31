@@ -60,3 +60,21 @@ async def lorem_ipsum(wordCount: int = 20):
     trimmed_text = " ".join(words) # Join the selected words back into a string
         
     return {"message": trimmed_text}
+
+
+
+
+# TODO:
+# get server connected to the database
+# --- john will have to do this as it requires aws access and im not gonna set that up 
+# get database tables set up 
+# --- need a table for temperature measurements (measurements, timestamp, plantID, other stuff..)
+# --- need a table for users if we are still doing that 
+# get server connected to the raspberry pi
+# --- set up api calls that the pi can call to send data to the server b  
+# go through niks wireframes and figure out which data will need to be passed to the front end
+# figure out a structure on how to pass data to the front end 
+# --- like what the structure of the api calls to be 
+# --- (...com/api/exampledata) with hard coded routes 
+# --- (...com/api/data?type=example) with url variables
+# --- (...com/api/data) with type=example as a parameter in the body of the get request

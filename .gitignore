@@ -8,3 +8,8 @@ frontend/Vue-Project/dist/
 
 
 
+UAB420.code-workspace
+.gitignore
+global-bundle.pem
+backend/JavaProject.code-workspace
+.gitignore
