@@ -7,17 +7,24 @@ load_dotenv()  # Load environment variables from .env file
 
 class Database:
     def __init__(self):
-        self.password = os.getenv("DB_PASSWORD")
+        # Uses the load_dotenv package to load database credentials from a .env file,
+        # it is set up this way so that we don't push our database creditials to GitHub 
+                "host": os.getenv("DB_HOST"),
+                "user": os.getenv("DB_USER"),
+                "password": os.getenv("DB_PASSWORD"),
+                "database": os.getenv("DB_NAME"),
+                "port": 3306 # Default MySQL port it doesn't have to be obfuscated, so the value is just here
+        }
         self.connection = None
 
     def connect(self):
         try:
             self.connection = mysql.connector.connect(
-                host='uab-420-database.crfsezwej2qz.us-east-1.rds.amazonaws.com',
-                port=3306,
-                database='UAB420',
-                user='admin',
-                password=self.password,
+                host=self.credintials["host"],
+                port=self.credintials["port"],
+                database=self.credintials["database"],
+                user=self.credintials["user"],
+                password=self.credintials["password"],
                 ssl_disabled=False,
                 autocommit=True,
                 ssl_ca='../global-bundle.pem'
