@@ -51,6 +51,7 @@ async def webhook(request: Request):
         raise HTTPException(status_code=401, detail="Invalid signature")
     
     # Run git pull
+    subprocess.run(["git", "restore", "."], cwd=REPO_PATH) # Restore the repo to discard any local changes before pulling
     subprocess.run(["git", "pull"], cwd=REPO_PATH)
     return {"status": "pulled"}
 
