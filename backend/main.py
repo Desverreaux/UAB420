@@ -76,28 +76,28 @@ async def lorem_ipsum(wordCount: int = 20):
         
     return {"message": trimmed_text}
 
-@app.get("/api/db-test")
-async def db_test():
-    try:
-        data = db.execute_query("SELECT first_name FROM employees")
-        return {"data": data}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Database connection failed: {e}")
+# @app.get("/api/db-test")
+# async def db_test():
+#     try:
+#         data = db.execute_query("SELECT first_name FROM employees")
+#         return {"data": data}
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=f"Database connection failed: {e}")
 
 
 #########
 # EVENTS
 #########
 
-@app.on_event("startup")
-def startup():
-    global db
-    db = Database()
-    db.connect()
+# @app.on_event("startup")
+# def startup():
+#     global db
+#     db = Database()
+#     db.connect()
 
-@app.on_event("shutdown")
-def shutdown():
-    db.disconnect()
+# @app.on_event("shutdown")
+# def shutdown():
+#     db.disconnect()
 
 # TODO:
 # get server connected to the database
