@@ -101,6 +101,16 @@ body {
   background-color: #A6B07E;
 }
 
+.Search {
+  border-radius: 25px;
+  background-color: #A6B07E;
+}
+
+.PFP {
+  border-radius: 25px;
+  background-color: #A6B07E;  
+}
+
 .main {
   flex: 1;
   display: flex;
