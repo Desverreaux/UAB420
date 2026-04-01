@@ -4,8 +4,8 @@
       <div class="title">Thirsty Plant</div>
       <div class="UIElements">
         <button @click="changeMessage">Guide</button>
-        <span>Search</span>
-        <span>PFP</span>
+        <button>Search</button>
+        <button>PFP</button>
       </div>
     </header>
 		
