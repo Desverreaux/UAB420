@@ -29,7 +29,7 @@ app.add_middleware(
     allow_headers=["*"], # allows all headers, you can specify which headers are allowed if needed
 )
 
-#poop from a butts
+#poop from a butt
 
 ################
 # API ENDPOINTS
