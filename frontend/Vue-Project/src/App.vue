@@ -1,7 +1,7 @@
 <template> <!-- HTML -->
 	<div class="page">
     <header class="header">
-      <div class="title">Thirsty</div>
+      <div class="title">Thirsty Plant</div>
       <div class="UIElements">
         <button class="Guide" @click="changeMessage">Guide</button>
         <button class="Search">Search</button>
@@ -71,7 +71,7 @@ body {
   flex-direction: column;
   height: 100vh; /*__vh = percentage of viewport height*/
   width: 100%;
-	background-color: #000000;
+	background-color: #14591D;
 }
 
 .header {
