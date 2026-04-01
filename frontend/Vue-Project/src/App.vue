@@ -1,11 +1,11 @@
 <template> <!-- HTML -->
 	<div class="page">
     <header class="header">
-      <div class="title">Plant Thirsty</div>
+      <div class="title">Thirsty Plant</div>
       <div class="UIElements">
-        <button @click="changeMessage">Guide</button>
-        <button>Search</button>
-        <button>PFP</button>
+        <button class="Guide" @click="changeMessage">Guide</button>
+        <button class="Search">Search</button>
+        <button class = "PFP">PFP</button>
       </div>
     </header>
 		
