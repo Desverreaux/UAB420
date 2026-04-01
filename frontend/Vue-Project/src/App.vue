@@ -1,7 +1,7 @@
 <template> <!-- HTML -->
 	<div class="page">
     <header class="header">
-      <div class="title">Thirsty Plant</div>
+      <div class="title">Plant Thirsty</div>
       <div class="UIElements">
         <button @click="changeMessage">Guide</button>
         <button>Search</button>
