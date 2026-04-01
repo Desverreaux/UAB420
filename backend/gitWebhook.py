@@ -2,8 +2,11 @@ import hmac
 import os
 import hashlib
 import subprocess 
+import requests 
 from dotenv import load_dotenv 
 from fastapi import FastAPI, Request, HTTPException 
+from fastapi.middleware.cors import CORSMiddleware # Is required to allow cross-origin requests
+
 
 load_dotenv()  # Load environment variables from .env file
 gitApp = FastAPI() # Create FastAPI app
