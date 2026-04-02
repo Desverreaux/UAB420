@@ -32,15 +32,17 @@ export default {
     align-items: center;
 
     z-index: 1000;
+
+    animation: fadeIn 0.3s ease;
 }
 
 .modal {
     background-color: #FF0000;
     padding: 2rem;
     border-radius: 25px;
-    min-width: 250px;
-    max-width: 75%;
-    animation: fadeIn 0.4s ease;
+    max-height: 100%;
+    max-width: 100%;
+    animation: fadeIn 0.3s ease;
 }
 
 @keyframes fadeIn {
