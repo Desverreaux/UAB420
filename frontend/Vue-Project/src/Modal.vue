@@ -38,7 +38,7 @@ export default {
     border-radius: 25px;
     min-width: 250px;
     max-width: 75%;
-    animation: fadeIn 0.2s ease;
+    animation: fadeIn 0.4s ease;
 }
 
 @keyframes fadeIn {
