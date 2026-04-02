@@ -1,7 +1,7 @@
 <template> <!-- HTML -->
 	<div class="page">
     <header class="header">
-      <div class="title">Thirsty Plant</div>
+      <div class="title">Thirsty Plant                </div>
       <div class="UIElements">
         <button class="Guide" @click="changeMessage">Guide</button>
         <button class="Search">Search</button>
@@ -146,6 +146,12 @@ body {
   background-color: #FFFFFF;
   border-radius: 25px;
   cursor: pointer;
+
+  transition: background-color 0.3s ease;
+}
+
+.existing_plant:hover{
+  background-color: #dedbd5;
 }
 
 .new_plant{
@@ -157,6 +163,12 @@ body {
   background-color: #FFFFFF;  
   border-radius: 25px;
   cursor: pointer;
+
+  transition: background-color 0.3s ease;
+}
+
+.new_plant:hover{
+  background-color: #dedbd5;
 }
 
 /*
