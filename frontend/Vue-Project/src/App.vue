@@ -36,6 +36,7 @@ export default { // JavaScript
 		const res = await fetch ("http://uab420.desverreaux.com:8000/api/loremIpsum?wordCount=30")
 		const data = await res.json()
 		this.message = data.message
+    /* DB port: uab420.desverreaux.com:8978/api/*/ 
 	},
  
 	methods: {
