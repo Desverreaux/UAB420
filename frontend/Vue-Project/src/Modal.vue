@@ -40,8 +40,8 @@ export default {
     background-color: #FF0000;
     padding: 2rem;
     border-radius: 25px;
-    max-height: 100%;
-    max-width: 100%;
+    height: 95%;
+    width: 95%;
     animation: fadeIn 0.3s ease;
 }
 
