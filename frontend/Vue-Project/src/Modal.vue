@@ -21,6 +21,8 @@ export default {
 
     transform: translate(-50%, -50%);
 
+    border-radius: 25px;
+
     width: 60%;
     height: 60%;
     background-color: #FFFFFF;
@@ -33,7 +35,7 @@ export default {
 }
 
 .modal {
-    background-color: #FFFFFF;
+    background-color: #FF0000;
     padding: 2rem;
     border-radius: 25px;
     min-width: 250px;
@@ -49,5 +51,4 @@ export default {
         opacity: 1;
     }
 }
-
 </style>
