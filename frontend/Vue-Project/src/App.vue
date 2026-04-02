@@ -5,12 +5,15 @@
       <div class="UIElements">
         <button class="Guide" @click="changeMessage">Guide</button>
         <button class="Search">Search</button>
-        <button class = "PFP">PFP</button>
+        <button class="PFP">PFP</button>
       </div>
     </header>
 		
     <main class="main">
-      <textarea :value="message"></textarea>
+      <!--<textarea :value="message"></textarea>-->
+      <button class="existing_plant">🪴</button>
+      <button class="new_plant">+</button>
+
       <!--
       <section class="main">{{ message }}</section>
 		  <button @click="changeMessage">Change Message</button>
@@ -127,11 +130,29 @@ body {
   */
 }
 
-textarea {
+/*textarea {
   width: 65%;
   height: 200px;
   font-size: 1rem;
   resize: none;
+}*/
+
+.existing_plant{
+  width: 25%;
+  height: 150px;
+
+  background-color: #FFFFFF;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.new_plant{
+  width: 25%;
+  height: 150px;
+
+  background-color: #FFFFFF;  
+  border-radius: 25px;
+  cursor: pointer;
 }
 
 /*
