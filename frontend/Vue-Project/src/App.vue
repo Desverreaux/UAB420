@@ -140,7 +140,7 @@ body {
 .existing_plant{
   width: 25%;
   height: 250px;
-  font-size: 4rem; /* pm = pixels, em/% = relative to parent element (default is 1em = 16px), rem = relative to html element --> Can also use xx-small to xx-large*/
+  font-size: 7rem; /* pm = pixels, em/% = relative to parent element (default is 1em = 16px), rem = relative to html element --> Can also use xx-small to xx-large*/
   
 
   background-color: #FFFFFF;
@@ -151,7 +151,7 @@ body {
 .new_plant{
   width: 25%;
   height: 250px;
-  font-size: 4rem; /* pm = pixels, em/% = relative to parent element (default is 1em = 16px), rem = relative to html element --> Can also use xx-small to xx-large*/
+  font-size: 7rem; /* pm = pixels, em/% = relative to parent element (default is 1em = 16px), rem = relative to html element --> Can also use xx-small to xx-large*/
   color: #5e5b53;
 
   background-color: #FFFFFF;  
