@@ -102,7 +102,7 @@ export default { // JavaScript
 
 </script>
 
-<style scoped> /* CSS */
+<style> /* CSS */
 /*
 Evergreen - #0E2F15
 Dark Spruce - #14591D
