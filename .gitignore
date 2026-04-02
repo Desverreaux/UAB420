@@ -8,4 +8,8 @@ global-bundle.pem
 backend/JavaProject.code-workspace
 sshkey
 sshkey.pub
+<<<<<<< HEAD
 runBackendServerLocal.sh
+=======
+backend/runBackendServerLocal.sh
+>>>>>>> origin/main
