@@ -2,10 +2,9 @@ node_modules/
 __pycache__/
 .env
 frontend/Vue-Project/dist/
-UAB420.code-workspace
-.gitignore
-global-bundle.pem
 backend/JavaProject.code-workspace
-.gitignore
+UAB420.code-workspace
+global-bundle.pem
 sshkey
 sshkey.pub
+runBackendServerLocal.sh

@@ -9,12 +9,17 @@ class Database:
     def __init__(self):
         # Uses the load_dotenv package to load database credentials from a .env file,
         # it is set up this way so that we don't push our database creditials to GitHub 
+        self.credintials = {
                 "host": os.getenv("DB_HOST"),
                 "user": os.getenv("DB_USER"),
                 "password": os.getenv("DB_PASSWORD"),
                 "database": os.getenv("DB_NAME"),
                 "port": 3306 # Default MySQL port it doesn't have to be obfuscated, so the value is just here
         }
+        print("Database credentials loaded successfully")
+        print(f"Database host: {self.credintials['host']}")
+        print(f"Database user: {self.credintials['user']}")
+        print(f"Database name: {self.credintials['database']}") 
         self.connection = None
 
     def connect(self):
