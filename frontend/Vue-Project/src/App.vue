@@ -5,7 +5,7 @@
       <div class="UIElements">
         <button class="Guide" @click="changeMessage">Guide</button>
         <button class="Search">Search</button>
-        <button class="PFP">PFP</button>
+        <button class="PFP">👤</button>
       </div>
     </header>
 		
@@ -104,18 +104,38 @@ body {
   border-radius: 25px;
   background-color: #A6B07E;
   cursor: pointer;
+
+  transition: background-color 0.2s ease;
+}
+
+.Guide:hover{
+  background-color: #7d855f;
 }
 
 .Search {
   border-radius: 25px;
   background-color: #A6B07E;
   cursor: pointer;
+
+  transition: background-color 0.2s ease;
+}
+
+.Search:hover{
+  background-color: #7d855f;
 }
 
 .PFP {
   border-radius: 25px;
   background-color: #A6B07E;  
   cursor: pointer;
+  color: #FFFFFF;
+
+  transition: background-color 0.2s ease;
+
+}
+
+.PFP:hover{
+  background-color: #7d855f;
 }
 
 .main {
@@ -147,7 +167,7 @@ body {
   border-radius: 25px;
   cursor: pointer;
 
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease;
 }
 
 .existing_plant:hover{
@@ -164,7 +184,7 @@ body {
   border-radius: 25px;
   cursor: pointer;
 
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease;
 }
 
 .new_plant:hover{
