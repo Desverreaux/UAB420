@@ -5,6 +5,7 @@ frontend/Vue-Project/dist/
 backend/JavaProject.code-workspace
 UAB420.code-workspace
 global-bundle.pem
+backend/JavaProject.code-workspace
 sshkey
 sshkey.pub
 runBackendServerLocal.sh

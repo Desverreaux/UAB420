@@ -88,7 +88,8 @@ body {
   font-style: oblique 10deg; /*normal, italic, etc*/
   text-decoration: underline; /*Can be customized*/
 
-  color: #a6b07e
+  color: #a6b07e;
+  cursor: default;
 }
 
 .UIElements {
@@ -99,16 +100,19 @@ body {
 .Guide {
   border-radius: 25px;
   background-color: #A6B07E;
+  cursor: pointer;
 }
 
 .Search {
   border-radius: 25px;
   background-color: #A6B07E;
+  cursor: pointer;
 }
 
 .PFP {
   border-radius: 25px;
   background-color: #A6B07E;  
+  cursor: pointer;
 }
 
 .main {
