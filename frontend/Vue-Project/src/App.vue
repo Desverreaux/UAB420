@@ -3,45 +3,99 @@
     <header class="header">
       <div class="title">Thirsty Plant</div>
       <div class="UIElements">
-        <button class="Guide" @click="changeMessage">Guide</button>
-        <button class="Search">Search</button>
-        <button class="PFP">👤</button>
+        <button class="Guide" @click="openModal('Guide')">Guide</button>
+        <button class="Search" @click="openModal('Search')">Search</button>
+        <button class="PFP" @click="openModal('PFP')">👤</button>
       </div>
     </header>
 		
     <main class="main">
-      <!--<textarea :value="message"></textarea>-->
-      <button class="existing_plant">🪴</button>
-      <button class="new_plant">+</button>
-
-      <!--
-      <section class="main">{{ message }}</section>
-		  <button @click="changeMessage">Change Message</button>
-       <aside class="sidebar">Your Ad Here!</aside>
-       -->
+      <button class="existing_plant"@click="openModal('existing_plant')">🪴</button>
+      <button class="new_plant" @click="openModal('new_plant')">+</button>
     </main>
+
+    <!--Guide Modal-->
+    <Modal :show="activeModal === 'Guide'" @close="closeModal">
+      <h2>Plant Guide</h2>
+      <p>Plant care guide and how to connect</p>
+      <button @click="closeModal">X</button>
+    </Modal>
+
+    <!--Search Modal-->
+    <Modal :show="activeModal === 'Search'" @close="closeModal">
+      <h2>Search_______</h2>
+      <input v-model="search_bar" placeholder="Search for plant" />
+      <button @click="search_command">🔍</button>
+      <button @click="closeModal">X</button>
+    </Modal>
+
+    <!--PFP Modal-->
+    <Modal :show="activeModal === 'PFP'" @close="closeModal">
+      <h2>User Profile</h2>
+      <input v-model="user_name" placeholder="Username" />
+      <button @click="update_profile">Update Profile</button>
+      <button @click="closeModal">X</button>
+    </Modal>
+    
+    <!--existing_plant Modal-->
+    <Modal :show="activeModal === 'existing_plant'" @close="closeModal">
+      <h2>Existing Plant</h2>
+      <input v-model="search_bar" placeholder="Search for plant" />
+      <textarea>This should say some text about your plant </textarea>
+      <button @click="closeModal">X</button>
+    </Modal>
+
+    <!--new_plant Modal
+    <Modal :show="activeModal === 'Search'" @close="closeModal">
+      <h2>Search_______</h2>
+      <input v-model="search_bar" placeholder="Search for plant" />
+      <button @click="search_command">🔍</button>
+      <button @click="closeModal">X</button>
+    </Modal>  [IM NOT SURE YET IF THIS WILL BE NEEDED SINCE THIS ROUTES TO THE SEARCH FEATURE]-->
 	</div>
 </template>
 
 <script>
+import Modal from "./Modal.vue"
 
 export default { // JavaScript
+  components: {
+    Modal
+  },
+
 	data() {
 		return {
-			/*message: "Test Output"*/
+			message: "",
+      activeModal: null, 
 		}
 	},
 
 	async mounted() {
-		const res = await fetch ("http://uab420.desverreaux.com:8000/api/loremIpsum?wordCount=30")
-		const data = await res.json()
-		this.message = data.message
-    /* DB port: uab420.desverreaux.com:8978/api/*/ 
-	},
+    try {
+      const res = await fetch ("http://uab420.desverreaux.com:8000/api/loremIpsum?wordCount=30")
+      const data = await res.json()
+      this.message = data.message
+      /* DB port: uab420.desverreaux.com:8978/api/*/ 
+	  } catch (err) {
+      console.log("Fetch Request Failed: ", err)
+    }
+  },
  
 	methods: {
+    openModal(name) {
+      this.activeModal = name
+      document.body.style.overflow = "hidden"
+    },
+
+    closeModal() {
+      this.activeModal = null
+      document.body.style.overflow = ""
+    },
+
+    //addPlant() {}
+
 		changeMessage() {
-			this.textarea = "Button Clicked"
+			this.message = "Button Clicked"
 		}
 	}
 }
@@ -158,7 +212,7 @@ body {
   resize: none;
 }*/
 
-.existing_plant{
+.existing_plant{ /* Note that this can be merged as .existing_plant, .new_plant{ */
   width: 25%;
   height: 250px;
   font-size: 7rem; /* pm = pixels, em/% = relative to parent element (default is 1em = 16px), rem = relative to html element --> Can also use xx-small to xx-large*/
