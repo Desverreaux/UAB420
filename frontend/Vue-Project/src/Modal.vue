@@ -16,8 +16,8 @@ export default {
 <style scoped>
 .overlay {
     position: fixed;
-    top: 0;
-    left: 0;
+    /*top: 0;
+    left: 0;*/
     width: 60%;
     height: 60%;
     background-color: #FFFFFF;
