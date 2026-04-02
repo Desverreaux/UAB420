@@ -7,3 +7,4 @@ global-bundle.pem
 backend/JavaProject.code-workspace
 sshkey
 sshkey.pub
+backend/runBackendServerLocal.sh
