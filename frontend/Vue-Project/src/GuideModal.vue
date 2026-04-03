@@ -26,6 +26,10 @@ export default {
 </script>
 
 <style scoped>
+.Modal {
+  display: flex;
+}
+
 .header {
   display: flex;
   flex-direction: column;
@@ -42,6 +46,7 @@ export default {
 .guide_text {
   color: #0E2F15;
   cursor: default;
+  height: 95%;
 }
 
 .close_button {
