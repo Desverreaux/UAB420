@@ -39,6 +39,8 @@
 <script>
 import GuideModal from "./GuideModal.vue"
 import SearchModal from "./SearchModal.vue"
+import PFPModal from "./PFPModal.vue"
+import ExistingPlantModal from "./ExistingPlantModal.vue"
 
 export default { // JavaScript
   components: {
@@ -58,7 +60,6 @@ export default { // JavaScript
     try {
       const res = await fetch ("http://uab420.desverreaux.com:8000/api/loremIpsum?wordCount=30")
       const data = await res.json()
-      this.message = data.message
       /* DB port: uab420.desverreaux.com:8978/api/*/ 
 	  } catch (err) {
       console.log("Fetch Request Failed: ", err)
@@ -68,12 +69,12 @@ export default { // JavaScript
 	methods: {
     openModal(name) {
       this.activeModal = name
-      document.body.style.overflow = "hidden"
+      document.body.classList.add = ("no-scroll")
     },
 
     closeModal() {
       this.activeModal = null
-      document.body.style.overflow = ""
+      document.body.classList.remove = ("no-scroll")
     },
 
     //addPlant() {}
@@ -177,7 +178,7 @@ body {
   flex: 1;
   display: flex;
   justify-content: center;
-  align-items: top;
+  align-items: flex-start;
   /*
   gap --> space between grid items
   padding --> space inside elements
@@ -224,6 +225,10 @@ body {
 
 .new_plant:hover{
   background-color: #dedbd5;
+}
+
+.no-scroll {
+  overflow: hidden;
 }
 
 /*
