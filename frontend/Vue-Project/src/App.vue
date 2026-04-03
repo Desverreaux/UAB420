@@ -16,21 +16,15 @@
 
     <!--Guide Modal-->
     <GuideModal :show="activeModal === 'Guide'" @close="closeModal"/>
+
+    <!--Search Modal-->
+    <SearchModal :show="activeModal === 'Search'" @close="closeModal"/>
+
     <!--PFP Modal-->
-    <Modal :show="activeModal === 'PFP'" @close="closeModal">
-      <h2>User Profile</h2>
-      <input v-model="user_name" placeholder="Username" />
-      <button @click="update_profile">Update Profile</button>
-      <button @click="closeModal">X</button>
-    </Modal>
+    <PFPModal :show="activeModal === 'PFP'" @close="closeModal"/>
     
     <!--existing_plant Modal-->
-    <Modal :show="activeModal === 'existing_plant'" @close="closeModal">
-      <h2>Existing Plant</h2>
-      <input v-model="search_bar" placeholder="Search for plant" />
-      <textarea>This should say some text about your plant </textarea>
-      <button @click="closeModal">X</button>
-    </Modal>
+    <ExistingPlantModal :show="activeModal === 'existing_plant'" @close="closeModal"/>
 
     <!--new_plant Modal
     <Modal :show="activeModal === 'Search'" @close="closeModal">

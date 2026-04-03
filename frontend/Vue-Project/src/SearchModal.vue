@@ -13,20 +13,20 @@ import Modal from "./Modal.vue"
 
 export default {
     props: ["show"],
-    emits: ["close", "add"],
+    emits: ["close", "query"],
     components: { Modal },
 
     data() {
         return {
-            plantName: ""
+            search_bar: ""
         }
     },
 
     methods: {
         submit() {
-            if (!this.plantName) return
-            this.$emit("add", this.plantName)
-            this.plantName = ""
+            if (!this.search_bar) return
+            this.$emit("query", this.search_bar)
+            this.search_bar = ""
         }
     }
 }
