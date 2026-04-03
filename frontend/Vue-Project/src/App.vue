@@ -43,7 +43,9 @@ import SearchModal from "./SearchModal.vue"
 export default { // JavaScript
   components: {
     GuideModal,
-    SearchModal
+    SearchModal, 
+    PFPModal, 
+    ExistingPlantModal
   },
 
 	data() {
