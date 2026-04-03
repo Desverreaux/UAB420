@@ -30,7 +30,7 @@ services:
       - ../backend/.env
     volumes:
       - ..:/repo
-      - /root/.ssh:/root/.ssh:ro
+      - /root/.ssh/id_ed25519:/root/.ssh/id_ed25519:ro
     networks:
       - app-network
 
