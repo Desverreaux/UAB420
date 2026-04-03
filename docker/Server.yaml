@@ -1,0 +1,52 @@
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/Services/Backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ../backend/.env
+    networks:
+      - app-network
+    
+  frontend:
+    build:
+      context: ..
+      dockerfile: docker/Services/Frontend
+    expose:
+      - "80"
+    networks:
+      - app-network
+
+  gitupdater:
+
+    build:
+      context: ..
+      dockerfile: docker/Services/GitUpdater
+    ports:
+      - "8500:8500"
+    env_file:
+      - ../backend/.env
+    volumes:
+      - ..:/repo
+    networks:
+      - app-network
+
+  nginx:
+    build:
+      context: ..
+      dockerfile: docker/Services/Nginx
+    ports:
+      - "80:80"
+      # - "443:443"
+    depends_on:
+      - backend
+      - frontend
+      - gitupdater
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

@@ -48,4 +48,3 @@ class Database:
         cur.execute(query)
         result = cur.fetchall()
         cur.close()
-        return result            
