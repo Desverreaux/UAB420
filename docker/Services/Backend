@@ -1,10 +1,9 @@
 FROM python:3.11-slim
-WORKDIR /app
+WORKDIR /repo/backend
 COPY docker/Services/Backend.requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
-COPY backend/ .
 EXPOSE 8000
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
 # this code needs to be added to the docker compose file when it is made 
 # backend:

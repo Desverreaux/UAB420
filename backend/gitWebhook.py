@@ -32,4 +32,5 @@ async def webhook(request: Request):
     # Run git pull
     subprocess.run(["git", "restore", "."], cwd=REPO_PATH) # Restore the repo to discard any local changes before pulling
     subprocess.run(["git", "pull"], cwd=REPO_PATH)
+
     return {"status": "pulled"}

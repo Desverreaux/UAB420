@@ -7,6 +7,8 @@ services:
       - "8000:8000"
     env_file:
       - ../backend/.env
+    volumes:
+      - ..:/repo
     networks:
       - app-network
     
@@ -16,6 +18,9 @@ services:
       dockerfile: docker/Services/Frontend
     expose:
       - "80"
+    volumes:
+      - ..:/repo
+      - frontend_node_modules:/repo/frontend/Vue-Project/node_modules
     networks:
       - app-network
 
@@ -51,3 +56,6 @@ services:
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  frontend_node_modules:
