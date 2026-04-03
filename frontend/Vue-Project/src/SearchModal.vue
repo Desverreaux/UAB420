@@ -43,5 +43,6 @@ export default {
   top: 95%;
   left: 95%;
   border-radius: 25px;
+  cursor: pointer;
 }
 </style>
