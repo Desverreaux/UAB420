@@ -37,7 +37,7 @@ export default {
 }
 
 .modal {
-    background-color: #FF0000;
+    background-color: #a6b07e;
     padding: 2rem;
     border-radius: 25px;
     height: 95%;

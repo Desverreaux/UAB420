@@ -15,20 +15,7 @@
     </main>
 
     <!--Guide Modal-->
-    <Modal :show="activeModal === 'Guide'" @close="closeModal">
-      <h2>Plant Guide</h2>
-      <p>Plant care guide and how to connect</p>
-      <button @click="closeModal">X</button>
-    </Modal>
-
-    <!--Search Modal-->
-    <Modal :show="activeModal === 'Search'" @close="closeModal">
-      <h2>Search_______</h2>
-      <input v-model="search_bar" placeholder="Search for plant" />
-      <button @click="search_command">🔍</button>
-      <button @click="closeModal">X</button>
-    </Modal>
-
+    <GuideModal :show="activeModal === 'Guide'" @close="closeModal"/>
     <!--PFP Modal-->
     <Modal :show="activeModal === 'PFP'" @close="closeModal">
       <h2>User Profile</h2>
@@ -56,16 +43,17 @@
 </template>
 
 <script>
-import Modal from "./Modal.vue"
+import GuideModal from "./GuideModal.vue"
+import SearchModal from "./SearchModal.vue"
 
 export default { // JavaScript
   components: {
-    Modal
+    GuideModal,
+    SearchModal
   },
 
 	data() {
 		return {
-			message: "",
       activeModal: null, 
 		}
 	},
@@ -93,10 +81,6 @@ export default { // JavaScript
     },
 
     //addPlant() {}
-
-		changeMessage() {
-			this.message = "Button Clicked"
-		}
 	}
 }
 
