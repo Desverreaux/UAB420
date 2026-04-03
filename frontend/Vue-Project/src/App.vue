@@ -6,7 +6,7 @@
         <button class="Guide" @click="openModal('Guide')">Guide</button>
         <button class="Search" @click="openModal('Search')">Search</button>
         <div>
-          <a href="https://vuejs.org" target="_blank" rel="noopener">Vue Docs</a>
+          <a href="uab420.desverreaux.com:8978" target="_blank" rel="noopener">Vue Docs</a>
           <router-link to="/contact">Contact Page</router-link>
         </div> 
          <button class="PFP" @click="openModal('PFP')">👤</button>
