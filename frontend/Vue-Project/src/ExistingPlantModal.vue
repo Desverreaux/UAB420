@@ -4,7 +4,7 @@
       <span classs="modal_title" modal_title>Existing Plant</span>
       <input v-model="search_bar" placeholder="Search for plant"/>
       <textarea class="plant_info">This should say some text about your plant </textarea>
-      <button class="close_button" @click="closeModal">X</button>
+      <button class="close_button" @click="$emit('close')">X</button>
     </Modal>
 </template>
 

@@ -4,7 +4,7 @@
       <div class="modal_title">User Profile</div>
       <input v-model="user_name" placeholder="Username" />
       <button class="update_profile" @click="update_profile">Update Profile</button>
-      <button class="close_button" @click="closeModal">X</button>
+      <button class="close_button" @click="$emit('close')">X</button>
     </Modal>
 </template>
 

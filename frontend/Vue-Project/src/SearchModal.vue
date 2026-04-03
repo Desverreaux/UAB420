@@ -4,7 +4,7 @@
       <div class = "modal_title">Search</div>
       <input v-model="search_bar" placeholder="Search for plant" />
       <button class="search_button" @click="search_command">🔍</button>
-      <button class="close_button" @click="closeModal">X</button>
+      <button class="close_button"@click="$emit('close')">X</button>
     </Modal>
 </template>
 
