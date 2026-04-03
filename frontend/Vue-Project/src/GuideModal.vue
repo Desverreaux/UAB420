@@ -6,12 +6,12 @@
         <button class="close_button" @click="$emit('close')">X</button>
       </header>
 
-      <body class = "guide_text">
+      <div class = "guide_text">
         <span>1. Power on your probe and connect it to Wi-Fi.</span>
         <span>2. Synchronize your probe with a specific plant.</span>
         <span>3. Insert the probe into the plant, keeping [non-waterproof part] above the soil.</span>
         <span>4. Hang out, have a good time.</span>
-      </body>
+      </div>
     </Modal>
 </template>
 
@@ -29,7 +29,7 @@ export default {
 .header {
   display: flex;
   justify-content: space-between;
-  flex-direction: column;
+  align-items: center;
   padding: 1rem;
 }
 
