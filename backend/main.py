@@ -56,6 +56,19 @@ async def lorem_ipsum(wordCount: int = 20):
         
     return {"message": trimmed_text}
 
+# @app.get("/api/SendMoistureData")
+# async def send_moisture_data(moistureLevel: float = None, plantID: int = 0):
+#     try: 
+#         if moistureLevel is None:
+#             raise HTTPException(status_code=400, detail="moistureLevel query parameter is required")
+#         query = "INSERT INTO moisture_data (plant_id, moisture_level) VALUES (%s, %s)"
+#         params = (plantID, moistureLevel)
+#         db.execute_query(query, params)
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=f"Failed to insert moisture data: {e}")
+
+#     return {"message": "Moisture data sent"}
+
 @app.get("/api/db-test")
 async def db_test():
     try:
@@ -81,8 +94,7 @@ def shutdown():
     db.disconnect()
 
 # TODO:
-# get server connected to the database
-# --- john will have to do this as it requires aws access and im not gonna set that up 
+
 # get database tables set up 
 # --- need a table for temperature measurements (measurements, timestamp, plantID, other stuff..)
 # --- need a table for users if we are still doing that 

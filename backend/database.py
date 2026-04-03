@@ -38,6 +38,15 @@ class Database:
             print(f"Database error: {e}")
             raise
 
+    # def logMeasurement(self, data = None):
+    #     try: 
+    #         if data == None or hasattr(data, "moistureLevel"): 
+    #             raise HTTPException(status_code=400, detail="moistureLevel query parameter is required")
+    #         cur = self.connection.cursor() #im not sure what this does but seems neccesary 
+    #         cur.execute(f"INSERT INTO moisture_data (plant_id, moisture_level) VALUES (%s, %s)")
+        
+
+
     def disconnect(self):
         if self.connection:
             self.connection.close()
