@@ -40,9 +40,12 @@ export default {
 }
 
 .guide_text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75 rem;
+  padding: 0 1rem 1rem 1rem;
   color: #0E2F15;
   cursor: default;
-  height: 95%;
 }
 
 .close_button {
