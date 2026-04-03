@@ -3,42 +3,81 @@
     <header class="header">
       <div class="title">Thirsty Plant</div>
       <div class="UIElements">
-        <button class="Guide" @click="changeMessage">Guide</button>
-        <button class="Search">Search</button>
-        <button class = "PFP">PFP</button>
+        <button class="Guide" @click="openModal('Guide')">Guide</button>
+        <button class="Search" @click="openModal('Search')">Search</button>
+        <button class="PFP" @click="openModal('PFP')">👤</button>
       </div>
     </header>
 		
     <main class="main">
-      <textarea :value="message"></textarea>
-      <!--
-      <section class="main">{{ message }}</section>
-		  <button @click="changeMessage">Change Message</button>
-       <aside class="sidebar">Your Ad Here!</aside>
-       -->
+      <button class="existing_plant"@click="openModal('existing_plant')">🪴</button>
+      <button class="new_plant" @click="openModal('new_plant')">+</button>
     </main>
+
+    <!--Guide Modal-->
+    <GuideModal :show="activeModal === 'Guide'" @close="closeModal"/>
+
+    <!--Search Modal-->
+    <SearchModal :show="activeModal === 'Search'" @close="closeModal"/>
+
+    <!--PFP Modal-->
+    <PFPModal :show="activeModal === 'PFP'" @close="closeModal"/>
+    
+    <!--existing_plant Modal-->
+    <ExistingPlantModal :show="activeModal === 'existing_plant'" @close="closeModal"/>
+
+    <!--new_plant Modal
+    <Modal :show="activeModal === 'Search'" @close="closeModal">
+      <h2>Search_______</h2>
+      <input v-model="search_bar" placeholder="Search for plant" />
+      <button @click="search_command">🔍</button>
+      <button @click="closeModal">X</button>
+    </Modal>  [IM NOT SURE YET IF THIS WILL BE NEEDED SINCE THIS ROUTES TO THE SEARCH FEATURE]-->
 	</div>
 </template>
 
 <script>
+import GuideModal from "./GuideModal.vue"
+import SearchModal from "./SearchModal.vue"
+import PFPModal from "./PFPModal.vue"
+import ExistingPlantModal from "./ExistingPlantModal.vue"
 
 export default { // JavaScript
+  components: {
+    GuideModal,
+    SearchModal,
+    PFPModal, 
+    ExistingPlantModal
+  },
+
 	data() {
 		return {
-			/*message: "Test Output"*/
+      activeModal: null, 
 		}
 	},
 
 	async mounted() {
-		const res = await fetch ("/api/loremIpsum?wordCount=30")
-		const data = await res.json()
-		this.message = data.message
-	},
+    try {
+      const res = await fetch ("http://uab420.desverreaux.com:8000/api/loremIpsum?wordCount=30")
+      const data = await res.json()
+      /* DB port: uab420.desverreaux.com:8978/api/*/ 
+	  } catch (err) {
+      console.log("Fetch Request Failed: ", err)
+    }
+  },
  
 	methods: {
-		changeMessage() {
-			this.textarea = "Button Clicked"
-		}
+    openModal(name) {
+      this.activeModal = name
+      document.body.classList.add = ("no-scroll")
+    },
+
+    closeModal() {
+      this.activeModal = null
+      document.body.classList.remove = ("no-scroll")
+    },
+
+    //addPlant() {}
 	}
 }
 
@@ -101,25 +140,45 @@ body {
   border-radius: 25px;
   background-color: #A6B07E;
   cursor: pointer;
+
+  transition: background-color 0.2s ease;
+}
+
+.Guide:hover{
+  background-color: #7d855f;
 }
 
 .Search {
   border-radius: 25px;
   background-color: #A6B07E;
   cursor: pointer;
+
+  transition: background-color 0.2s ease;
+}
+
+.Search:hover{
+  background-color: #7d855f;
 }
 
 .PFP {
   border-radius: 25px;
   background-color: #A6B07E;  
   cursor: pointer;
+  color: #FFFFFF;
+
+  transition: background-color 0.2s ease;
+
+}
+
+.PFP:hover{
+  background-color: #7d855f;
 }
 
 .main {
   flex: 1;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   /*
   gap --> space between grid items
   padding --> space inside elements
@@ -127,11 +186,49 @@ body {
   */
 }
 
-textarea {
+/*textarea {
   width: 65%;
   height: 200px;
   font-size: 1rem;
   resize: none;
+}*/
+
+.existing_plant{ /* Note that this can be merged as .existing_plant, .new_plant{ */
+  width: 25%;
+  height: 250px;
+  font-size: 7rem; /* pm = pixels, em/% = relative to parent element (default is 1em = 16px), rem = relative to html element --> Can also use xx-small to xx-large*/
+  
+
+  background-color: #FFFFFF;
+  border-radius: 25px;
+  cursor: pointer;
+
+  transition: background-color 0.2s ease;
+}
+
+.existing_plant:hover{
+  background-color: #dedbd5;
+}
+
+.new_plant{
+  width: 25%;
+  height: 250px;
+  font-size: 7rem; /* pm = pixels, em/% = relative to parent element (default is 1em = 16px), rem = relative to html element --> Can also use xx-small to xx-large*/
+  color: #5e5b53;
+
+  background-color: #FFFFFF;  
+  border-radius: 25px;
+  cursor: pointer;
+
+  transition: background-color 0.2s ease;
+}
+
+.new_plant:hover{
+  background-color: #dedbd5;
+}
+
+.no-scroll {
+  overflow: hidden;
 }
 
 /*
