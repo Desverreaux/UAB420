@@ -17,3 +17,17 @@ export default {
     components: { Modal }
 }
 </script>
+
+<style scoped>
+.modal_title {
+  font-size: 3rem;
+  color: #0E2F15;
+  cursor: default;
+}
+
+.close_button {
+  top: 95%;
+  left: 95%;
+  border-radius: 25px;
+}
+</style>
