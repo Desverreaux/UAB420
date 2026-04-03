@@ -5,7 +5,11 @@
       <div class="UIElements">
         <button class="Guide" @click="openModal('Guide')">Guide</button>
         <button class="Search" @click="openModal('Search')">Search</button>
-        <button class="PFP" @click="openModal('PFP')">👤</button>
+        <div>
+          <a href="https://vuejs.org" target="_blank" rel="noopener">Vue Docs</a>
+          <router-link to="/contact">Contact Page</router-link>
+        </div> 
+         <button class="PFP" @click="openModal('PFP')">👤</button>
       </div>
     </header>
 		
