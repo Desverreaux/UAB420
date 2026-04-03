@@ -110,7 +110,7 @@ body {
   flex-direction: column;
   height: 100vh; /*__vh = percentage of viewport height*/
   width: 100%;
-	background-color: #0000aa;
+	background-color: #14591D;
 }
 
 .header {
