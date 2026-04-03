@@ -30,7 +30,7 @@ services:
       - ../backend/.env
     volumes:
       - ..:/repo
-      - ~/.ssh:/root/.ssh:ro
+      - /root/.ssh:/root/.ssh:ro
     networks:
       - app-network
 
