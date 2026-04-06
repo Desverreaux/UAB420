@@ -56,6 +56,11 @@ async def lorem_ipsum(wordCount: int = 20):
         
     return {"message": trimmed_text}
 
+@app.get("/api/getHistoricalData")
+
+
+
+
 # @app.get("/api/SendMoistureData")
 # async def send_moisture_data(moistureLevel: float = None, plantID: int = 0):
 #     try: 
