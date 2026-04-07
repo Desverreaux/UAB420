@@ -34,8 +34,8 @@ def validateMoistureData(dataObject):
 		if value not in dataObject:
 			raise HTTPException(status_code=400, detail=f"Bad request: Missing required field '{value}'")
 	
-	dataObject.plantId = validatePlantId(dataObject["plantId"])
-	dataObject.moistureLevel = validateMoistureLevel(dataObject["moistureLevel"])
+	dataObject["plantId"] = validatePlantId(dataObject["plantId"])
+	dataObject["moistureLevel"] = validateMoistureLevel(dataObject["moistureLevel"])
 
 	if hasattr(dataObject, "timestamp") and dataObject["timestamp"] is not None:
 		dataObject["timestamp"] = validateTimestamp(dataObject["timestamp"])
