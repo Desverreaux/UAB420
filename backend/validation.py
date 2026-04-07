@@ -42,7 +42,7 @@ def validateMoistureData(dataObject):
 	
 	return dataObject
 
-def validatePlantID(plantIdentifier):
+def validatePlantId(plantIdentifier):
 	try:
 		if type(plantIdentifier) == int:
 			return plantIdentifier
@@ -66,7 +66,7 @@ def validatePlantID(plantIdentifier):
 VALIDATORS = {
 	"moistureLevel": validateMoistureLevel,
 	"moistureData": validateMoistureData,
-	"plantIdentifier": validatePlantID,      # validates and resolves plant IDs
+	"plantIdentifier": validatePlantId,      # validates and resolves plant IDs
 	"fromDate": validateTimestamp,            # parses timestamps
 	"toDate": validateTimestamp,
 }
