@@ -59,7 +59,6 @@ def validatePlantID(plantIdentifier):
 # It can be read as if a function uses the arguement "moistureData" then auto_validate will call validateMoistureData on that value before passing it to the original funciton
 VALIDATORS = {
 	"moistureLevel": validateMoistureLevel,
-	"moistureData": validateMoistureData,
 	"plantIdentifier": validatePlantID,      # validates and resolves plant IDs
 	"fromDate": validateTimestamp,            # parses timestamps
 	"toDate": validateTimestamp,
