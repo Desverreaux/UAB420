@@ -24,17 +24,23 @@ def validateMoistureLevel(moistureLevel):
 	except (TypeError, ValueError):
 		raise HTTPException(status_code=400, detail=f"Bad request: '{moistureLevel}' is not a valid number")
 
-# Below was committed out as it seems that passing json/objects through a url param doesn't work 
-# def validateMoistureData(dataObject):
+def validateMoistureData(dataObject):
  
-# 	valuesToCheck = ["plantId", "moistureLevel"]
+	valuesToCheck = ["plantId", "moistureLevel"]
 
-# 	if dataObject is None:
-# 		raise HTTPException(status_code=400, detail="Bad request: No data was sent")
-# 	for value in valuesToCheck:
-# 		if value not in dataObject:
-# 			raise HTTPException(status_code=400, detail=f"Bad request: Missing required field '{value}'")
-# 	return dataObject
+	if dataObject is None:
+		raise HTTPException(status_code=400, detail="Bad request: No data was sent")
+	for value in valuesToCheck:
+		if value not in dataObject:
+			raise HTTPException(status_code=400, detail=f"Bad request: Missing required field '{value}'")
+	
+	dataObject.plantId = validatePlantId(dataObject.plantId)
+	dataObject.moistureLevel = validateMoistureLevel(dataObject.moistureLevel)
+
+	if hasattr(dataObject, "timestamp") and dataObject.timestamp is not None:
+		dataObject.timestamp = validateTimestamp(dataObject.timestamp)
+	
+	return dataObject
 
 def validatePlantID(plantIdentifier):
 	try:

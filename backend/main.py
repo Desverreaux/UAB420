@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, Request, HTTPException 
 from fastapi.middleware.cors import CORSMiddleware # Is required to allow cross-origin requests
 from validation import auto_validate, validatePlantID
+from pydantic import BaseModel
 
 # Import packages information:
 # HMAC, hashlib: Used for verifying the authenticity of incoming webhook requests from GitHub by creating a hash of the request body and comparing it to the signature provided in the request headers.
@@ -20,6 +21,13 @@ from validation import auto_validate, validatePlantID
 # fastapi: Used for creating the FastAPI app, defining API endpoints, handling incoming requests, and raising HTTP exceptions when needed.              
 
 REPO_PATH = "/sharedFiles/Server"
+
+class MoistureData(BaseModel):
+    plantIdentifier: str
+    moistureLevel: float
+    timestamp: float = None  # optional, defaults to None
+
+
 
 load_dotenv()  # Load environment variables from .env file
 app = FastAPI() # Create FastAPI app
@@ -83,9 +91,11 @@ async def get_plant_data(plantIdentifier):
 
 @app.post("/api/SendMoistureData", status_code=201)
 @auto_validate
-async def send_moisture_data(plantIdentifier, moistureLevel, timestamp):
+async def send_moisture_data(moistureData):
+	if hasattr(moistureData, "timestamp") or moistureData.timestamp is None:
+		moistureData.timestamp = time.time()
 
-	# db.logMeasurement(plantID, moistureLevel, timestamp)
+	# db.logMeasurement(moistureData.plantID, moistureData.moistureLevel, moistureData.timestamp)
 
 	return {"message": "Moisture data sent"}
 
