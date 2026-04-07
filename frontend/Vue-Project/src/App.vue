@@ -1,42 +1,71 @@
 <template> <!-- HTML -->
 	<div class="page">
     <header class="header">
-      <div class="title">Thirsty Plant</div>
+      <div 
+        class="title">Thirsty Plant
+      </div>
+
       <div class="UIElements">
-        <button class="Guide" @click="openModal('Guide')">Guide</button>
-        <button class="Search" @click="openModal('Search')">Search</button>
+        <button 
+          class="Guide"
+          @click="openModal('Guide')">Guide
+        </button>
+
+        <button
+          class="Search"
+          @click="openModal('Search')">Search
+        </button>
+
         <div>
           <a href="http://uab420.desverreaux.com:8978" target="_blank" rel="noopener">Database</a>
         </div> 
-         <button class="PFP" @click="openModal('PFP')">👤</button>
-         <!--<button class = "critical_error" @click="openModal('critical_error')">Error Test</button>-->
+
+        <button
+          class="PFP"
+          @click="openModal('PFP')">👤
+        </button>
+
       </div>
     </header>
 		
     <main class="main">
-      <button class="existing_plant"@click="openModal('existing_plant')">🪴</button>
-      <button class="new_plant" @click="openModal('new_plant')">+</button>
+      <button 
+        class="existing_plant"
+        @click="openModal('existing_plant')">🪴
+      </button>
+
+      <button 
+        class="new_plant"
+        @click="openModal('new_plant')">+
+      </button>
+
     </main>
 
     <!--Guide Modal-->
-    <GuideModal :show="activeModal === 'Guide'" @close="closeModal"/>
+    <GuideModal 
+      :show="activeModal === 'Guide'" 
+      @close="closeModal"
+    />
 
     <!--Search Modal-->
-    <SearchModal :show="activeModal === 'Search'" @close="closeModal"/>
+    <SearchModal 
+      :show="activeModal === 'Search'" 
+      @close="closeModal"
+    />
 
     <!--PFP Modal-->
-    <PFPModal :show="activeModal === 'PFP'" @close="closeModal"/>
+    <PFPModal 
+      :show="activeModal === 'PFP'" 
+      @close="closeModal"
+    />
     
     <!--existing_plant Modal-->
-    <ExistingPlantModal :show="activeModal === 'existing_plant'" @close="closeModal"/>
+    <ExistingPlantModal 
+      :show="activeModal === 'existing_plant'" 
+      @close="closeModal"
+    />
 
-    <!--new_plant Modal
-    <Modal :show="activeModal === 'Search'" @close="closeModal">
-      <h2>Search_______</h2>
-      <input v-model="search_bar" placeholder="Search for plant" />
-      <button @click="search_command">🔍</button>
-      <button @click="closeModal">X</button>
-    </Modal>  [IM NOT SURE YET IF THIS WILL BE NEEDED SINCE THIS ROUTES TO THE SEARCH FEATURE]-->
+    <!--new_plant Modal [IM NOT SURE YET IF THIS WILL BE NEEDED SINCE THIS ROUTES TO THE SEARCH FEATURE]-->
 
     <CriticalErrorModal 
       :show="activeModal === 'critical_error'" 
