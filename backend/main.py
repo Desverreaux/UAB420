@@ -93,10 +93,10 @@ async def get_plant_data(plantIdentifier):
 @auto_validate
 async def send_moisture_data(moistureData: dict = Body()):
 
-	if not hasattr(moistureData, "timestamp") or moistureData.timestamp is None:
-		moistureData.timestamp = time.time()
+	if "timestamp" not in moistureData or moistureData["timestamp"] is None:
+		moistureData["timestamp"] = time.time()
 
-	# db.logMeasurement(moistureData.plantID, moistureData.moistureLevel, moistureData.timestamp)
+	# db.logMeasurement(moistureData["plantID"], moistureData["moistureLevel"], moistureData["timestamp"])
 
 	return {"message": "Moisture data sent"}
 
