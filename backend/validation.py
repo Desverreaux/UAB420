@@ -53,6 +53,8 @@ def validatePlantId(plantIdentifier):
 				return plantId #if the above line executes without throwing an error then the identifier was a number passed as a string
 			except ValueError:
 				return plantIdentifier # return the string name as-is for now, database lookup can happen in the endpoint
+		else: 
+			raise HTTPException(status_code=400, detail="Bad request: plantid must either be an int or the name of the plant")	
 	except TypeError: #Catches exceptions throw as a result of no input
 		raise HTTPException(status_code=400, detail="Bad request: A value was not provided for plantID")
 
