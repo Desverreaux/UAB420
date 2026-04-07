@@ -7,7 +7,7 @@ import requests
 import database
 from dateutil import parser
 from dotenv import load_dotenv 
-from fastapi import FastAPI, Request, HTTPException 
+from fastapi import FastAPI, Request, HTTPException, Body
 from fastapi.middleware.cors import CORSMiddleware # Is required to allow cross-origin requests
 from validation import auto_validate, validatePlantID, validateMoistureData
 from pydantic import BaseModel
