@@ -61,7 +61,7 @@ async def lorem_ipsum(wordCount: int = 20):
 
 @app.get("/api/getHistoricalData", status_code=200)
 @auto_validate
-async def get_historical_data(plantIdentifier = None, fromDate = None, toDate = None):
+async def get_historical_data(plantIdentifier, fromDate, toDate):
 
 	# Sets defaults for time frame if none is provided, defaults to from the beginning of time to now 
 	if fromDate is None:
@@ -74,7 +74,7 @@ async def get_historical_data(plantIdentifier = None, fromDate = None, toDate = 
 
 @app.get("/api/getPlantData")
 @auto_validate
-async def get_plant_data(plantIdentifier = None):
+async def get_plant_data(plantIdentifier):
 
 	data = db.getPlantData(plantIdentifier)
 	
@@ -83,7 +83,7 @@ async def get_plant_data(plantIdentifier = None):
 
 @app.post("/api/SendMoistureData", status_code=201)
 @auto_validate
-async def send_moisture_data(moistureData = None):
+async def send_moisture_data(moistureData):
 
 	moistureLevel = moistureData["moistureLevel"]
 	plantID = validatePlantID(moistureData["plantID"])
