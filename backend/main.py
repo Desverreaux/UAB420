@@ -1,13 +1,15 @@
 import hmac 
 import os
+import time
 import hashlib
 import subprocess 
 import requests 
-import database, validation
+import database
 from dateutil import parser
 from dotenv import load_dotenv 
 from fastapi import FastAPI, Request, HTTPException 
 from fastapi.middleware.cors import CORSMiddleware # Is required to allow cross-origin requests
+from validation import auto_validate, validatePlantID
 
 # Import packages information:
 # HMAC, hashlib: Used for verifying the authenticity of incoming webhook requests from GitHub by creating a hash of the request body and comparing it to the signature provided in the request headers.
@@ -24,10 +26,10 @@ app = FastAPI() # Create FastAPI app
 
 # Allow Vue dev server to talk to FastAPI
 app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # allows all origins, you can specify your frontend URL here
-    allow_methods=["*"], # allows all HTTP methods (GET, POST, etc.)
-    allow_headers=["*"], # allows all headers, you can specify which headers are allowed if needed
+	CORSMiddleware,
+	allow_origins=["*"],  # allows all origins, you can specify your frontend URL here
+	allow_methods=["*"], # allows all HTTP methods (GET, POST, etc.)
+	allow_headers=["*"], # allows all headers, you can specify which headers are allowed if needed
 )
 
 ################
@@ -39,65 +41,65 @@ app.add_middleware(
 
 @app.get("/api/hello")
 async def hello():
-    return {"message": "Hello from FastAPI!"}
+	return {"message": "Hello from FastAPI!"}
 
 
 @app.get("/api/loremIpsum") # Example API endpoint to fetch lorem ipsum text
 async def lorem_ipsum(wordCount: int = 20):
-    headers = {
-        "X-API-Key": os.getenv("NINJAS_API_KEY")  # Assuming you have an API key stored in your .env file
-    }
-    if wordCount < 1 or wordCount > 100:
-        raise HTTPException(status_code=400, detail="wordCount must be between 1 and 100")
-    else:    
-        response = requests.get("https://api.api-ninjas.com/v1/loremipsum", params={"start_with_lorem_ipsum": True}, headers=headers)
-    text = response.json().get("text", "") # Get the generated text from the API response, defaulting to an empty string if not found
-    words = text.split()[:wordCount] # Split the text into words and take the specified number of words
-    trimmed_text = " ".join(words) # Join the selected words back into a string
-        
-    return {"message": trimmed_text}
+	headers = {
+		"X-API-Key": os.getenv("NINJAS_API_KEY")  # Assuming you have an API key stored in your .env file
+	}
+	if wordCount < 1 or wordCount > 100:
+		raise HTTPException(status_code=400, detail="wordCount must be between 1 and 100")
+	else:    
+		response = requests.get("https://api.api-ninjas.com/v1/loremipsum", params={"start_with_lorem_ipsum": True}, headers=headers)
+	text = response.json().get("text", "") # Get the generated text from the API response, defaulting to an empty string if not found
+	words = text.split()[:wordCount] # Split the text into words and take the specified number of words
+	trimmed_text = " ".join(words) # Join the selected words back into a string
+		
+	return {"message": trimmed_text}
 
 @app.get("/api/getHistoricalData", status_code=200)
 @auto_validate
-async def get_historical_data(plantIdentifier, fromDate, toDate):
+async def get_historical_data(plantIdentifier = None, fromDate = None, toDate = None):
 
-    # Sets defaults for time frame if none is provided, defaults to from the beginning of time to now 
-    if fromDate is None:
-        fromDate = time.time(0) # represents the epoch so 1970  
-    if toDate is None:
-        toDate = time.time() # represents the current time 
-    
-    data = db.getHistoricalData(plantIdentifier, fromDate, toDate)
-    return {"data": data}
+	# Sets defaults for time frame if none is provided, defaults to from the beginning of time to now 
+	if fromDate is None:
+		fromDate = 0  # represents the epoch so 1970  
+	if toDate is None:
+		toDate = time.time()  # represents the current time 
+	
+	data = db.getHistoricalData(plantIdentifier, fromDate, toDate)
+	return {"data": data}
 
 @app.get("/api/getPlantData")
 @auto_validate
-async def get_plant_data(plantIdentifier):
+async def get_plant_data(plantIdentifier = None):
 
-    data = db.getPlantData(plantIdentifier)
-    
-    return {"data": data}
+	data = db.getPlantData(plantIdentifier)
+	
+	return {"data": data}
 
 
-@app.get("/api/SendMoistureData", status_code=201) #return to this boi
+@app.post("/api/SendMoistureData", status_code=201)
 @auto_validate
-async def send_moisture_data(moistureData):
+async def send_moisture_data(moistureData = None):
 
-    moistureLevel = moistureData["moistureLevel"]
-    plantID = validatePlantID(moistureData["plantID"])
-    timestamp = time.time()
+	# moistureLevel = moistureData["moistureLevel"]
+	# plantID = validatePlantID(moistureData["plantID"])
+	# timestamp = time.time()
 
-    db.logMeasurement(plantID, moistureLevel, timestamp)
+	# db.logMeasurement(plantID, moistureLevel, timestamp)
 
-    return {"message": "Moisture data sent"}
+	return {"message": "Moisture data sent"}
 
 @app.get("/api/db-test")
 async def db_test():
-    try:
-        data = db.execute_query("SELECT first_name FROM employees")
-        return {"data": data}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Database connection failed: {e}")
+	try:
+		data = db.execute_query("SELECT first_name FROM employees")
+		return {"data": data}
+	except Exception as e:
+		raise HTTPException(status_code=500, detail=f"Database connection failed: {e}")
 
 
 #########
@@ -106,14 +108,14 @@ async def db_test():
 
 @app.on_event("startup")
 def startup():
-    global db
-    db = database.Database()
-    db.connect()
-    print("Database connected successfully")
+	global db
+	db = database.Database()
+	db.connect()
+	print("Database connected successfully")
 
 @app.on_event("shutdown")
 def shutdown():
-    db.disconnect()
+	db.disconnect()
 
 ##################
 # Helper Functions 
