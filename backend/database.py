@@ -1,6 +1,6 @@
 import mysql.connector
-import boto3
 import os
+import re
 import time
 from functools import wraps
 from dotenv import load_dotenv
@@ -108,7 +108,6 @@ class Database:
             # This is a safety net in case someone writes raw f-string queries instead of parameterized queries.
             # Parameterized queries (%s) are the RIGHT way to prevent injection, but this catches it if they don't.
             
-            import re
             # Block common SQL injection keywords (case-insensitive, must be standalone words)
             # \b = word boundary, so "DROP" is blocked but "backdrop" is not
             sql_keywords = [
@@ -142,13 +141,13 @@ class Database:
             return value
 
     @auto_sanitize
-    def getHistoricalData(self, plantID: int = None, fromDate: time, toDate: time):
+    def getHistoricalData(self, plantID: int = None, fromDate: float = None, toDate: float = None):
         #this will get called so we can make a little graph on the front end, it just returns the last however many (there should be some upper limit) moisture level readings for a plant
         #return type should be a json file 
         pass
 
     @auto_sanitize
-    def getLast*Event*(self, plantID: int = None, event: string):
+    def getLastEvent(self, plantID: int = None, event: str = None):
         #this will search the readings of a given plant and return the last time an *event* happened 
         #im imagining this as like you pass "dry", and it would return the last time the plant had its moisture drop below 10% or something 
         #you can also have the event string be like a argument that you parse, kinda like the reflextor assignment we had, but that sounds hard
@@ -158,7 +157,7 @@ class Database:
         pass
 
     @auto_sanitize
-    def logMeasurement(self, plantID: int = None, moistureLevel: float, timestamp: time):
+    def logMeasurement(self, plantID: int = None, moistureLevel: float = None, timestamp: float = None):
         #so the main.py (name might have changed) is going to get moisture data from the pico, its then gonna call this function to save that data to the database
         #should check that arguments are filled and throw an error if they arent
         #sql has an option to just make a time stamp when a entry is created if you want to use that or pass your own timestamp is up to up
@@ -172,7 +171,7 @@ class Database:
         pass 
 
     @auto_sanitize
-    def addPlant(self, plantID: int = None, plantName: string = None, plantRoom: string = None) 
+    def addPlant(self, plantID: int = None, plantName: str = None, plantRoom: str = None):
         #this will add a plant to the database 
         pass
 
@@ -192,7 +191,7 @@ class Database:
         pass
 
     @auto_sanitize
-    def getPlantIdByName(self, Name: string = ""):
+    def getPlantIdByName(self, Name: str = ""):
         #probably isn't required but would search for a plant named "blah" and return the primary key for that entry
         pass
 
@@ -203,19 +202,21 @@ class Database:
         pass
 
     @auto_sanitize
-    def setPlantStatus(self, plantID: int = None, status: string = ""):
+    def setPlantStatus(self, plantID: int = None, status: str = ""):
         #a setter for the health status, status needs to be validated to make sure its one of the options
         pass
 
     @auto_sanitize
-    def setPlantImagePath(self, plantID: int = None, pathToPlantImage: string = "", plantSpecies):
+    def setPlantImagePath(self, plantSpecies: str = None, plantID: int = None, pathToPlantImage: str = ""):
         # the absolute parent path to the images is gonna be /sharedFiles/Server/frontend/src/assets/Images/Plants
         # the relative parent path to the images is gonna be ../frontend/src/assets/Images/Plants
         # this will store the filepath of the image for a species of plant
+        pass
 
     @auto_sanitize
     def getPlantImagePath(self, plantSpecies: str = None):
-        # this will get the file path for the image for a given type of plant 
+        # this will get the file path for the image for a given type of plant
+        pass
   
     @auto_sanitize
     def getPlantRoom(self, plantID: int = None):
@@ -226,24 +227,24 @@ class Database:
         pass 
 
     @auto_sanitize
-    def addUser(self, userName: string = None, password: string = ""):
+    def addUser(self, userName: str = None, password: str = ""):
         #this will add a username and password to your implementation of a users table 
         pass
 
     @auto_sanitize
-    def isUser(self, userName: string = None, password: string = ""):
+    def isUser(self, userName: str = None, password: str = ""):
         #this will be used to validate the creditials of a login, you get the username and password, find the user in the table, and compare the password to the password given 
         #im sure theres a fancy way of hashing/encrypting the password for security purposes, but i don't think thats really nesscesary 
         pass  
 
     @auto_sanitize
-    def getUserData(self, userName: string = None): 
+    def getUserData(self, userName: str = None): 
         #according to nik's diagram users will have attributes like climate, and preferred units of temperature you can either make these their own column and have getters and setters for each
         #or if we wanna be flexable we can just have a Data column that holds some json that holds all the attributes like that
         pass
 
     @auto_sanitize
-    def setUserData(self, userName: string = None, attribute: string, value):
+    def setUserData(self, attribute: str, value, userName: str = None):
         #setter for the thing above 
         pass
 
