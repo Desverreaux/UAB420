@@ -29,10 +29,26 @@
     </header>
 		
     <main class="main">
+      <div class="plant_card" @click="openModal('existing_plant')">
+        <div class="status_icon" :class="plant_status">
+          <span v-if="plant_status === 'good'">✅</span>
+          <span v-else-if="plant_status === 'warning'">⚠️</span>
+          <span v-else>❗</span>
+        </div>
+
+        <div class="plant_icon">🪴</div>
+
+        <div class="moisture_percentage">
+          {{ moisture_percentage }}
+        </div>
+      </div>
+
+      <!--
       <button 
         class="existing_plant"
         @click="openModal('existing_plant')">🪴
       </button>
+      -->
 
       <button 
         class="new_plant"
@@ -94,7 +110,13 @@ export default { // JavaScript
 	data() {
 		return {
       activeModal: null, 
-      errorMessage: null
+      errorMessage: null,
+
+      //Placeholder moisture percentage
+      moisture_percentage: 78,
+
+      //Placeholder plant status: "good" | "warning" | "critical"
+      plant_status: "good", 
 		}
 	},
 
@@ -107,6 +129,16 @@ export default { // JavaScript
 
       if (!res.ok) {
         throw new Error('HTTP error --> Status: ${res.status}')
+      }
+
+      this.moisture_percentage = 78
+
+      if (this.moisture_percentage > 60) {
+        this.plant_status = "good"
+      } else if (this.moisture_percentage > 30) {
+        this.plant_status = "warning"
+      } else {
+        this.plant_status = "critical"
       }
 
       const data = await res.json()
@@ -232,6 +264,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  gap: 2rem;
   /*
   gap --> space between grid items
   padding --> space inside elements
@@ -239,17 +272,82 @@ body {
   */
 }
 
-/*textarea {
-  width: 65%;
-  height: 200px;
-  font-size: 1rem;
-  resize: none;
-}*/
-
-.existing_plant{ /* Note that this can be merged as .existing_plant, .new_plant{ */
+.plant_card {
+  position: relative;
   width: 25%;
   height: 250px;
-  font-size: 7rem; /* pm = pixels, em/% = relative to parent element (default is 1em = 16px), rem = relative to html element --> Can also use xx-small to xx-large*/
+  background-color: #FFFFFF;
+  border-radius: 25px;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: bavkground-color 0.2s ease;
+}
+
+.plant_card:hover {
+  background-color: #dedbd5
+}
+
+.plant_icon {
+  font-size: 7rem;
+}
+
+.moisture_percentage {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+
+  background-color: #000000;
+  color: #FFFFFF;
+  border-radius: 50%;
+
+  width: 50px;
+  height: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: bold;
+}
+
+.status_icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  width: 40px; 
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: bold;
+}
+
+.status_icon.good {
+  background-color: #4CAF50;
+  color: #FFFFFF;
+}
+
+.status_icon.warning {
+  background-color: #FFC107;
+  color: #000000;
+}
+
+.status_icon.critical {
+  background-color: #F44336;
+  color: #000000;
+}
+/* 
+.existing_plant{ /* Note that this can be merged as .existing_plant, .new_plant{ 
+  width: 25%;
+  height: 250px;
+  font-size: 7rem; /* pm = pixels, em/% = relative to parent element (default is 1em = 16px), rem = relative to html element --> Can also use xx-small to xx-large
   
 
   background-color: #FFFFFF;
@@ -262,6 +360,7 @@ body {
 .existing_plant:hover{
   background-color: #dedbd5;
 }
+*/
 
 .new_plant{
   width: 25%;
