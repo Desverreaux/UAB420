@@ -9,7 +9,7 @@
           <a href="http://uab420.desverreaux.com:8978" target="_blank" rel="noopener">Database</a>
         </div> 
          <button class="PFP" @click="openModal('PFP')">👤</button>
-         <button class = "critical_error" @click="openModal('critical_error')">Error Test</button>
+         <!--<button class = "critical_error" @click="openModal('critical_error')">Error Test</button>-->
       </div>
     </header>
 		
@@ -71,7 +71,7 @@ export default { // JavaScript
 
 	async mounted() {
     try {
-      const res = await fetch ("http://uab420.desverreaux.com:8000/api/loremIpsum?wordCount=30")
+      const res = await fetch ("http://uab420.desverreaux.com:8000/apiovyuovgit a/loremIpsum?wordCount=30")
       /* DB port: uab420.desverreaux.com:8978/api/*/ 
 
       if (!res.ok) {
