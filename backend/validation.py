@@ -29,7 +29,7 @@ def auto_validate(func):
 
 def validateTimeStamp(timestamp): #todo finish this function, as it currently consolidates different ways of writting a timestamp but doesn't actually check if it is a time stamp
     try:
-       return = parser.parse(timestamp)
+       return parser.parse(timestamp)
    except (TypeError, ValueError):
         raise HTTPException(status_code=400, detail="Bad request: invalid timestamp")
 
