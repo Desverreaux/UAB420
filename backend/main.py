@@ -89,7 +89,7 @@ async def send_moisture_data(moistureData = None):
 	plantID = validatePlantID(moistureData["plantID"])
 	timestamp = time.time()
 
-	db.logMeasurement(plantID, moistureLevel, timestamp)
+	# db.logMeasurement(plantID, moistureLevel, timestamp)
 
 	return {"message": "Moisture data sent"}
 
