@@ -180,6 +180,11 @@ class Database:
     def getPlants(self):
         #this will return a list of all the plants we got
         pass
+ 
+    @auto_sanitize
+    def getPlantData(self,plantID):
+        #this will return a data object that is just a plants row in the plant table 
+        pass
 
     @auto_sanitize
     def getPlantName(self, plantID: int = None):

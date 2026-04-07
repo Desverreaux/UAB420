@@ -3,12 +3,11 @@ import os
 import hashlib
 import subprocess 
 import requests 
-import database
+import database, validation
 from dateutil import parser
 from dotenv import load_dotenv 
 from fastapi import FastAPI, Request, HTTPException 
 from fastapi.middleware.cors import CORSMiddleware # Is required to allow cross-origin requests
-
 
 # Import packages information:
 # HMAC, hashlib: Used for verifying the authenticity of incoming webhook requests from GitHub by creating a hash of the request body and comparing it to the signature provided in the request headers.
@@ -58,40 +57,39 @@ async def lorem_ipsum(wordCount: int = 20):
         
     return {"message": trimmed_text}
 
-@app.get("/api/getHistoricalData")
-async def get_historical_data(plantIdentifier = None, fromDate = None, toDate = datetime.now()):
-    #validates input
-    plantId = getPlantID(plantIdentifier)
-    fromDate = parser.parse(fromDate)
-    toDate = parser.parse(toDate)
+@app.get("/api/getHistoricalData", status_code=200)
+@auto_validate
+async def get_historical_data(plantIdentifier, fromDate, toDate):
 
-    #queries database
-    data = db.getHistoricalData(plantID, fromDate, toDate)
-
-    #returns response (should be a json obj)
-    return data
+    # Sets defaults for time frame if none is provided, defaults to from the beginning of time to now 
+    if fromDate is None:
+        fromDate = time.time(0) # represents the epoch so 1970  
+    if toDate is None:
+        toDate = time.time() # represents the current time 
+    
+    data = db.getHistoricalData(plantIdentifier, fromDate, toDate)
+    return {"data": data}
 
 @app.get("/api/getPlantData")
-async def get_plant_data(plantIdentifier, )
+@auto_validate
+async def get_plant_data(plantIdentifier):
+
+    data = db.getPlantData(plantIdentifier)
+    
+    return {"data": data}
 
 
+@app.get("/api/SendMoistureData", status_code=201) #return to this boi
+@auto_validate
+async def send_moisture_data(moistureData):
 
+    moistureLevel = moistureData["moistureLevel"]
+    plantID = validatePlantID(moistureData["plantID"])
+    timestamp = time.time()
 
+    db.logMeasurement(plantID, moistureLevel, timestamp)
 
-
-
-# @app.get("/api/SendMoistureData")
-# async def send_moisture_data(moistureLevel: float = None, plantID: int = 0):
-#     try: 
-#         if moistureLevel is None:
-#             raise HTTPException(status_code=400, detail="moistureLevel query parameter is required")
-#         query = "INSERT INTO moisture_data (plant_id, moisture_level) VALUES (%s, %s)"
-#         params = (plantID, moistureLevel)
-#         db.execute_query(query, params)
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=f"Failed to insert moisture data: {e}")
-
-#     return {"message": "Moisture data sent"}
+    return {"message": "Moisture data sent"}
 
 @app.get("/api/db-test")
 async def db_test():
@@ -118,31 +116,13 @@ def shutdown():
     db.disconnect()
 
 ##################
-# Helper Functions
+# Helper Functions 
 ##################
 
-def getPlantID(plantIdentifier):
-    try: 
-        if(type(plantIdentifier) == int):
-            return self.getPlantID_int(plantIdentifier)
-        elif(type(plantIdentifier) == str): #In this case the plant is being referred to by either its name, or a string of "38" for example 
-            #this try catch block essentially works as a if/else statement for whether the variable is a string or a int
-            try: 
-                plantId = int(plantIdentifier) #attempts to convert the string into an int, this checks if the id just got passed as a string somehow
-                return self.getPlantID_int(plantId) #if the above line executes without throwing an error then the identifier was a number passed as a string
-            except ValueError: 
-                return self.getPlantID_string(plantIdentifier) 
-    except TypeError: #Catches exceptions throw as a result of no input 
-        raise HTTPException(status_code, detail=f"Bad request: A value was not provided for plantID")
-
-
-def getPlantID_int(plantIdentifier): 
-    return plantIdentifier
-
-def getPlantID_string(plantName):
-    return db.getPlantIdByName(plantName)
-
 # TODO:
+
+# Set up positive http codes 
+
 
 # get database tables set up 
 # --- need a table for temperature measurements (measurements, timestamp, plantID, other stuff..)
