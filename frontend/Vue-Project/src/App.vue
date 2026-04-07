@@ -71,9 +71,10 @@ export default { // JavaScript
 
 	async mounted() {
     try {
-      const res = await fetch ("http://thisdoesnotexist123456.com")
+      const res = await fetch ("http://uab420.desverreaux.com:8000/api/loremIpsum?wordCount=30")
+      /*Broken Link:  http://thisdoesnotexist123456.com*/
       /*LIP:  http://uab420.desverreaux.com:8000/api/loremIpsum?wordCount=30*/
-      /* DB port: uab420.desverreaux.com:8978/api/*/ 
+      /*DB port: uab420.desverreaux.com:8978/api/*/ 
 
       if (!res.ok) {
         throw new Error('HTTP error --> Status: ${res.status}')
