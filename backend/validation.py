@@ -34,7 +34,7 @@ def validateTimeStamp(timestamp): #todo finish this function, as it currently co
 		raise HTTPException(status_code=400, detail="Bad request: invalid timestamp")
 
 def validateMoistureLevel(moistureLevel): 
-	 try:
+	try:
 		moistureLevel = float(value) #checks to see if moistureLevel is a float or can be cast as a float
 		if 0 <= moistureLevel <= 1:  #checks to see if moistureLevel is between 0 and 1 sense it is suppose to be a percent value 
 			return moistureLevel
