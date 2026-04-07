@@ -26,7 +26,7 @@ def validateMoistureLevel(moistureLevel):
 
 def validateMoistureData(dataObject):
  
-	valuesToCheck = ["plantID", "moistureLevel"]
+	valuesToCheck = ["plantId", "moistureLevel"]
 
 	if dataObject is None:
 		raise HTTPException(status_code=400, detail="Bad request: No data was sent")
