@@ -9,6 +9,7 @@
           <a href="http://uab420.desverreaux.com:8978" target="_blank" rel="noopener">Database</a>
         </div> 
          <button class="PFP" @click="openModal('PFP')">👤</button>
+         <button class = "critical_error" @click="openModal('critical_error')">Error Test</button>
       </div>
     </header>
 		
@@ -36,6 +37,8 @@
       <button @click="search_command">🔍</button>
       <button @click="closeModal">X</button>
     </Modal>  [IM NOT SURE YET IF THIS WILL BE NEEDED SINCE THIS ROUTES TO THE SEARCH FEATURE]-->
+
+    <CriticalErrorModal :show="activeModal === 'critical_error'" @close="closeModal"/>
 	</div>
 </template>
 
@@ -44,13 +47,15 @@ import GuideModal from "./GuideModal.vue"
 import SearchModal from "./SearchModal.vue"
 import PFPModal from "./PFPModal.vue"
 import ExistingPlantModal from "./ExistingPlantModal.vue"
+import CriticalErrorModal from "./CriticalErrorModal.vue"
 
 export default { // JavaScript
   components: {
     GuideModal,
     SearchModal,
     PFPModal, 
-    ExistingPlantModal
+    ExistingPlantModal,
+    CriticalErrorModal
   },
 
 	data() {
