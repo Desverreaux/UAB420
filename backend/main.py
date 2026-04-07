@@ -83,7 +83,7 @@ async def get_plant_data(plantIdentifier):
 
 @app.post("/api/SendMoistureData", status_code=201)
 @auto_validate
-async def send_moisture_data(plantIdentifier, moistureLevel, time):
+async def send_moisture_data(plantIdentifier, moistureLevel, timestamp):
 
 	# db.logMeasurement(plantID, moistureLevel, timestamp)
 
