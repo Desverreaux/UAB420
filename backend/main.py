@@ -1,13 +1,15 @@
 import hmac 
 import os
+import time
 import hashlib
 import subprocess 
 import requests 
-import database, validation
+import database
 from dateutil import parser
 from dotenv import load_dotenv 
 from fastapi import FastAPI, Request, HTTPException 
 from fastapi.middleware.cors import CORSMiddleware # Is required to allow cross-origin requests
+from validation import auto_validate, validatePlantID
 
 # Import packages information:
 # HMAC, hashlib: Used for verifying the authenticity of incoming webhook requests from GitHub by creating a hash of the request body and comparing it to the signature provided in the request headers.
@@ -59,29 +61,29 @@ async def lorem_ipsum(wordCount: int = 20):
 
 @app.get("/api/getHistoricalData", status_code=200)
 @auto_validate
-async def get_historical_data(plantIdentifier, fromDate, toDate):
+async def get_historical_data(plantIdentifier = None, fromDate = None, toDate = None):
 
 	# Sets defaults for time frame if none is provided, defaults to from the beginning of time to now 
 	if fromDate is None:
-		fromDate = time.time(0) # represents the epoch so 1970  
+		fromDate = 0  # represents the epoch so 1970  
 	if toDate is None:
-		toDate = time.time() # represents the current time 
+		toDate = time.time()  # represents the current time 
 	
 	data = db.getHistoricalData(plantIdentifier, fromDate, toDate)
 	return {"data": data}
 
 @app.get("/api/getPlantData")
 @auto_validate
-async def get_plant_data(plantIdentifier):
+async def get_plant_data(plantIdentifier = None):
 
 	data = db.getPlantData(plantIdentifier)
 	
 	return {"data": data}
 
 
-@app.get("/api/SendMoistureData", status_code=201) #return to this boi
+@app.post("/api/SendMoistureData", status_code=201)
 @auto_validate
-async def send_moisture_data(moistureData):
+async def send_moisture_data(moistureData = None):
 
 	moistureLevel = moistureData["moistureLevel"]
 	plantID = validatePlantID(moistureData["plantID"])
