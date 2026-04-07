@@ -7,7 +7,11 @@
       </header>
 
       <div class = "error_explanation">
-        <span>The program encountered a critical error; please restart the application.</span>
+        <span>
+            The program encountered a critical error; please restart the application.
+        </span>
+
+        <pre v-if="error" class="error_box"> {{ error }}</pre>
       </div>
     </Modal>
 </template>
@@ -16,7 +20,10 @@
 import Modal from "./Modal.vue"
 
 export default {
-    props: ["show"],
+    props:  {
+        show: Boolean,
+        error: String
+    },
     emits: ["close"],
     components: { Modal }
 }
@@ -36,13 +43,23 @@ export default {
   cursor: default;
 }
 
-.guide_text {
+.error_explanation {
   display: flex;
   flex-direction: column;
-  gap: 0.75 rem;
+  gap: 0.75rem;
   padding: 0 1rem 1rem 1rem;
   color: #0E2F15;
   cursor: default;
+}
+
+.error_box {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-family: monospace;
+    white-space: pre-wrap;
+    word-break: break-word;
 }
 
 .close_button {

@@ -42,7 +42,7 @@ export default {
 .guide_text {
   display: flex;
   flex-direction: column;
-  gap: 0.75 rem;
+  gap: 0.75rem;
   padding: 0 1rem 1rem 1rem;
   color: #0E2F15;
   cursor: default;

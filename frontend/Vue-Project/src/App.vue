@@ -38,7 +38,11 @@
       <button @click="closeModal">X</button>
     </Modal>  [IM NOT SURE YET IF THIS WILL BE NEEDED SINCE THIS ROUTES TO THE SEARCH FEATURE]-->
 
-    <CriticalErrorModal :show="activeModal === 'critical_error'" @close="closeModal"/>
+    <CriticalErrorModal 
+      :show="activeModal === 'critical_error'" 
+      :error="errorMessage"
+      @close="closeModal"
+    />
 	</div>
 </template>
 
@@ -61,28 +65,38 @@ export default { // JavaScript
 	data() {
 		return {
       activeModal: null, 
+      errorMessage: null
 		}
 	},
 
 	async mounted() {
     try {
       const res = await fetch ("http://uab420.desverreaux.com:8000/api/loremIpsum?wordCount=30")
-      const data = await res.json()
       /* DB port: uab420.desverreaux.com:8978/api/*/ 
+
+      if (!res.ok) {
+        throw new Error('HTTP error --> Status: ${res.status}')
+      }
+
+      const data = await res.json()
+
 	  } catch (err) {
       console.log("Fetch Request Failed: ", err)
+
+      this.errorMessage = err.message || "Unknown error"
+      this.openModal("critical_error")
     }
   },
  
 	methods: {
     openModal(name) {
       this.activeModal = name
-      document.body.classList.add = ("no-scroll")
+      document.body.classList.add("no-scroll")
     },
 
     closeModal() {
       this.activeModal = null
-      document.body.classList.remove = ("no-scroll")
+      document.body.classList.remove("no-scroll")
     },
 
     //addPlant() {}
