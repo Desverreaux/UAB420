@@ -9,7 +9,7 @@ from dateutil import parser
 from dotenv import load_dotenv 
 from fastapi import FastAPI, Request, HTTPException 
 from fastapi.middleware.cors import CORSMiddleware # Is required to allow cross-origin requests
-from validation import auto_validate, validatePlantID
+from validation import auto_validate, validatePlantID, validateMoistureData
 from pydantic import BaseModel
 
 # Import packages information:
@@ -22,10 +22,10 @@ from pydantic import BaseModel
 
 REPO_PATH = "/sharedFiles/Server"
 
-class MoistureData(BaseModel):
-    plantIdentifier: str
-    moistureLevel: float
-    timestamp: float = None  # optional, defaults to None
+# class MoistureData(BaseModel):
+#     plantIdentifier: str
+#     moistureLevel: float
+#     timestamp: float = None  # optional, defaults to None
 
 
 
@@ -91,8 +91,9 @@ async def get_plant_data(plantIdentifier):
 
 @app.post("/api/SendMoistureData", status_code=201)
 @auto_validate
-async def send_moisture_data(moistureData):
-	if hasattr(moistureData, "timestamp") or moistureData.timestamp is None:
+async def send_moisture_data(moistureData: dict = Body()):
+
+	if not hasattr(moistureData, "timestamp") or moistureData.timestamp is None:
 		moistureData.timestamp = time.time()
 
 	# db.logMeasurement(moistureData.plantID, moistureData.moistureLevel, moistureData.timestamp)
