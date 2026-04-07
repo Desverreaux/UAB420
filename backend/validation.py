@@ -72,3 +72,8 @@ def getPlantID_int(plantIdentifier):
 def getPlantID_string(plantName):
 	from database import Database
 	return db.getPlantIdByName(plantName)
+
+
+
+
+#poop from a butt
