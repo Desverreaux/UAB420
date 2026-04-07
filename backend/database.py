@@ -187,7 +187,7 @@ class Database:
         pass
 
     @auto_sanitize
-    def getPlantID(self, Name: string = ""):
+    def getPlantIdByName(self, Name: string = ""):
         #probably isn't required but would search for a plant named "blah" and return the primary key for that entry
         pass
 

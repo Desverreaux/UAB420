@@ -4,6 +4,7 @@ import hashlib
 import subprocess 
 import requests 
 import database
+from dateutil import parser
 from dotenv import load_dotenv 
 from fastapi import FastAPI, Request, HTTPException 
 from fastapi.middleware.cors import CORSMiddleware # Is required to allow cross-origin requests
@@ -30,11 +31,12 @@ app.add_middleware(
     allow_headers=["*"], # allows all headers, you can specify which headers are allowed if needed
 )
 
-#poop from a butts
-
 ################
 # API ENDPOINTS
 ################
+
+# GENERAL NOTES:
+# the variable "plantIdentifier" works for either the plant name or the plant id, 
 
 @app.get("/api/hello")
 async def hello():
@@ -57,6 +59,23 @@ async def lorem_ipsum(wordCount: int = 20):
     return {"message": trimmed_text}
 
 @app.get("/api/getHistoricalData")
+async def get_historical_data(plantIdentifier = None, fromDate = None, toDate = datetime.now()):
+    #validates input
+    plantId = getPlantID(plantIdentifier)
+    fromDate = parser.parse(fromDate)
+    toDate = parser.parse(toDate)
+
+    #queries database
+    data = db.getHistoricalData(plantID, fromDate, toDate)
+
+    #returns response (should be a json obj)
+    return data
+
+@app.get("/api/getPlantData")
+async def get_plant_data(plantIdentifier, )
+
+
+
 
 
 
@@ -97,6 +116,31 @@ def startup():
 @app.on_event("shutdown")
 def shutdown():
     db.disconnect()
+
+##################
+# Helper Functions
+##################
+
+def getPlantID(plantIdentifier):
+    try: 
+        if(type(plantIdentifier) == int):
+            return self.getPlantID_int(plantIdentifier)
+        elif(type(plantIdentifier) == str): #In this case the plant is being referred to by either its name, or a string of "38" for example 
+            #this try catch block essentially works as a if/else statement for whether the variable is a string or a int
+            try: 
+                plantId = int(plantIdentifier) #attempts to convert the string into an int, this checks if the id just got passed as a string somehow
+                return self.getPlantID_int(plantId) #if the above line executes without throwing an error then the identifier was a number passed as a string
+            except ValueError: 
+                return self.getPlantID_string(plantIdentifier) 
+    except TypeError: #Catches exceptions throw as a result of no input 
+        raise HTTPException(status_code, detail=f"Bad request: A value was not provided for plantID")
+
+
+def getPlantID_int(plantIdentifier): 
+    return plantIdentifier
+
+def getPlantID_string(plantName):
+    return db.getPlantIdByName(plantName)
 
 # TODO:
 
