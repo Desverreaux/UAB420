@@ -73,7 +73,7 @@ def auto_validate(func):
 		bound.apply_defaults()
 
 		for param_name, value in bound.arguments.items():
-			if param_name in VALIDATORS and value is not None:
+			if param_name in VALIDATORS:
 				bound.arguments[param_name] = VALIDATORS[param_name](value)
 
 		return await func(*bound.args, **bound.kwargs)

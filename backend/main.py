@@ -85,9 +85,9 @@ async def get_plant_data(plantIdentifier = None):
 @auto_validate
 async def send_moisture_data(moistureData = None):
 
-	# moistureLevel = moistureData["moistureLevel"]
-	# plantID = validatePlantID(moistureData["plantID"])
-	# timestamp = time.time()
+	moistureLevel = moistureData["moistureLevel"]
+	plantID = validatePlantID(moistureData["plantID"])
+	timestamp = time.time()
 
 	# db.logMeasurement(plantID, moistureLevel, timestamp)
 
