@@ -82,7 +82,7 @@ async def get_plant_data(plantIdentifier = None):
 
 
 @app.post("/api/SendMoistureData", status_code=201)
-# @auto_validate
+@auto_validate
 async def send_moisture_data(moistureData = None):
 
 	# moistureLevel = moistureData["moistureLevel"]
