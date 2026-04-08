@@ -64,9 +64,9 @@ services:
       - certbot-var:/var/lib/letsencrypt
       - certbot-www:/var/www/certbot
     # On first run, use the command below to obtain the certificate:
-    #   docker compose -f docker/Server.yaml run --rm certbot certonly --webroot -w /var/www/certbot -d uab420.desverreaux.com --agree-tos --email YOUR_EMAIL
+    #   docker compose -f docker/Server.yaml run --rm --entrypoint "certbot" certbot certonly --webroot -w /var/www/certbot -d uab420.desverreaux.com --agree-tos --email YOUR_EMAIL
     # For renewals, use:
-    #   docker compose -f docker/Server.yaml run --rm certbot renew
+    #   docker compose -f docker/Server.yaml run --rm --entrypoint "certbot" certbot renew
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do sleep 6h & wait $${!}; done'"
     networks:
       - app-network
