@@ -100,6 +100,10 @@ async def send_moisture_data(moistureData: dict = Body()):
 
 	return {"message": "Moisture data sent"}
 
+@app.post("/api/createUser", status_code=201)
+@auto_validate
+async def createNewUser(username: str, password: str)
+
 @app.get("/api/db-test")
 async def db_test():
 	try:
