@@ -122,9 +122,9 @@ export default { // JavaScript
 
 	async mounted() {
     try {
-      const res = await fetch ("http://uab420.desverreaux.com:8000/api/loremIpsum?wordCount=30")
+      const res = await fetch ("/api/loremIpsum?wordCount=30")
       /*Broken Link:  http://thisdoesnotexist123456.com*/
-      /*LIP:  http://uab420.desverreaux.com:8000/api/loremIpsum?wordCount=30*/
+      /*LIP:  /api/loremIpsum?wordCount=30*/
       /*DB port: uab420.desverreaux.com:8978/api/*/ 
 
       if (!res.ok) {
