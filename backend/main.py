@@ -86,10 +86,9 @@ async def get_historical_data(plantIdentifier, fromDate, toDate):
 @auto_validate
 async def get_plant_data(plantIdentifier):
 
-	data = db.getPlantData(plantIdentifier)
+	data = db.getFakeData(plantIdentifier)
 	
-	return {"data": fake.plant(plantID=1)}
-	# return {"data": data}
+	return {"data": data}
 
 
 @app.post("/api/SendMoistureData", status_code=201)
