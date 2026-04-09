@@ -5,7 +5,7 @@ import time
 import random
 from functools import wraps
 from dotenv import load_dotenv
-from faker import Faker
+from fakeModels import FakeModels
 
 load_dotenv()  # Load environment variables from .env file
 
@@ -25,8 +25,7 @@ class Database:
 		print(f"Database user: {self.credintials['user']}")
 		print(f"Database name: {self.credintials['database']}") 
 		self.connection = None
-		self.fake = Faker()
-		Faker.seed(0)
+		self.fake = FakeModels()
 
 	def connect(self):
 		try:
@@ -155,6 +154,10 @@ class Database:
 	def getFakeData(self, plantID: int = None, fromDate: float = None, toDate: float = None):
 		#this will get called so we can make a little graph on the front end, it just returns the last however many (there should be some upper limit) moisture level readings for a plant
 		#return type should be a json file 
+		if fromDate is None:
+			fromDate = 0
+		if toDate is None:
+			toDate = time.time()
 		return self.fake.readings(plantID=plantID, fromDate=fromDate, toDate=toDate)
 
 	@auto_sanitize
