@@ -148,31 +148,22 @@ class Database:
 	def getHistoricalData(self, plantID: int = None, fromDate: float = None, toDate: float = None):
 		#this will get called so we can make a little graph on the front end, it just returns the last however many (there should be some upper limit) moisture level readings for a plant
 		#return type should be a json file 
-		if plantID is None:
-			raise ValueError("plantID is required")
-
 		if fromDate is None:
 			fromDate = 0
 		if toDate is None:
 			toDate = time.time()
-		if fromDate > toDate:
-			raise ValueError("fromDate must be less than or equal to toDate")
+		return self.fake.readings(plantID=plantID, fromDate=fromDate, toDate=toDate)
 
-		# Use Faker to generate realistic-looking dummy notes and values.
-		plant_name = str(plantID)
-		duration = max(1, int(toDate - fromDate))
-		num_points = min(30, max(5, duration // (3600 * 2)))
-		data = []
-		for idx in range(num_points):
-			timestamp = int(fromDate + (toDate - fromDate) * idx / max(num_points - 1, 1))
-			data.append({
-				"plantId": plantID,
-				"plantName": plant_name,
-				"timestamp": timestamp,
-				"moistureLevel": round(random.uniform(18.0, 92.0), 1),
-				"note": self.fake.sentence(nb_words=6),
-			})
-		return data
+
+	@auto_sanitize
+	def getFakeData(self, plantID: int = None, fromDate: float = None, toDate: float = None):
+		#this will get called so we can make a little graph on the front end, it just returns the last however many (there should be some upper limit) moisture level readings for a plant
+		#return type should be a json file 
+		if fromDate is None:
+			fromDate = 0
+		if toDate is None:
+			toDate = time.time()
+		return self.fake.readings(plantID=plantID, fromDate=fromDate, toDate=toDate)
 
 	@auto_sanitize
 	def getLastEvent(self, plantID: int = None, event: str = None):

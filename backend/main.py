@@ -6,6 +6,7 @@ import subprocess
 import requests 
 import database
 import bcrypt
+import fakeModels as fake
 from dateutil import parser
 from dotenv import load_dotenv 
 from fastapi import FastAPI, Request, HTTPException, Body
@@ -87,7 +88,8 @@ async def get_plant_data(plantIdentifier):
 
 	data = db.getPlantData(plantIdentifier)
 	
-	return {"data": data}
+	return {"data": fake.fakeModels.plant(plantID=1)}
+	# return {"data": data}
 
 
 @app.post("/api/SendMoistureData", status_code=201)
