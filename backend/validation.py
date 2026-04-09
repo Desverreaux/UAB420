@@ -22,6 +22,8 @@ def validatePassword(password):
 
 def validateTimestamp(timestamp): #todo finish this function, as it currently consolidates different ways of writting a timestamp but doesn't actually check if it is a time stamp
 	try:
+		if timestamp is None: 
+			return parser.parse(0)
 		return parser.parse(timestamp)
 	except (TypeError, ValueError):
 		raise HTTPException(status_code=400, detail="Bad request: invalid timestamp")
