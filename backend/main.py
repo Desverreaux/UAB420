@@ -71,14 +71,7 @@ async def lorem_ipsum(wordCount: int = 20):
 
 @app.get("/api/getHistoricalData", status_code=200)
 @auto_validate
-async def get_historical_data(plantIdentifier, fromDate, toDate):
-
-	# Sets defaults for time frame if none is provided, defaults to from the beginning of time to now 
-	if fromDate is None:
-		fromDate = 0  # represents the epoch so 1970  
-	if toDate is None:
-		toDate = time.time()  # represents the current time 
-	
+async def get_historical_data(plantIdentifier, fromDate = 0, toDate = 99999999999):
 	data = db.getHistoricalData(plantIdentifier, fromDate, toDate)
 	return {"data": data}
 
