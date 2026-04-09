@@ -88,7 +88,7 @@ async def get_plant_data(plantIdentifier):
 
 	data = db.getPlantData(plantIdentifier)
 	
-	return {"data": FakeModels.plant(plantID=1)}
+	return {"data": fakeModels.plant(plantID=1)}
 	# return {"data": data}
 
 
