@@ -148,11 +148,7 @@ class Database:
 	def getHistoricalData(self, plantID: int = None, fromDate: float = None, toDate: float = None):
 		#this will get called so we can make a little graph on the front end, it just returns the last however many (there should be some upper limit) moisture level readings for a plant
 		#return type should be a json file 
-		if fromDate is None:
-			fromDate = 0
-		if toDate is None:
-			toDate = time.time()
-		return self.fake.readings(plantID=plantID, fromDate=fromDate, toDate=toDate)
+		pass
 
 
 	@auto_sanitize
@@ -269,7 +265,7 @@ class Database:
 	@auto_sanitize 
 	def isUser(self, username: str = None):
 		#returns true if the user exists 
-	pass 
+		pass 
 
 	#Tables needed Users, Readings, Plants, Images
 	#### Users needs columns: id, username, password, unit of temp prefference, climate, whatever else you can thing of
