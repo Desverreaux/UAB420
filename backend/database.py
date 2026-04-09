@@ -143,18 +143,30 @@ class Database:
 
 			return value
 
+	##########
+	# Dummy data methods 
+	##########
+
+	@auto_sanitize
+	def getFakeHistoricalData(self, plantID, fromDate, toDate):
+		#this will get called so we can make a little graph on the front end, it just returns the last however many (there should be some upper limit) moisture level readings for a plant
+		#return type should be a json file 
+		return self.fake.readings(plantID=plantID, fromDate=fromDate, toDate=toDate)
+
+	@auto_sanitize
+	def getFakePlantData(self,plantID, fromDate, toDate):
+		return self.fake.plant()
+
+
+
+	#################################################################################################################
+	#################################################################################################################
+
 	@auto_sanitize
 	def getHistoricalData(self, plantID: int = None, fromDate: float = None, toDate: float = None):
 		#this will get called so we can make a little graph on the front end, it just returns the last however many (there should be some upper limit) moisture level readings for a plant
 		#return type should be a json file 
 		pass
-
-
-	@auto_sanitize
-	def getFakeData(self, plantID: int = None, fromDate: float = None, toDate: float = None):
-		#this will get called so we can make a little graph on the front end, it just returns the last however many (there should be some upper limit) moisture level readings for a plant
-		#return type should be a json file 
-		return self.fake.readings(plantID=plantID, fromDate=fromDate, toDate=toDate)
 
 	@auto_sanitize
 	def getLastEvent(self, plantID: int = None, event: str = None):
