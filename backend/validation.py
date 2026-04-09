@@ -20,13 +20,34 @@ def validatePassword(password):
 		raise HTTPException(status_code=401, detail="Error: Password must be at less than 32 characters")
 	return password 
 
-def validateTimestamp(timestamp): #todo finish this function, as it currently consolidates different ways of writting a timestamp but doesn't actually check if it is a time stamp
-	try:
-		if timestamp is None: 
-			return parser.parse(0)
-		return parser.parse(timestamp)
-	except (TypeError, ValueError):
-		raise HTTPException(status_code=400, detail="Bad request: invalid timestamp")
+def validateTimestamp(timestamp):
+	"""
+	Accepts:
+	  - None            → returns None (let the endpoint apply its own default)
+	  - numeric / numeric string like 0, 1741814400 → treated as a Unix epoch (seconds)
+	  - human-readable string like "march 12th 2012" or "1/1/1 1:1:1" → parsed by dateutil
+	Always returns a float (epoch seconds) or None.
+	"""
+	if timestamp is None:
+		return None
+
+	# If it's already a number, treat it as epoch seconds
+	if isinstance(timestamp, (int, float)):
+		return float(timestamp)
+
+	# If it's a string, try numeric first, then natural-language parsing
+	if isinstance(timestamp, str):
+		try:
+			return float(timestamp)  # handles "0", "1741814400", etc.
+		except ValueError:
+			pass
+		try:
+			dt = parser.parse(timestamp)          # handles "march 12th 2012", "1/1/1 1:1:1", etc.
+			return dt.timestamp()                  # convert to epoch float
+		except (ValueError, OverflowError):
+			raise HTTPException(status_code=400, detail=f"Bad request: '{timestamp}' is not a valid timestamp")
+
+	raise HTTPException(status_code=400, detail=f"Bad request: invalid timestamp type '{type(timestamp).__name__}'")
 
 def validateMoistureLevel(moistureLevel): 
 	try:
