@@ -5,7 +5,7 @@ import hashlib
 import subprocess 
 import requests 
 import database
-import bcrypt
+# import bcrypt
 import fakeModels as fake
 from dateutil import parser
 from dotenv import load_dotenv 
