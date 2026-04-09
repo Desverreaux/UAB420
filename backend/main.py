@@ -5,6 +5,7 @@ import hashlib
 import subprocess 
 import requests 
 import database
+import bcrypt
 from dateutil import parser
 from dotenv import load_dotenv 
 from fastapi import FastAPI, Request, HTTPException, Body
@@ -102,7 +103,37 @@ async def send_moisture_data(moistureData: dict = Body()):
 
 @app.post("/api/createUser", status_code=201)
 @auto_validate
-async def createNewUser(username: str, password: str)
+async def createNewUser(username: str, password: str):
+	if(db.isUser(username)):
+		raise HTTPException(status_code=400, detail=f"Error: User already exists")
+	db.addUser(username,password)
+	return {"message": f"Account for {username} has been created!"}
+
+@app.post("/api/login", status_code=200)
+@auto_validate
+async def login(username: str, password: str):
+	if(not db.isUser(username)): 
+		raise HTTPException(status_code=401, detail=f"Error: User doesn't exist!")
+	elif (db.getPassword(username) != password): 
+		raise HTTPException(status_code=401, detail=f"Error: Incorrect Password!")
+	else: 
+		return {"message": f"User:{username} successfully logged in!"}
+
+@app.get("/api/getUserData", status_code=200)
+@auto_validate
+async def getUserData(username: str):
+	if(not db.isUser(username)): 
+		raise HTTPException(status_code=401, detail=f"Error: User doesn't exist!")
+	else: 
+		data = db.getUserData(username)
+		return {"data": data}
+
+
+
+
+
+
+		
 
 @app.get("/api/db-test")
 async def db_test():
@@ -131,6 +162,12 @@ def shutdown():
 ##################
 # Helper Functions 
 ##################
+
+def hash_password(plain_password: str):
+    return bcrypt.hashpw(plain_password.encode(), bcrypt.gensalt()).decode()
+
+def verify_password(plain_password: str, hashed: str):
+    return bcrypt.checkpw(plain_password.encode(), hashed.encode())
 
 # TODO:
 

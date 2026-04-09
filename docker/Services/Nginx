@@ -1,4 +1,10 @@
 FROM nginx:alpine
+
+# switch between these two copy statments to determine if the site runs secure or not
+# This conf file will start the server in ssl but also break certain dev tools
+# COPY docker/Services/nginxConf/SSL/nginx.conf /etc/nginx/nginx.conf
+# This is the default conf for development
 COPY docker/Services/nginxConf/Dev/nginx.conf /etc/nginx/nginx.conf
+
 EXPOSE 80 443
 CMD ["nginx", "-g", "daemon off;"]

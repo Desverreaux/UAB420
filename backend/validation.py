@@ -8,6 +8,18 @@ from fastapi import HTTPException
 # Validation Functions
 ######################
 
+def validateUserName(username):
+	if len(username) < 0:
+		raise HTTPException(status_code=401, detail="Error: Username must be at least 1 character")
+	if len(username) > 32:
+		raise HTTPException(status_code=401, detail="Error: Username must be at less than 32 characters")
+	return username 
+
+def validatePassword(password): 
+	if len(password) > 32:
+		raise HTTPException(status_code=401, detail="Error: Password must be at less than 32 characters")
+	return password 
+
 def validateTimestamp(timestamp): #todo finish this function, as it currently consolidates different ways of writting a timestamp but doesn't actually check if it is a time stamp
 	try:
 		return parser.parse(timestamp)
@@ -66,6 +78,8 @@ def validatePlantId(plantIdentifier):
 # Map parameter names to their validation functions
 # It can be read as if a function uses the arguement "moistureData" then auto_validate will call validateMoistureData on that value before passing it to the original funciton
 VALIDATORS = {
+	"username": validateUserName,
+	"password": validatePassword,
 	"moistureLevel": validateMoistureLevel,
 	"moistureData": validateMoistureData,
 	"plantIdentifier": validatePlantId,      # validates and resolves plant IDs
