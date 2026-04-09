@@ -46,7 +46,7 @@ class FakeModels:
         return {
             "id": random.randint(1, 100_000),
             "plantId": plantID,
-            "moistureLevel": round(random.uniform(10.0, 95.0), 1),
+            "moistureLevel": random.uniform(0, 1),
             "timestamp": timestamp or time.time(),
         }
 
