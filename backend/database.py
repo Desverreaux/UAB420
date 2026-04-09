@@ -154,7 +154,7 @@ class Database:
 		return self.fake.readings(plantID=plantID, fromDate=fromDate, toDate=toDate)
 
 	@auto_sanitize
-	def getFakePlantData(self,plantID, fromDate, toDate):
+	def getFakePlantData(self,plantID):
 		return self.fake.plant()
 
 
