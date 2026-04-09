@@ -130,11 +130,26 @@ async def getUserData(username: str):
 		return {"data": data}
 
 
+@app.get("/api/getPlantData", status_code=200)
+@auto_validate
+async def getPlantData(plantIdentifier):
+	data = db.getPlantData(plantIdentifier)
+	return {"data": data}
 
 
+@app.get("/api/getPlantStatus", status_code=200)
+@auto_validate
+async def getPlantStatus(plantIdentifier):
+	data = db.getPlantData(plantIdentifier)
+	return {"status": data["status"]}
+	
 
-
-		
+@app.get("/api/getPlantImage", status_code=200)
+@auto_validate
+async def getPlantImage(plantIdentifier):
+	data = db.getPlantData(plantIdentifier)
+	# return {"image": data.get("plantImage", "")}
+	pass
 
 @app.get("/api/db-test")
 async def db_test():
