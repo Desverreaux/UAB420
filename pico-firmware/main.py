@@ -1,31 +1,46 @@
-from machine import Pin, ADC
+import machine
 import time
-from soil_sensor import SoilSensor
+import config as cfg_mod
+import wifi
+import soil_sensor as sensor
+import api
 
+print("\n" + "=" * 50)
+print("Soil sensor firmware v1.0.0 — booting")
+print("=" * 50)
 
-SENSOR_ADC = 26
-SENSOR_POWER = 15
+cfg = cfg_mod.load()
+print(cfg)
 
-sensor = SoilSensor(SENSOR_ADC, SENSOR_POWER)
+if cfg is None:
+    print("[main] no config found — halting. Upload config.json and reboot.")
+    raise SystemExit
 
-test = ADC(Pin(SENSOR_ADC))
+# connect to wifi
 
+connected = wifi.connect(cfg)
 
-while True:
-    sensor.power_on()
-    print("sensor is on...")
-    
-    raw = test.read_u16()
-    print("Raw value: ", raw)
+if not connected:
+    print("[main] WiFi failed — wiping credentials and rebooting.")
+    print("[main] check SSID and password in config.json")
+    cfg_mod.wipe_wifi(cfg)
+    time.sleep(2)
+    machine.reset()
 
-    # print("Percentage value: ", percent)
+while connected:
 
-    sensor.power_off()
-    print("power is off...")
-    time.sleep(3)
+    cfg["_rssi"] = wifi.rssi()
 
+    wifi.sync_time()
 
+    timestamp = wifi.timestamp_iso()
 
+    reading = sensor.read(cfg)
 
+    success = api.post_reading(cfg, reading, timestamp)
 
+    if not success:
+        print("POST failed")
 
+    sleep_time = 10
+    time.sleep(sleep_time)

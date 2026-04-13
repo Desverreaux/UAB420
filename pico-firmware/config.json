@@ -1,0 +1,20 @@
+{
+    "wifi": {
+        "ssid": "YOUR_WIFI_SSID",
+        "password": "YOUR_WIFI_PASSWORD"
+    },
+    "api": {
+        "base_url": "http://192.168.1.96:5000",
+        "endpoint_reading": "/api/sensor/reading",
+        "key": ""
+    },
+    "sensor": {
+        "id": "sensor-01",
+        "interval_minutes": 1,
+        "calibration": {
+            "dry_raw": 45000,
+            "wet_raw": 19000
+        }
+    },
+    "firmware_version": "1.0.0"
+}
