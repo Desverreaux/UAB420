@@ -1,10 +1,16 @@
 <!--Search Modal-->
 <template>
     <Modal :show="show" @close="$emit('close')">
-      <div class = "modal_title">Search</div>
-      <input v-model="search_bar" placeholder="Search for plant" />
-      <button class="search_button" @click="search_command">🔍</button>
-      <button class="close_button"@click="$emit('close')">X</button>
+        <header class ="header">
+            <div class = "modal_title">Search</div>
+            <button class="close_button"@click="$emit('close')">X</button>
+        </header>
+      
+        <div class="main">
+          <input v-model="search_bar" placeholder="Search for plant" />
+            <button class="search_button" @click="search_command">🔍</button>  
+        </div>
+    
     </Modal>
 </template>
 
@@ -33,6 +39,13 @@ export default {
 </script>
 
 <style scoped>
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+
 .modal_title {
   font-size: 3rem;
   color: #0E2F15;
@@ -44,5 +57,11 @@ export default {
   left: 95%;
   border-radius: 25px;
   cursor: pointer;
+}
+
+.main{
+    display: flex;
+    flex-direction: row;
+    cursor: default;
 }
 </style>
