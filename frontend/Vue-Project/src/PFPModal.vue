@@ -1,10 +1,16 @@
 <!--PFP Modal-->
 <template>
     <Modal :show="show" @close="$emit('close')">
-      <div class="modal_title">User Profile</div>
+
+      <header class="header">
+        <div class="modal_title">User Profile</div>
+        <button class="close_button" @click="$emit('close')">X</button>
+      </header>
+      
+      <div
       <input v-model="user_name" placeholder="Username" />
       <button class="update_profile" @click="update_profile">Update Profile</button>
-      <button class="close_button" @click="$emit('close')">X</button>
+      
     </Modal>
 </template>
 
