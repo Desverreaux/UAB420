@@ -7,7 +7,6 @@
         <button class="close_button" @click="$emit('close')">X</button>
       </header>
       
-      <div
       <input v-model="user_name" placeholder="Username" />
       <button class="update_profile" @click="update_profile">Update Profile</button>
       
