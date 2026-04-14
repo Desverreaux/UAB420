@@ -18,30 +18,35 @@ export default {
     position: fixed;
     top: 50%;
     left: 50%;
-
     transform: translate(-50%, -50%);
-
-    border-radius: 25px;
 
     width: 60%;
     height: 60%;
+
+    border-radius: 25px;
+    padding: 1.5rem;
+
     background-color: #FFFFFF;
 
     display: flex;
-    justify-content: center;
-    align-items: center;
+    /*justify-content: center;
+    align-items: center;*/
 
     z-index: 1000;
 
     animation: fadeIn 0.3s ease;
+
+    box-sizing: border-box;
 }
 
 .modal {
     background-color: #a6b07e;
+
     padding: 2rem;
-    border-radius: 20px;
-    height: 95%;
-    width: 97%;
+    border-radius: calc(25px - 1.5rem);
+
+    height: 100%;
+    width: 100%;
     animation: fadeIn 0.3s ease;
 }
 
