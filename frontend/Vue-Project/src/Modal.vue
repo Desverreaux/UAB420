@@ -39,9 +39,9 @@ export default {
 .modal {
     background-color: #a6b07e;
     padding: 2rem;
-    border-radius: 25px;
+    border-radius: 20px;
     height: 95%;
-    width: 95%;
+    width: 97%;
     animation: fadeIn 0.3s ease;
 }
 
