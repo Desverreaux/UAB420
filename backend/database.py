@@ -180,14 +180,28 @@ class Database:
 
 	@auto_sanitize
 	def getMoistureLevel(self, plantID: int = None):
+
 		#this will return the most recent moisture reading for a plant 
 		#return type will be a float 
-		pass 
+        cur = self.connection.cursor()
+        query = ("SELECT moistureLevel "
+                 "FROM readings "
+                 "WHERE plantID = %s "
+                 "ORDER BY reading_at DESC")
+        cur.execute(query, plantID)
+        moistureLevelTuple = cur.fetchone()
+        cur.close()
+        return moistureLevelTuple[0]
 
 	@auto_sanitize
-	def addPlant(self, plantID: int = None, plantName: str = None, plantRoom: str = None):
+	def addPlant(self, plantID: int = None, plantName: str = None, plantRoom: str = None) -> None:
 		#this will add a plant to the database 
-		pass
+        cur = self.connection.cursor()
+        query = ("INSERT INTO plants "
+                 "VALUES (DEFAULT, %s, %s, %s, NULL, NULL, NULL, NULL")
+        parameters = (plantName, plantID, plantRoom)
+        cur.execute(query, parameters)
+        cur.close()
 
 	@auto_sanitize
 	def getPlants(self):
@@ -231,30 +245,55 @@ class Database:
 	def getPlantImagePath(self, plantSpecies: str = None):
 		# this will get the file path for the image for a given type of plant
 		pass
-  
+
 	@auto_sanitize
 	def getPlantRoom(self, plantID: int = None):
 		pass
 
 	@auto_sanitize
 	def setPlantRoom(self, plantID: int = None):
+        cur = self.connection.cursor()
+        query = ("UPDATE plants "
+                 "SET ")
 		pass 
 
-	@auto_sanitize
-	def addUser(self, userName: str = None, password: str = ""):
-		#this will add a username and password to your implementation of a users table 
-		pass
+    @auto_sanitize
+    def addUser(self, userName: str, password: str = "", tempUnit: str = "F", climate: str = "Humid"):
+	    #this will add a username and password to your implementation of a users table 
+        cur = self.connection.cursor()
+        query = ("INSERT INTO users "
+                 "VALUES (DEFAULT, %s, %s, %s, %s")
+        parameters = (userName, password, tempUnit, climate)
+        cur.execute(query, parameters)
+        cur.close()
 
-	@auto_sanitize
+    @auto_sanitize
 	def getPassword(self, userName: str = None):
-		pass  
+        cur = self.connection.cursor()
+        query = ("SELECT username, pass_word "
+                 "FROM users "
+                 "WHERE username = %s")
+        cur.execute(query, userName)
+        userCredentials = cur.fetchone()
+        cur.close()
+        return userCredentials[1]
 
 	@auto_sanitize
 	def getUserData(self, userName: str = None): 
 		#according to nik's diagram users will have attributes like climate, and preferred units of temperature you can either make these their own column and have getters and setters for each
 		#or if we wanna be flexable we can just have a Data column that holds some json that holds all the attributes like that
 		#this should raise a Value Error if the user cannot be found
-		pass
+        query = ("SELECT * "
+                 "FROM users "
+                 "WHERE username = %s")
+        cur = self.conenction.cursor()
+        cur.execute(query, userName)
+        userData = cur.fetchone()
+        cur.close()
+        if userData is None:
+            raise ValueError
+        else:
+            return userData
 
 	@auto_sanitize
 	def setUserData(self, attribute: str, value, userName: str = None):
@@ -263,13 +302,23 @@ class Database:
 
 	@auto_sanitize 
 	def isUser(self, username: str = None):
+        cur = self.connection.cursor()
+        query = ("SELECT username "
+                 "FROM users "
+                 "WHERE username = %s")
+        cur.execute(query, username)
+        row = cur.fetchone()
+        cur.close()
+        if (row is not None) and (row[0] == username):
+            return True
+        else:
+            return False
 		#returns true if the user exists 
-		pass 
 
 	#Tables needed Users, Readings, Plants, Images
 	#### Users needs columns: id, username, password, unit of temp prefference, climate, whatever else you can thing of
 	#### Readings needs columns: id, moistureLevel, plantId, timestamp
-	#### Plants needs columns: id, plantName, mostRecentMoistureLevel(maybe?), room, plantSpecies, plantImage, status
+	#### Plants needs columns: id, plantName, plantID, mostRecentMoistureLevel(maybe?), room, plantSpecies, plantImage, status
 	#### Images needs columns: id, plantSpecies, filepath, (some kind of hash so you can check if the image is still at that location, optional tho cause i have no idea how to do that)
 	#### ----Note: Images only stores the file path of the images as that just stores better, like its possible to store the images in the database but it would make the code alot more annoying and slower    
 	
