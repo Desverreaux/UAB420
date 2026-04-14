@@ -26,7 +26,7 @@ export default {
     border-radius: 24px;
     padding: 1.5rem;
 
-    background-color: #FFFFFF;
+    background-color: #d1603d;
 
     display: flex;
     /*justify-content: center;

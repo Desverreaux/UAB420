@@ -31,7 +31,7 @@
     <main class="main">
       <div class="plant_card" @click="openModal('existing_plant')">
         <div class="status_icon" :class="plant_status">
-          <span v-if="plant_status === 'good'">✅</span>
+          <span v-if="plant_status === 'good'">✓</span>
           <span v-else-if="plant_status === 'warning'">⚠️</span>
           <span v-else>❗</span>
         </div>
