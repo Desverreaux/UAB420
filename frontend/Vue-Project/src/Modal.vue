@@ -23,7 +23,7 @@ export default {
     width: 60%;
     height: 60%;
 
-    border-radius: 25px;
+    border-radius: 24px;
     padding: 1.5rem;
 
     background-color: #FFFFFF;
@@ -43,7 +43,7 @@ export default {
     background-color: #a6b07e;
 
     padding: 2rem;
-    border-radius: calc(25px - 1.5rem);
+    border-radius: 16px;
 
     height: 100%;
     width: 100%;
