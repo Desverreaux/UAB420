@@ -23,8 +23,29 @@ import Modal from "./Modal.vue"
 export default {
     props: ["show"],
     emits: ["close"], 
-    components: { Modal }
+    components: { Modal }, 
+
+  data() {
+    return {
+      user_name: "",
+      user_password: ""
+    }
+  },
+
+  methods: {
+    user_login() {
+      // LOGIN SCRIPTING GOES HERE
+
+      // Clears input
+      this.user_name = "";
+      this.user_password = "";
+   }
+  }
 }
+
+
+
+
 </script>
 
 <style scoped>
