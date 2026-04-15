@@ -52,6 +52,7 @@ export default {
 .main{
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.75rem;
   padding: 0 1rem 1rem 1rem;
   color: #0E2F15;

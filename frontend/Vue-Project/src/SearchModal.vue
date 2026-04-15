@@ -53,9 +53,11 @@ export default {
 }
 
 .close_button {
-  top: 95%;
-  left: 95%;
-  border-radius: 25px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #0E2F15;
+  font-weight: bold;
   cursor: pointer;
 }
 
