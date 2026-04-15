@@ -40,6 +40,8 @@ export default {
 }
 
 .modal {
+    position: relative;
+
     background-color: #a6b07e;
 
     padding: 2rem;

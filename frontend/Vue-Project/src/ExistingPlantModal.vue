@@ -27,16 +27,11 @@ export default {
 </script>
 
 <style scoped>
-.modal {
-  position: relative;
-}
-
 .header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
 
-  position: relative;
   padding: 0.5rem 1rem 0.25rem 1rem;
 }
 
