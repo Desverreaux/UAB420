@@ -3,33 +3,111 @@
     <Modal :show="show" @close="$emit('close')">
 
       <header class="header">
-        <span class="modal_title" modal_title>Existing Plant</span>  
+        <span class="modal_title">Existing Plant</span>  
         <button class="close_button" @click="$emit('close')">X</button>
       </header>
       
       <div class="main">
         <textarea class="plant_status">This should say something about the overall status of your plant</textarea>
+
         <div class="plant_graph">
-          <p>Graph Placeholder</p>
-          <p>Moisture: 45%</p>
+          <canvas ref="plant_chart"></canvas>
           
 
         </div>
 
-        <textarea class="plant_graph">This should also eventually be a graph</textarea>
       </div>
-      
       
     </Modal>
 </template>
 
 <script>
 import Modal from "./Modal.vue"
+import { Chart, registerables } from "chart.js"
+
+Chart.register(...registerables)
 
 export default {
     props: ["show"],
     emits: ["close"],
-    components: { Modal }
+    components: { Modal },
+
+    data() {
+      return {
+        chart: null,
+        loading: false // Loads stuff in real-time once we have backend fetching
+      }
+    },
+
+    methods: {
+      async render_chart() {
+        const context = this.$refs.plant_chart.getContext("2d")
+
+        let data_points
+        let labels
+
+        try {
+          // RESERVED FOR ONCE BACKEND FETCHING IS LIVE
+
+          /*
+          this.loading = true
+
+          const response = await fetch("/api/plant_data")
+          const result = await response.json() 
+          //Should be formatted as:
+          // data: [1, 2, 3, 4, 5]
+          // labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+
+          data_points = result.data
+          labels = result.labels
+
+          this.loading = false
+          */
+
+          // Test data that can be deleted later
+          data_points = [1, 2, 3, 4, 5, 6, 7]
+          labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+
+          if (this.chart) {
+            this.chart.destroy()
+          }
+
+          this.chart = new Chart(context, {
+            type: "line",
+            data: {
+              labels, 
+              datasets: [{
+                label: "Moisture %",
+                data: data_points,
+                borderColor: "#0E2F15",
+                backgroundColor: "rgba(14, 47, 21, 0.2)",
+                tension: 0.3, 
+                fill: true
+              }]
+            },
+            
+            options: {
+              responsive: true, 
+              maintainAspectRatio: false
+            }
+
+          })
+          
+        } catch (err) {
+          console.error("Failed to load chart data: ", err)
+        }
+      }
+    },
+
+    watch: {
+      show(val) {
+        if (val) {
+          this.$nextTick(() => {
+            this.render_chart()
+          })
+        }
+      }
+    }
 }
 </script>
 
@@ -81,7 +159,18 @@ export default {
 }
 
 .plant_graph {
-  resize: none;
+  width: 75%;
+  height: 250px;
+
+  padding: 1rem;
+
+  border-radius: 12px;
+  border: 2px solid #0E2F15
+}
+
+.plant_graph canvas {
+  width: 100% !important;
+  height: 100% !important;
 }
 
 </style>

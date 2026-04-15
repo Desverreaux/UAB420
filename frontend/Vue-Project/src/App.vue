@@ -43,21 +43,10 @@
         </div>
       </div>
 
-      <!--
-      <button 
-        class="existing_plant"
-        @click="openModal('existing_plant')">🪴
-      </button>
-      -->
-
       <button 
         class="new_plant"
         @click="openModal('new_plant')">+
       </button>
-
-      <div class="chart_card">
-        <Bar :data="chartData" :options="chartOptions" />
-      </div>
 
     </main>
 
@@ -102,19 +91,6 @@ import PFPModal from "./PFPModal.vue"
 import ExistingPlantModal from "./ExistingPlantModal.vue"
 import CriticalErrorModal from "./CriticalErrorModal.vue"
 
-import {
-  Chart as ChartJS,
-  Title,
-  Tooltip,
-  Legend,
-  BarElement,
-  CategoryScale,
-  LinearScale
-} from 'chart.js'
-import { Bar } from 'vue-chartjs'
-
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
-
 export default { // JavaScript
   components: {
     GuideModal,
@@ -122,7 +98,6 @@ export default { // JavaScript
     PFPModal, 
     ExistingPlantModal,
     CriticalErrorModal,
-    Bar
   },
 
 	data() {
@@ -137,13 +112,6 @@ export default { // JavaScript
       plant_status: "good", 
 
       // Bar chart data
-      chartData: {
-        labels: ['January', 'February', 'March'],
-        datasets: [{ data: [40, 20, 12] }]
-      },
-      chartOptions: {
-        responsive: true
-      },
 		}
 	},
 
@@ -155,7 +123,7 @@ export default { // JavaScript
       /*DB port: uab420.desverreaux.com:8978/api/*/ 
 
       if (!res.ok) {
-        throw new Error('HTTP error --> Status: ${res.status}')
+        throw new Error(`HTTP error --> Status: ${res.status}`)
       }
 
       this.moisture_percentage = 78
