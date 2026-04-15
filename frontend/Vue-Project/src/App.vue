@@ -43,8 +43,6 @@
         </div>
       </div>
 
-      <Bar :data="data" :options="options" />
-
       <!--
       <button 
         class="existing_plant"
@@ -56,6 +54,10 @@
         class="new_plant"
         @click="openModal('new_plant')">+
       </button>
+
+      <div class="chart_card">
+        <Bar :data="chartData" :options="chartOptions" />
+      </div>
 
     </main>
 
@@ -113,8 +115,6 @@ import { Bar } from 'vue-chartjs'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
-
-
 export default { // JavaScript
   components: {
     GuideModal,
@@ -134,16 +134,16 @@ export default { // JavaScript
       moisture_percentage: 78,
 
       //Placeholder plant status: "good" | "warning" | "critical"
-      plant_status: "good",
-      
-      data: {
+      plant_status: "good", 
+
+      // Bar chart data
+      chartData: {
         labels: ['January', 'February', 'March'],
         datasets: [{ data: [40, 20, 12] }]
       },
-      options: {
+      chartOptions: {
         responsive: true
-      }
-
+      },
 		}
 	},
 
@@ -369,6 +369,14 @@ body {
 
 .new_plant:hover{
   background-color: #dedbd5;
+}
+
+.chart_card {
+  width: 50%;
+  background-color: #FFFFFF;
+  border-radius: 25px;
+  padding: 1.5rem;
+  margin-top: 1rem;
 }
 
 .no-scroll {
