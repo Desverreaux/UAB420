@@ -43,6 +43,8 @@
         </div>
       </div>
 
+      <Bar :data="data" :options="options" />
+
       <!--
       <button 
         class="existing_plant"
@@ -54,11 +56,6 @@
         class="new_plant"
         @click="openModal('new_plant')">+
       </button>
-
-      <!-- Chart.js test - remove once verified -->
-      <div style="background:#fff; border-radius:12px; padding:1rem; width:300px; height:220px;">
-        <canvas ref="testChart"></canvas>
-      </div>
 
     </main>
 
@@ -97,15 +94,26 @@
 </template>
 
 <script>
-import { Chart as ChartJS, BarController, BarElement, CategoryScale, LinearScale } from "chart.js"
-import { Chart } from "vue-chartjs"
 import GuideModal from "./GuideModal.vue"
 import SearchModal from "./SearchModal.vue"
 import PFPModal from "./PFPModal.vue"
 import ExistingPlantModal from "./ExistingPlantModal.vue"
 import CriticalErrorModal from "./CriticalErrorModal.vue"
 
-ChartJS.register(BarController, BarElement, CategoryScale, LinearScale)
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale
+} from 'chart.js'
+import { Bar } from 'vue-chartjs'
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
+
+
 
 export default { // JavaScript
   components: {
@@ -113,7 +121,8 @@ export default { // JavaScript
     SearchModal,
     PFPModal, 
     ExistingPlantModal,
-    CriticalErrorModal
+    CriticalErrorModal,
+    Bar
   },
 
 	data() {
@@ -125,20 +134,20 @@ export default { // JavaScript
       moisture_percentage: 78,
 
       //Placeholder plant status: "good" | "warning" | "critical"
-      plant_status: "good", 
+      plant_status: "good",
+      
+      data: {
+        labels: ['January', 'February', 'March'],
+        datasets: [{ data: [40, 20, 12] }]
+      },
+      options: {
+        responsive: true
+      }
+
 		}
 	},
 
 	async mounted() {
-    // Chart.js test - remove once verified
-    new Chart(this.$refs.testChart, {
-      type: "bar",
-      data: {
-        labels: ["A", "B", "C"],
-        datasets: [{ label: "Test", data: [3, 7, 5] }]
-      }
-    })
-
     try {
       const res = await fetch ("/api/loremIpsum?wordCount=30")
       /*Broken Link:  http://thisdoesnotexist123456.com*/
