@@ -7,8 +7,12 @@
         <button class="close_button" @click="$emit('close')">X</button>
       </header>
       
-      <input v-model="user_name" placeholder="Username" />
-      <button class="update_profile" @click="update_profile">Update Profile</button>
+      <div class="main">
+        <input v-model="user_name" placeholder="Username" />
+        <input v-model="user_password" placeholder="Password" />
+        <button class="update_profile" @click="update_profile">Update Profile</button>
+      </div>
+      
       
     </Modal>
 </template>
@@ -52,5 +56,12 @@ export default {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
+}
+
+.main {
+  display: flex;
+  flex-direction: row;
+  cursor: default;
+}
 }
 </style>
