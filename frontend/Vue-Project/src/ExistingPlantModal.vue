@@ -27,6 +27,10 @@ export default {
 </script>
 
 <style scoped>
+.modal {
+  position: relative;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -56,8 +60,8 @@ export default {
   /*margin-top: -0.25rem;
   margin-right: -0.5rem;*/
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  top: 0.75rem;
+  right: 0.75rem;
 }
 
 .main{
