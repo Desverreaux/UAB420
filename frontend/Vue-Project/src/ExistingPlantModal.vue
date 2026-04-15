@@ -52,7 +52,7 @@ export default {
   cursor: pointer;
 
   margin-top: -0.25rem;
-  margin-right: -0.25rem;
+  margin-right: -0.5rem;
 }
 
 .main{
