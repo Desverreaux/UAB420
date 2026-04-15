@@ -10,7 +10,7 @@
       <div class="main">
         <input v-model="user_name" placeholder="Username" />
         <input v-model="user_password" placeholder="Password" />
-        <button class="update_profile" @click="update_profile">Update Profile</button>
+        <button class="update_profile" @click="update_profile">Login</button>
       </div>
       
       
@@ -60,7 +60,7 @@ export default {
 
 .main {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   cursor: default;
 }
 
