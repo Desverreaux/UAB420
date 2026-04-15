@@ -62,6 +62,7 @@ export default {
   display: flex;
   flex-direction: column;
   cursor: default;
+  align-items: center;
 }
 
 </style>
