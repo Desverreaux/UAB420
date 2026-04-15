@@ -42,14 +42,19 @@ export default {
 .header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     padding: 1rem;
+
+    padding: 0.5rem 1rem 0.25rem 1rem;
 }
 
 .modal_title {
   font-size: 3rem;
   color: #0E2F15;
   cursor: default;
+
+  margin: 0;
+  line-height: 1;
 }
 
 .close_button {
@@ -59,6 +64,10 @@ export default {
   border: 2px solid #0E2F15;
   font-weight: bold;
   cursor: pointer;
+
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
 }
 
 .main{
