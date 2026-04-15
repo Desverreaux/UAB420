@@ -9,6 +9,13 @@
       
       <div class="main">
         <textarea class="plant_status">This should say something about the overall status of your plant</textarea>
+        <div class="plant_graph">
+          <p>Graph Placeholder</p>
+          <p>Moisture: 45%</p>
+          
+
+        </div>
+
         <textarea class="plant_graph">This should also eventually be a graph</textarea>
       </div>
       
@@ -68,6 +75,8 @@ export default {
 }
 
 .plant_status {
+  width: 65%;
+  height: 20vh;
   resize: none;
 }
 
