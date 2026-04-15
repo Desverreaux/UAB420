@@ -269,6 +269,7 @@ body {
 
 .plant_icon {
   font-size: 7rem;
+  color: #000000
 }
 
 .moisture_percentage {
@@ -333,7 +334,7 @@ body {
 
   background-color: #FFFFFF;  
   border-radius: 25px;
-  
+
   cursor: pointer;
 
   transition: background-color 0.2s ease;
