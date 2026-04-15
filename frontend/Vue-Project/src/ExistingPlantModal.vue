@@ -49,10 +49,10 @@ export default {
         try {
           // RESERVED FOR ONCE BACKEND FETCHING IS LIVE
 
-          /*
+          
           this.loading = true
 
-          const response = await fetch("/api/plant_data")
+          const response = await fetch(`/api/getHistoricalData?plantIdentifier=plant1`)
           const result = await response.json() 
           //Should be formatted as:
           // data: [1, 2, 3, 4, 5]
@@ -62,11 +62,10 @@ export default {
           labels = result.labels
 
           this.loading = false
-          */
+          
 
           // Test data that can be deleted later
-          data_points = [1, 2, 3, 4, 5, 6, 7]
-          labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+          
 
           if (this.chart) {
             this.chart.destroy()
@@ -165,10 +164,13 @@ export default {
   padding: 1rem;
 
   border-radius: 12px;
-  border: 2px solid #0E2F15
+  border: 2px solid #0E2F15;
+
+  overflow: hidden;
 }
 
 .plant_graph canvas {
+  display: block;
   width: 100% !important;
   height: 100% !important;
 }

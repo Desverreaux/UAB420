@@ -73,7 +73,21 @@ async def lorem_ipsum(wordCount: int = 20):
 @auto_validate
 async def get_historical_data(plantIdentifier, fromDate = 0, toDate = 99999999999):
 	data = db.getFakeData(plantIdentifier, fromDate, toDate)
-	return {"data": data}
+
+	labels = []
+	values = []
+
+	for entry in data:
+		values.append(entry["moistureLevel"])
+
+		date_time = time.strftime('%a', time.localtime(entry["reading_at"]))
+		labels.append(date_time)
+
+	
+	return {
+		"labels": labels,
+		"data": values
+	}
 
 @app.get("/api/getPlantData")
 @auto_validate
