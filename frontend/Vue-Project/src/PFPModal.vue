@@ -31,13 +31,9 @@ export default {
 }
 
 .close_button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-
-
-  /*top: 95%;
-  left: 95%;*/
+  top: 95%;
+  left: 95%;
+  
   border-radius: 50%;
   cursor: pointer;
 }
