@@ -63,5 +63,5 @@ export default {
   flex-direction: row;
   cursor: default;
 }
-}
+
 </style>
