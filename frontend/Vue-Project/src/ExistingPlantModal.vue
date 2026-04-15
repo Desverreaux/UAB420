@@ -31,6 +31,8 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+
+  position: relative;
   padding: 0.5rem 1rem 0.25rem 1rem;
 }
 
@@ -51,8 +53,11 @@ export default {
   font-weight: bold;
   cursor: pointer;
 
-  margin-top: -0.25rem;
-  margin-right: -0.5rem;
+  /*margin-top: -0.25rem;
+  margin-right: -0.5rem;*/
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
 }
 
 .main{
