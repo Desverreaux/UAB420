@@ -10,7 +10,7 @@
       <div class="main">
         <input v-model="user_name" placeholder="Username" />
         <input v-model="user_password" type="password" placeholder="Password" />
-        <button class="update_profile" @click="update_profile">Login</button>
+        <button class="update_profile" @click="user_login">Login</button>
       </div>
       
       
