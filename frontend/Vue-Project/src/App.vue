@@ -193,8 +193,10 @@ body {
 .page {
   display: flex;
   flex-direction: column;
+
   height: 100vh; /*__vh = percentage of viewport height*/
   width: 100%;
+
 	background-color: #14591D;
 }
 
@@ -207,10 +209,10 @@ body {
 
 .title{
   font-family: "Merriweather";
-  font-size: 4rem; /* pm = pixels, em/% = relative to parent element (default is 1em = 16px), rem = relative to html element --> Can also use xx-small to xx-large*/
-  font-weight: bold; /*lighter, normal, bold, bolder*/
-  font-style: oblique 10deg; /*normal, italic, etc*/
-  text-decoration: underline; /*Can be customized*/
+  font-size: 4rem; 
+  font-weight: bold; 
+  font-style: oblique 10deg; 
+  text-decoration: underline; 
 
   color: #a6b07e;
   cursor: default;
@@ -221,70 +223,44 @@ body {
   gap: 1rem;
 }
 
-.Guide {
+.Guide, .Search, .PFP {
   border-radius: 25px;
   background-color: #A6B07E;
-  cursor: pointer;
 
+  cursor: pointer;
   transition: background-color 0.2s ease;
 }
 
-.Guide:hover{
-  background-color: #7d855f;
-}
-
-.Search {
-  border-radius: 25px;
-  background-color: #A6B07E;
-  cursor: pointer;
-
-  transition: background-color 0.2s ease;
-}
-
-.Search:hover{
-  background-color: #7d855f;
-}
-
-.PFP {
-  border-radius: 25px;
-  background-color: #A6B07E;  
-  cursor: pointer;
-  color: #FFFFFF;
-
-  transition: background-color 0.2s ease;
-
-}
-
-.PFP:hover{
+.Guide:hover, .Search:hover, .PFP:hover{
   background-color: #7d855f;
 }
 
 .main {
   flex: 1;
+
   display: flex;
   justify-content: center;
   align-items: flex-start;
+
   gap: 2rem;
-  /*
-  gap --> space between grid items
-  padding --> space inside elements
-  margin --> space outside elements
-  */
 }
 
 .plant_card {
   position: relative;
+
   width: 25%;
   height: 250px;
+
   background-color: #FFFFFF;
   border-radius: 25px;
+
   cursor: pointer;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  transition: bavkground-color 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 
 .plant_card:hover {
@@ -302,6 +278,7 @@ body {
 
   background-color: #000000;
   color: #FFFFFF;
+
   border-radius: 50%;
 
   width: 50px;
@@ -321,7 +298,9 @@ body {
 
   width: 40px; 
   height: 40px;
+
   border-radius: 50%;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -343,33 +322,18 @@ body {
   background-color: #F44336;
   color: #000000;
 }
-/* 
-.existing_plant{ /* Note that this can be merged as .existing_plant, .new_plant{ 
-  width: 25%;
-  height: 250px;
-  font-size: 7rem; /* pm = pixels, em/% = relative to parent element (default is 1em = 16px), rem = relative to html element --> Can also use xx-small to xx-large
-  
 
-  background-color: #FFFFFF;
-  border-radius: 25px;
-  cursor: pointer;
-
-  transition: background-color 0.2s ease;
-}
-
-.existing_plant:hover{
-  background-color: #dedbd5;
-}
-*/
 
 .new_plant{
   width: 25%;
   height: 250px;
-  font-size: 7rem; /* pm = pixels, em/% = relative to parent element (default is 1em = 16px), rem = relative to html element --> Can also use xx-small to xx-large*/
+
+  font-size: 7rem; 
   color: #5e5b53;
 
   background-color: #FFFFFF;  
   border-radius: 25px;
+  
   cursor: pointer;
 
   transition: background-color 0.2s ease;
