@@ -125,6 +125,8 @@ async def getUserData(username: str):
 @auto_validate
 async def getPlantData(plantIdentifier):
 	data = db.getPlantData(plantIdentifier)
+	if data is None:
+		raise HTTPException(status_code=404, detail=f"Error: No data found for plant '{plantIdentifier}'")
 	return {"data": data}
 
 
@@ -132,16 +134,20 @@ async def getPlantData(plantIdentifier):
 @auto_validate
 async def getPlantStatus(plantIdentifier):
 	data = db.getPlantData(plantIdentifier)
-	return {"status": data["status"]}
-	
+	try:
+		return {"status": data["status"]}
+	except KeyError:
+		raise HTTPException(status_code=404, detail=f"Error: No status found for plant '{plantIdentifier}'")
 
 @app.get("/api/getPlantImage", status_code=200)
 @auto_validate
 async def getPlantImage(plantIdentifier):
 	data = db.getPlantData(plantIdentifier)
-	# return {"image": data.get("plantImage", "")}
-	pass
-
+	try: 
+		return {"image": data["plantImage"]}
+	except KeyError:
+		raise HTTPException(status_code=404, detail=f"Error: No image found for plant '{plantIdentifier}'")
+	
 @app.get("/api/db-test")
 async def db_test():
 	try:
