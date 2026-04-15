@@ -97,14 +97,15 @@
 </template>
 
 <script>
-import { Chart, BarController, BarElement, CategoryScale, LinearScale } from "chart.js"
+import { Chart as ChartJS, BarController, BarElement, CategoryScale, LinearScale } from "chart.js"
+import { Chart } from "vue-chartjs"
 import GuideModal from "./GuideModal.vue"
 import SearchModal from "./SearchModal.vue"
 import PFPModal from "./PFPModal.vue"
 import ExistingPlantModal from "./ExistingPlantModal.vue"
 import CriticalErrorModal from "./CriticalErrorModal.vue"
 
-Chart.register(BarController, BarElement, CategoryScale, LinearScale)
+ChartJS.register(BarController, BarElement, CategoryScale, LinearScale)
 
 export default { // JavaScript
   components: {
