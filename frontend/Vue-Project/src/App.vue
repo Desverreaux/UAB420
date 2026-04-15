@@ -55,6 +55,11 @@
         @click="openModal('new_plant')">+
       </button>
 
+      <!-- Chart.js test - remove once verified -->
+      <div style="background:#fff; border-radius:12px; padding:1rem; width:300px; height:220px;">
+        <canvas ref="testChart"></canvas>
+      </div>
+
     </main>
 
     <!--Guide Modal-->
@@ -92,11 +97,14 @@
 </template>
 
 <script>
+import { Chart, BarController, BarElement, CategoryScale, LinearScale } from "chart.js"
 import GuideModal from "./GuideModal.vue"
 import SearchModal from "./SearchModal.vue"
 import PFPModal from "./PFPModal.vue"
 import ExistingPlantModal from "./ExistingPlantModal.vue"
 import CriticalErrorModal from "./CriticalErrorModal.vue"
+
+Chart.register(BarController, BarElement, CategoryScale, LinearScale)
 
 export default { // JavaScript
   components: {
@@ -121,6 +129,15 @@ export default { // JavaScript
 	},
 
 	async mounted() {
+    // Chart.js test - remove once verified
+    new Chart(this.$refs.testChart, {
+      type: "bar",
+      data: {
+        labels: ["A", "B", "C"],
+        datasets: [{ label: "Test", data: [3, 7, 5] }]
+      }
+    })
+
     try {
       const res = await fetch ("/api/loremIpsum?wordCount=30")
       /*Broken Link:  http://thisdoesnotexist123456.com*/
