@@ -174,3 +174,88 @@ def handle_request(request):
 
     # Default: show config page
     return http_response(config_page())
+
+
+# Read the full HTTP request from the client socket, including headers and body (if Content-Length is specified).
+def read_http_request(cl, max_bytes=4096):
+    data = b""
+
+    # Read until we have headers.
+    while b"\r\n\r\n" not in data and len(data) < max_bytes:
+        try:
+            chunk = cl.recv(1024)
+        except OSError as e:
+            if getattr(e, "errno", None) == 11:  # EAGAIN
+                continue
+            raise
+        if not chunk:
+            break
+        data += chunk
+
+    header_end = data.find(b"\r\n\r\n")
+    if header_end == -1:
+        return data
+
+    # MicroPython decode() has no errors= kwarg; HTTP headers are ASCII/UTF-8.
+    headers = data[:header_end].decode().split("\r\n")
+    content_length = 0
+    for line in headers[1:]:
+        if line.lower().startswith("content-length:"):
+            try:
+                content_length = int(line.split(":", 1)[1].strip())
+            except ValueError:
+                content_length = 0
+            break
+
+    body = data[header_end + 4:]
+    remaining = content_length - len(body)
+    while remaining > 0 and len(data) < max_bytes:
+        try:
+            chunk = cl.recv(min(1024, remaining))
+        except OSError as e:
+            if getattr(e, "errno", None) == 11:  # EAGAIN
+                continue
+            raise
+        if not chunk:
+            break
+        body += chunk
+        remaining -= len(chunk)
+
+    return data[:header_end + 4] + body
+
+
+# Handle a DNS query by returning a response that points all domains to the AP IP address, enabling captive portal functionality.
+def handle_dns_query(data):
+    if len(data) < 12:
+        return None
+
+    # Copy transaction ID from query.
+    txid = data[0:2]
+
+    # Build a basic standard response with recursion desired/available bits.
+    flags = b"\x81\x80"
+    qdcount = data[4:6]
+    ancount = qdcount
+    nscount = b"\x00\x00"
+    arcount = b"\x00\x00"
+    header = txid + flags + qdcount + ancount + nscount + arcount
+
+    # Find the end of the question section.
+    idx = 12
+    while idx < len(data) and data[idx] != 0:
+        idx += 1 + data[idx]
+    if idx + 5 >= len(data):
+        return None
+    question_end = idx + 5
+    question = data[12:question_end]
+
+    # Name pointer to original question at offset 12 (0xC00C).
+    answer_name = b"\xc0\x0c"
+    answer_type = b"\x00\x01"    # A record
+    answer_class = b"\x00\x01"   # IN
+    ttl = b"\x00\x00\x00\x1e"    # 30 seconds
+    rdlength = b"\x00\x04"
+    rdata = bytes(int(part) for part in AP_IP.split("."))
+
+    answer = answer_name + answer_type + answer_class + ttl + rdlength + rdata
+    return header + question + answer
