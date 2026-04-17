@@ -102,3 +102,24 @@ def parse_form(data):
         return params
     except:
         return {}
+    
+
+# Save the WiFi credentials to a config file. Returns True on success, False on failure.
+# TODO: maybe replace with config.py module.
+def save_config(ssid, password):
+    try:
+        with open("config.json", "r") as f:
+            config = ujson.load(f)
+    except:
+        config = {}
+    config["wifi"] = config.get("wifi", {})
+    config["wifi"]["ssid"] = ssid
+    config["wifi"]["password"] = password
+    config["wifi"]["configured"] = True
+    try:
+        with open("config.json", "w") as f:
+            ujson.dump(config, f)
+        return True
+    except OSError as e:
+        print("config save failed:", e)
+        return False
