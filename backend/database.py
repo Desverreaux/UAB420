@@ -177,14 +177,24 @@ class Database:
         #should check that arguments are filled and throw an error if they arent
         #sql has an option to just make a time stamp when a entry is created if you want to use that or pass your own timestamp is up to up
         #return type should be some kind of confirmation that the value was sent in
+        FLOAT_DELTA: float = 0.0001
         if not (isinstance(plantID, int)) or not (isinstance(moistureLevel, float)):
             raise ValueError("PlantID must be an int and Moisture Level must be a float")
-        cur = self.connection.cursor()
+        cur = self.connection.cursor(dictionary = True)
         query = ("INSERT INTO readings (id, moistureLevel, plantID, reading_at) "
                  "VALUES (DEFAULT, %s, %s, DEFAULT)")
         parameters = (moistureLevel, plantID)
         cur.execute(query, parameters)
+        verifyQuery = ("SELECT * "
+                       "FROM readings "
+                       "ORDER BY id DESC")
+        cur.execute(verifyQuery)
+        data = cur.fetchone()
         cur.close()
+        if ( data['plantID'] == plantID ) and ( abs((data['moistureLevel'] - moistureLevel)) <= FLOAT_DELTA ):
+            return True
+        else:
+            return False
 
     @auto_sanitize
     def getMoistureLevel(self, plantID: int = None):
