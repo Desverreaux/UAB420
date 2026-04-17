@@ -78,7 +78,8 @@ async def get_historical_data(plantIdentifier, fromDate = 0, toDate = 9999999999
 @app.get("/api/getPlantData")
 @auto_validate
 async def get_plant_data(plantIdentifier):
-	data = db.getFakePlantData(plantIdentifier)
+	# data = db.getFakePlantData(plantIdentifier)
+	data = {"data": "data"}
 	return {"data": data}
 
 
