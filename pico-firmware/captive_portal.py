@@ -11,6 +11,8 @@ AP_IP = "192.168.4.1"
 REBOOT_DELAY_MS = 6000
 REBOOT_AT_MS = None
 
+
+# Start the access point and configure the network settings
 def start_ap():
     ap = network.WLAN(network.AP_IF)
     ap.active(True)
@@ -28,3 +30,14 @@ def start_ap():
     print("IP:", ap.ifconfig()[0])
 
 
+def http_response(body, status="200 OK", content_type="text/html", headers=None):
+    lines = [
+        f"HTTP/1.1 {status}",
+        f"Content-Type: {content_type}",
+        "Cache-Control: no-store",
+    ]
+    if headers:
+        lines.extend(headers)
+    lines.append("")
+    lines.append(body)
+    return "\r\n".join(lines)
