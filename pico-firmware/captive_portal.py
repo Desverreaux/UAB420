@@ -71,3 +71,34 @@ def success_page(ssid):
     </body>
     </html>
     """
+
+# URL-decode form values (e.g. "My+WiFi" -> "My WiFi", "%20" -> " ", etc.)
+def url_decode(value):
+    value = value.replace("+", " ")
+    out = ""
+    i = 0
+    while i < len(value):
+        ch = value[i]
+        if ch == "%" and i + 2 < len(value):
+            try:
+                out += chr(int(value[i + 1:i + 3], 16))
+                i += 3
+                continue
+            except ValueError:
+                pass
+        out += ch
+        i += 1
+    return out
+
+# Parse the form data from the POST request body and return a dictionary of parameters
+def parse_form(data):
+    try:
+        body = data.split("\r\n\r\n")[1]
+        params = {}
+        for pair in body.split("&"):
+            if "=" in pair:
+                k, v = pair.split("=", 1)
+                params[url_decode(k)] = url_decode(v)
+        return params
+    except:
+        return {}
