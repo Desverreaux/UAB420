@@ -41,3 +41,21 @@ def http_response(body, status="200 OK", content_type="text/html", headers=None)
     lines.append("")
     lines.append(body)
     return "\r\n".join(lines)
+
+# Basic captive portal page with a form to submit WiFi credentials
+# TODO: Add some styling later
+def config_page():
+    return """
+    <html>
+    <body>
+        <h2>Configure WiFi</h2>
+        <form action="/configure" method="post">
+            SSID:<br>
+            <input name="ssid"><br>
+            Password:<br>
+            <input name="password" type="password"><br><br>
+            <input type="submit" value="Save">
+        </form>
+    </body>
+    </html>
+    """
