@@ -59,3 +59,15 @@ def config_page():
     </body>
     </html>
     """
+
+# TODO: MAYBE add some styling here too...
+def success_page(ssid):
+    return f"""
+    <html>
+    <body>
+        <h2>WiFi Saved</h2>
+        <p>SSID: <b>{ssid}</b></p>
+        <p>Your Pico is rebooting now. Reconnect to your normal WiFi and return to your sensor app in a few seconds.</p>
+    </body>
+    </html>
+    """
