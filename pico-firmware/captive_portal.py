@@ -259,3 +259,74 @@ def handle_dns_query(data):
 
     answer = answer_name + answer_type + answer_class + ttl + rdlength + rdata
     return header + question + answer
+
+# Main server loop that listens for both HTTP and DNS requests using non-blocking sockets and a poller. 
+# Handles captive portal logic and triggers reboot after successful WiFi config.
+def start_server():
+    http_addr = socket.getaddrinfo("0.0.0.0", 80)[0][-1]
+    dns_addr = socket.getaddrinfo("0.0.0.0", 53)[0][-1]
+
+    http_sock = socket.socket()
+    http_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    http_sock.bind(http_addr)
+    http_sock.listen(2)
+    http_sock.setblocking(False)
+
+    dns_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    dns_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    dns_sock.bind(dns_addr)
+    dns_sock.setblocking(False)
+
+    poller = uselect.poll()
+    poller.register(http_sock, uselect.POLLIN)
+    poller.register(dns_sock, uselect.POLLIN)
+
+    print("HTTP listening on", http_addr)
+    print("DNS listening on", dns_addr)
+
+    while True:
+        if REBOOT_AT_MS is not None and time.ticks_diff(REBOOT_AT_MS, time.ticks_ms()) <= 0:
+            print("Rebooting into station mode...")
+            machine.reset()
+
+        events = poller.poll(500)
+        for sock_obj, event in events:
+            if not (event & uselect.POLLIN):
+                continue
+
+            if sock_obj == dns_sock:
+                try:
+                    data, client = dns_sock.recvfrom(512)
+                    response = handle_dns_query(data)
+                    if response:
+                        dns_sock.sendto(response, client)
+                except OSError as e:
+                    # EAGAIN / would-block can happen on non-blocking sockets.
+                    if getattr(e, "errno", None) != 11:
+                        print("dns error:", e)
+                continue
+
+            # HTTP socket event
+            elif sock_obj == http_sock:
+                cl = None
+                try:
+                    cl, client = http_sock.accept()
+                    cl.settimeout(2)
+                    request = read_http_request(cl)
+                    if not request:
+                        continue
+                    response = handle_request(request)
+                    cl.send(response)
+                except OSError as e:
+                    if getattr(e, "errno", None) != 11:
+                        print("http error:", e)
+                finally:
+                    if cl:
+                        cl.close()
+
+
+# Main entry point to start the captive portal. 
+# Sets up the access point and starts the HTTP/DNS server loop.
+def start_portal():
+    start_ap()
+    start_server()
