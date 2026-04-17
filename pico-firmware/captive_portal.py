@@ -123,3 +123,54 @@ def save_config(ssid, password):
     except OSError as e:
         print("config save failed:", e)
         return False
+    
+
+# HTTP routing function to handle incoming requests and return appropriate responses based on the URL and method
+def handle_request(request):
+    global REBOOT_AT_MS
+    request = request.decode()
+    request_line = request.split("\r\n", 1)[0]
+
+    # Captive portal triggers for common Android/iOS/Windows probes.
+    portal_paths = (
+        "/generate_204",
+        "/hotspot-detect.html",
+        "/ncsi.txt",
+        "/connecttest.txt",
+        "/redirect",
+        "/canonical.html",
+        "/success.txt",
+        "/fwlink",
+    )
+    if any(path in request_line for path in portal_paths):
+        return http_response(
+            "",
+            status="302 Found",
+            headers=[f"Location: http://{AP_IP}/"],
+        )
+
+    # Config form submission
+    if "POST /configure" in request:
+        params = parse_form(request)
+
+        ssid = params.get("ssid", "").strip()
+        password = params.get("password", "")
+
+        if not ssid:
+            return http_response(
+                "<h3>SSID is required.</h3><p><a href='/'>Go back</a></p>",
+                status="400 Bad Request",
+            )
+
+        print("Received config for SSID:", ssid)
+
+        if save_config(ssid, password):
+            REBOOT_AT_MS = time.ticks_add(time.ticks_ms(), REBOOT_DELAY_MS)
+            return http_response(success_page(ssid))
+        return http_response(
+            "<h3>Failed to save config.</h3><p><a href='/'>Try again</a></p>",
+            status="500 Internal Server Error",
+        )
+
+    # Default: show config page
+    return http_response(config_page())
