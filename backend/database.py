@@ -3,10 +3,12 @@ from mysql.connector import MySQLConnection
 import os
 import re
 import time
+from datetime import datetime
 import random
 from functools import wraps
 from dotenv import load_dotenv
 from fakeModels import FakeModels
+import json
 
 load_dotenv()  # Load environment variables from .env file
 
@@ -145,11 +147,32 @@ class Database:
             return value
 
     @auto_sanitize
-    def getHistoricalData(self, plantID: int = None, fromDate: float = None, toDate: float = None):
+    def getHistoricalData(self, plantID: int = None, fromDate: datetime = None, toDate: datetime = None):
         #this will get called so we can make a little graph on the front end, it just returns the last however many (there should be some upper limit) moisture level readings for a plant
         #return type should be a json file 
-        pass
-
+        UPPER_LIMIT = 20 #Edit this to change when the cursor has to break when iterating through results
+        resultDict = {}
+        query = ("SELECT * " 
+                 "FROM readings "
+                 "WHERE plantID = %s "
+                 "AND reading_at BETWEEN %s AND %s "
+                 "ORDER BY reading_at DESC")
+        cur = self.connection.cursor(dictionary = True)
+        parameters = (plantID, fromDate, toDate)
+        readingNum = 1
+        cur.execute(query, parameters)
+        #The results are ordered from newest to oldest based off fromDate and toDate 
+        #reading_1 will always be newest result based off fromDate and toDate
+        for row in cur:
+            currentReadingKey = "reading_" + str(readingNum)
+            resultDict[currentReadingKey] = row
+            resultDict[currentReadingKey]['reading_at'] = resultDict[currentReadingKey]['reading_at'].isoformat()
+            readingNum = readingNum + 1
+            if readingNum > UPPER_LIMIT:
+                break
+        cur.close()
+        return json.dumps(resultDict)
+        
 
     @auto_sanitize
     def getFakeData(self, plantID: int = None, fromDate: float = None, toDate: float = None):
@@ -206,7 +229,7 @@ class Database:
                  "FROM readings "
                  "WHERE plantID = %s "
                  "ORDER BY reading_at DESC")
-        cur.execute(query, plantID)
+        cur.execute(query, (plantID,))
         moistureLevelRow = cur.fetchone()
         cur.close()
         return moistureLevelRow['moistureLevel']
@@ -241,7 +264,7 @@ class Database:
         query = ("SELECT * "
                  "FROM plants "
                  "WHERE plantID = %s")
-        cur.execute(query, plantID)
+        cur.execute(query, (plantID,))
         dataRow = cur.fetchone()
         cur.close()
         return dataRow
@@ -253,7 +276,7 @@ class Database:
         query = ("SELECT plantName "
                  "FROM plants "
                  "WHERE plantID = %s")
-        cur.execute(query, plantID)
+        cur.execute(query, (plantID,))
         nameDict = cur.fetchone()
         cur.close()
         return nameDict['plantName']
@@ -265,7 +288,7 @@ class Database:
         query = ("SELECT plantID "
                  "FROM plants "
                  "WHERE plantName = %s")
-        cur.execute(query, Name)
+        cur.execute(query, (Name,))
         plantID_Row: dict[str, str] = cur.fetchone()
         cur.close()
         return plantID_Row['plantID']
@@ -278,7 +301,7 @@ class Database:
         query = ("SELECT status "
                  "FROM plants "
                  "WHERE plantID = %s")
-        cur.execute(query, plantID)
+        cur.execute(query, (plantID,))
         statusRow: dict[str, str] = cur.fetchone()
         cur.close()
         return statusRow['status']
@@ -340,7 +363,7 @@ class Database:
         query = ("SELECT pass_word "
                  "FROM users "
                  "WHERE username = %s")
-        cur.execute(query, userName)
+        cur.execute(query, (userName,))
         passwordRow: dict[str, str] = cur.fetchone()
         cur.close()
         return passwordRow['pass_word']
@@ -354,7 +377,7 @@ class Database:
                  "FROM users "
                  "WHERE username = %s")
         cur = self.connection.cursor(dictionary = True)
-        cur.execute(query, userName)
+        cur.execute(query, (userName,))
         userDataRow = cur.fetchone()
         cur.close()
         if userDataRow is None:
@@ -397,7 +420,7 @@ class Database:
         query = ("SELECT username "
                  "FROM users "
                  "WHERE username = %s")
-        cur.execute(query, username)
+        cur.execute(query, (username,))
         usernameRow = cur.fetchone()
         cur.close()
         if (usernameRow is not None) and (usernameRow['username'] == username):
