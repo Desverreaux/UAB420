@@ -200,7 +200,8 @@ body {
 }
 
 .logo {
-  height: 80px;
+  height: 150px;
+  width: auto;
   object-fit: contain;
   cursor: default;
 }
