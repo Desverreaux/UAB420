@@ -1,9 +1,11 @@
 <template> <!-- HTML -->
 	<div class="page">
     <header class="header">
-      <div 
-        class="title">Thirsty Plant
-      </div>
+      <img 
+        src="/src/assets/Images/graphic_design_is_my_passion2.png"
+        alt="Thirsty Plant Logo"
+        class="logo"
+      />
 
       <div class="UIElements">
         <button 
@@ -197,22 +199,17 @@ body {
 	background-color: #14591D;
 }
 
+.logo {
+  height: 80px;
+  object-fit: contain;
+  cursor: default;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-}
-
-.title{
-  font-family: "Merriweather";
-  font-size: 4rem; 
-  font-weight: bold; 
-  font-style: oblique 10deg; 
-  text-decoration: underline; 
-
-  color: #a6b07e;
-  cursor: default;
 }
 
 .UIElements {
