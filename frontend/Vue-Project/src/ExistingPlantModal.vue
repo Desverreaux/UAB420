@@ -8,7 +8,7 @@
       </header>
       
       <div class="main">
-        <textarea class="plant_status">This should say something about the overall status of your plant</textarea>
+        <span class="plant_status">This should say something about the overall status of your plant</span>
 
         <div class="plant_graph">
           <canvas ref="plant_chart"></canvas>
