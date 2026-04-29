@@ -4,43 +4,69 @@ import config as cfg_mod
 import wifi
 import soil_sensor as sensor
 import api
+import captive_portal as portal
 
-print("\n" + "=" * 50)
-print("Soil sensor firmware v1.0.0 — booting")
-print("=" * 50)
+CONNECT_WIFI_ATTEMPTS = 3
 
-cfg = cfg_mod.load()
-print(cfg)
+def start_ap_mode():
+    print("[main] starting AP mode")
+    portal.start_portal()
 
-if cfg is None:
-    print("[main] no config found — halting. Upload config.json and reboot.")
-    raise SystemExit
-
-# connect to wifi
-
-connected = wifi.connect(cfg)
-
-if not connected:
-    print("[main] WiFi failed — wiping credentials and rebooting.")
-    print("[main] check SSID and password in config.json")
-    cfg_mod.wipe_wifi(cfg)
     time.sleep(2)
     machine.reset()
 
-while connected:
+def connect_to_wifi(cfg, attempts=CONNECT_WIFI_ATTEMPTS):
+    print("[main] connecting to WiFi")
+    for attempt in range(attempts):
+        if wifi.connect(cfg):
+            return True
+        print(f"[main] WiFi connection attempt {attempt + 1} failed")
+        time.sleep(1)
+    return False
+    
 
-    cfg["_rssi"] = wifi.rssi()
+def boot():
+    print("\n" + "=" * 50)
+    print("Soil sensor firmware v1.0.0 — booting")
+    print("=" * 50)
+
+    cfg = cfg_mod.load()
+    # print(cfg)
+
+    # TODO: handle this better by maybe creating a config file if it doesn't exist.
+    if cfg is None:
+        print("[main] no config found — halting. Upload config.json and reboot.")
+        raise SystemExit
+
+    if not cfg_mod.has_wifi(cfg):
+        print("[main] no WiFi config found — starting AP mode.")
+        start_ap_mode()
+
+    if not connect_to_wifi(cfg):
+        print("[main] WiFi failed — starting AP mode.")
+        start_ap_mode()
 
     wifi.sync_time()
+    return cfg
 
-    timestamp = wifi.timestamp_iso()
+def run(cfg):
 
-    reading = sensor.read(cfg)
+    while True:
+        if not wifi.is_wifi_connected():
+            print("[main] WiFi disconnected - reconnecting...")
+            if not connect_to_wifi(cfg):
+                print("[main] WiFi failed — starting AP mode.")
+                start_ap_mode()
 
-    success = api.post_reading(cfg, reading, timestamp)
+        timestamp = wifi.timestamp_iso()
+        reading = sensor.read(cfg)
 
-    if not success:
-        print("POST failed")
+        success = api.post_reading(cfg, reading, timestamp)
+        if not success:
+            print("[main] POST failed")
 
-    sleep_time = 10
-    time.sleep(sleep_time)
+        time.sleep(cfg["sensor"]["interval_minutes"] * 60)
+
+
+cfg = boot()
+run(cfg)
