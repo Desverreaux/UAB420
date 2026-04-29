@@ -37,6 +37,11 @@ def connect(cfg):
     return True
 
 
+def is_wifi_connected():
+    wlan = network.WLAN(network.STA_IF)
+    return wlan.isconnected()
+
+
 def rssi():
     wlan = network.WLAN(network.STA_IF)
     try:
