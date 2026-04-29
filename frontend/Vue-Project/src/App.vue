@@ -18,12 +18,11 @@
           @click="openModal('Search')">Search
         </button>
 
-        <a 
+        <button 
           class="Database"
-          href="http://uab420.desverreaux.com:8978" 
-          target="_blank" 
-          rel="noopener">Database
-        </a> 
+          @click="window.open('http://uab420.desverreaux.com:8978', '_blank')">
+          Database
+        </button> 
 
         <button
           class="Profile"
@@ -229,6 +228,7 @@ body {
 .Guide, .Search, .Profile, .Database {
   border-radius: 25px;
   background-color: #A6B07E;
+  color: #000000;
 
   cursor: pointer;
   transition: background-color 0.2s ease;
