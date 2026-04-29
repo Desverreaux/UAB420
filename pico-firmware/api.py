@@ -12,10 +12,10 @@ def post_reading(cfg, reading, timestamp):
     url = cfg["api"]["base_url"] + cfg["api"]["endpoint_reading"]
 
     payload = {
-        "sensor_id":      cfg["sensor"]["id"],
-        "moisture_pct":   reading["moisture_pct"],
+        "plantId":      cfg["sensor"]["id"],
+        "moistureLevel":   reading["moisture_pct"],
         "raw_adc":        reading["raw_adc"],
-        "timestamp_utc":  timestamp,
+        "timestamp":  timestamp,
         "firmware_version": cfg["firmware_version"],
         "rssi":           cfg.get("_rssi", None)
     }
@@ -35,7 +35,7 @@ def post_reading(cfg, reading, timestamp):
         res = urequests.post(url, data=json.dumps(payload), headers=headers)
         print(f"[api] response status: {res.status_code}")
 
-        if res.status_code == 200:
+        if res.status_code == 201:
             _handle_response(cfg, res)
             res.close()
             return True

@@ -1,16 +1,16 @@
 {
     "wifi": {
-        "ssid": "YOUR_WIFI_SSID",
-        "password": "YOUR_WIFI_PASSWORD"
+        "ssid": "PicoTesting",
+        "password": "PicoTesting"
     },
     "api": {
-        "base_url": "http://192.168.1.96:5000",
-        "endpoint_reading": "/api/sensor/reading",
+        "base_url": "http://uab420.desverreaux.com",
+        "endpoint_reading": "/api/SendMoistureData",
         "key": ""
     },
     "sensor": {
-        "id": "sensor-01",
-        "interval_minutes": 1,
+        "id": "6",
+        "interval_minutes": 0.5,
         "calibration": {
             "dry_raw": 45000,
             "wet_raw": 19000

@@ -36,8 +36,8 @@ def create_default_config():
             "password": "YOUR_WIFI_PASSWORD"
         },
         "api": {
-            "base_url": "http://192.168.1.96:5000",
-            "endpoint_reading": "/api/sensor/reading",
+            "base_url": "http://uab420.desverreaux.com",
+            "endpoint_reading": "/api/SendMoistureData",
             "key": ""
         },
         "sensor": {
