@@ -89,7 +89,7 @@ async def send_moisture_data(moistureData: dict = Body()):
 	if "timestamp" not in moistureData or moistureData["timestamp"] is None:
 		moistureData["timestamp"] = time.time()
 
-	db.logMeasurement(moistureData["plantId"], moistureData["moistureLevel"], moistureData["timestamp"])
+	db.logMeasurement(moistureData["plantId"], moistureData["moistureLevel"])
 
 	return {"message": "Moisture data sent"}
 
