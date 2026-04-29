@@ -193,7 +193,7 @@ class Database:
         #events could be: Last time watered, last time it was really dry, ... i feel like there would be others but can't think of any 
         #return type should be a timestamp
         pass
-        
+
     @auto_sanitize
     def logMeasurement(self, plantID: int = None, moistureLevel: float = None):
         #so the main.py (name might have changed) is going to get moisture data from the pico, its then gonna call this function to save that data to the database
@@ -207,6 +207,9 @@ class Database:
         query = ("INSERT INTO readings (moistureLevel, plantID, reading_at) "
                  "VALUES (%s, %s, NOW())")
         parameters = (moistureLevel, plantID)
+
+        print(f"Executing query: {query} with parameters {parameters}") # Debugging log to see the final query and parameters
+        
         cur.execute(query, parameters)
         inserted_id = cur.lastrowid
         # verifyQuery = ("SELECT * "
