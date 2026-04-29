@@ -72,13 +72,13 @@ async def lorem_ipsum(wordCount: int = 20):
 @app.get("/api/getHistoricalData", status_code=200)
 @auto_validate
 async def get_historical_data(plantIdentifier, fromDate = 0, toDate = 99999999999):
-	data = db.getFakeHistoricalData(plantIdentifier, fromDate, toDate)
+	data = db.getHistoricalData(plantIdentifier, fromDate, toDate)
 	return {"data": data}
 
 @app.get("/api/getPlantData")
 @auto_validate
 async def get_plant_data(plantIdentifier):
-	data = db.getFakePlantData(plantIdentifier)
+	data = db.getPlantData(plantIdentifier)
 	return {"data": data}
 
 
