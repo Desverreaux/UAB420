@@ -239,7 +239,7 @@ class Database:
         #this will add a plant to the database 
         cur = self.connection.cursor()
         query = ("INSERT INTO plants "
-                 "VALUES (DEFAULT, %s, %s, NULL, NULL, NULL, NULL")
+                 "VALUES (DEFAULT, %s, %s, NULL, NULL, NULL, NULL)")
         parameters = (plantName, plantRoom)
         cur.execute(query, parameters)
         cur.close()
