@@ -179,105 +179,232 @@ class Database:
 		pass
 
 	@auto_sanitize
-	def logMeasurement(self, plantID: int = None, moistureLevel: float = None, timestamp: float = None):
+	def logMeasurement(self, plantID: int = "NULL", moistureLevel: float = "NULL"):
 		#so the main.py (name might have changed) is going to get moisture data from the pico, its then gonna call this function to save that data to the database
 		#should check that arguments are filled and throw an error if they arent
 		#sql has an option to just make a time stamp when a entry is created if you want to use that or pass your own timestamp is up to up
 		#return type should be some kind of confirmation that the value was sent in
+        cur = self.connection.cursor()
+        query = ("INSERT INTO readings (id, moistureLevel, plantID, reading_at) "
+                 "VALUES (DEFAULT, %s, %s, DEFAULT)")
+        parameters = (moistureLevel, plantID)
+        cur.execute(query, parameters)
+        cur.close()
 		pass
 
 	@auto_sanitize
 	def getMoistureLevel(self, plantID: int = None):
+
 		#this will return the most recent moisture reading for a plant 
 		#return type will be a float 
-		pass 
+        cur = self.connection.cursor()
+        query = ("SELECT moistureLevel "
+                 "FROM readings "
+                 "WHERE plantID = %s "
+                 "ORDER BY reading_at DESC")
+        cur.execute(query, plantID)
+        moistureLevelTuple = cur.fetchone()
+        cur.close()
+        return moistureLevelTuple[0]
 
 	@auto_sanitize
-	def addPlant(self, plantID: int = None, plantName: str = None, plantRoom: str = None):
+	def addPlant(self, plantName: str = None, plantRoom: str = None):
 		#this will add a plant to the database 
-		pass
+        cur = self.connection.cursor()
+        query = ("INSERT INTO plants "
+                 "VALUES (DEFAULT, %s, %s, NULL, NULL, NULL, NULL")
+        parameters = (plantName, plantRoom)
+        cur.execute(query, parameters)
+        cur.close()
 
 	@auto_sanitize
 	def getPlants(self):
 		#this will return a list of all the plants we got
-		pass
- 
+        plantList = []
+        cur = self.connection.cursor()
+        query = ("SELECT plantName "
+                 "FROM plants")
+        for plantTuple in cur:
+            plantList.append(plantTuple[0])
+        cur.close()
+        return plantList
+
 	@auto_sanitize
 	def getPlantData(self,plantID):
 		#this will return a data object that is just a plants row in the plant table 
-		pass
+        cur = self.connection.cursor()
+        query = ("SELECT * "
+                 "FROM plants "
+                 "WHERE plantID = %s")
+        cur.execute(query, plantID)
+        dataRow = cur.fetchone()
+        cur.close()
+        return dataRow
 
 	@auto_sanitize
 	def getPlantName(self, plantID: int = None):
 		#returns the name of the plant given its ID
-		pass
+        cur = self.connection.cursor()
+        query = ("SELECT plantName "
+                 "FROM plants "
+                 "WHERE plantID = %s")
+        cur.execute(query, plantID)
+        nameTuple = cur.fetchone()
+        cur.close()
+        return nameTuple[0]
 
 	@auto_sanitize
 	def getPlantIdByName(self, Name: str = ""):
 		#probably isn't required but would search for a plant named "blah" and return the primary key for that entry
-		pass
+        cur = self.connection.cursor()
+        query = ("SELECT plantID "
+                 "FROM plants "
+                 "WHERE plantName = %s")
+        cur.execute(query, Name)
+        plantID_Tuple = cur.fetchone()
+        cur.close()
+        return plantID_Tuple[0]
 
 	@auto_sanitize
 	def getPlantStatus(self, plantID: int = None): 
 		#based on nik's wireframe, we'll have a health attribute to the plant
 		#apparently the options are healthy, needs attention, and struggling 
-		pass
+        cur = self.connection.cursor()
+        query = ("SELECT status "
+                 "FROM plants "
+                 "WHERE plantID = %s")
+        cur.execute(query, plantID)
+        statusTuple = cur.fetchone()
+        cur.close()
+        return statusTuple[0]
 
 	@auto_sanitize
 	def setPlantStatus(self, plantID: int = None, status: str = ""):
 		#a setter for the health status, status needs to be validated to make sure its one of the options
-		pass
+        validStatus = ["healthy", "needs attention", "struggling"]
+        status = status.lower()
+        if status not in validStatus:
+            raise ValueError("Not a valid status")
+        cur = self.connection.cursor()
+        query = ("UPDATE plants "
+                 "SET status = %s" 
+                 "WHERE plantID = %s")
+        parameters = (status, plantID)
+        cur.execute(query, parameters)
+        cur.close()
+        return
+    
+    #I think we said we're not doing images
+    #I'll leave the function headers just in case
+    #@auto_sanitize
+	#def setPlantImagePath(self, plantSpecies: str = None, plantID: int = None, pathToPlantImage: str = ""):
+	#	# the absolute parent path to the images is gonna be /sharedFiles/Server/frontend/src/assets/Images/Plants
+	#	# the relative parent path to the images is gonna be ../frontend/src/assets/Images/Plants
+	#	# this will store the filepath of the image for a species of plant
+	#	pass
 
-	@auto_sanitize
-	def setPlantImagePath(self, plantSpecies: str = None, plantID: int = None, pathToPlantImage: str = ""):
-		# the absolute parent path to the images is gonna be /sharedFiles/Server/frontend/src/assets/Images/Plants
-		# the relative parent path to the images is gonna be ../frontend/src/assets/Images/Plants
-		# this will store the filepath of the image for a species of plant
-		pass
+	#@auto_sanitize
+	#def getPlantImagePath(self, plantSpecies: str = None):
+	#	# this will get the file path for the image for a given type of plant
+	#	pass
 
-	@auto_sanitize
-	def getPlantImagePath(self, plantSpecies: str = None):
-		# this will get the file path for the image for a given type of plant
-		pass
-  
-	@auto_sanitize
-	def getPlantRoom(self, plantID: int = None):
-		pass
+    #@auto_sanitize
+	#def getPlantRoom(self, plantID: int = None):
+	#	pass
 
-	@auto_sanitize
-	def setPlantRoom(self, plantID: int = None):
-		pass 
+	#@auto_sanitize
+	#def setPlantRoom(self, plantID: int = None):
+    #    cur = self.connection.cursor()
+    #    query = ("UPDATE plants "
+    #             "SET ")
+	#	pass 
 
-	@auto_sanitize
-	def addUser(self, userName: str = None, password: str = ""):
-		#this will add a username and password to your implementation of a users table 
-		pass
+    @auto_sanitize
+    def addUser(self, userName: str, password: str = "", tempUnit: str = "F", climate: str = "NULL"):
+	    #this will add a username and password to your implementation of a users table 
+        cur = self.connection.cursor()
+        query = ("INSERT INTO users "
+                 "VALUES (DEFAULT, %s, %s, %s, %s")
+        parameters = (userName, password, tempUnit, climate)
+        cur.execute(query, parameters)
+        cur.close()
 
-	@auto_sanitize
+    @auto_sanitize
 	def getPassword(self, userName: str = None):
-		pass  
+        cur = self.connection.cursor()
+        query = ("SELECT pass_word "
+                 "FROM users "
+                 "WHERE username = %s")
+        cur.execute(query, userName)
+        passwordTuple = cur.fetchone()
+        cur.close()
+        return passwordTuple[0]
 
 	@auto_sanitize
 	def getUserData(self, userName: str = None): 
 		#according to nik's diagram users will have attributes like climate, and preferred units of temperature you can either make these their own column and have getters and setters for each
 		#or if we wanna be flexable we can just have a Data column that holds some json that holds all the attributes like that
 		#this should raise a Value Error if the user cannot be found
-		pass
+        query = ("SELECT * "
+                 "FROM users "
+                 "WHERE username = %s")
+        cur = self.conenction.cursor()
+        cur.execute(query, userName)
+        userData = cur.fetchone()
+        cur.close()
+        if userData is None:
+            raise ValueError("User could not be found")
+        else:
+            return userData
 
 	@auto_sanitize
-	def setUserData(self, attribute: str, value, userName: str = None):
-		#setter for the thing above 
-		pass
+    def setUserData(self, id: int, username: str = None, pass_word: str = None, temp_unit: str = None, climate: str = None):
+		#setter for the thing above us
+        parameters = []
+        cur = self.connection.cursor()
+        query = ("UPDATE users "
+                 "SET ")
+        if username is not None:
+            query = query + "username = %s, "
+            parameters.append(username)
+        if pass_word is not None:
+            query = query + "pass_word = %s, "
+            parameters.append(pass_word)
+        if temp_unit is not None:
+            query = query + "temp_unit = %s, "
+            parameters.append(temp_unit)
+        if climate is not None:
+            query = query + "climate = %s, "
+            parameters.append(climate)
+        parameters.append(id)
+        query = query[:-2]
+        parameters = tuple(parameters)
+        queryConditional = "WHERE id = %s"
+        query = query + " " + queryConditional
+        cur.execute(query, parameters)
+        cur.close()
+        return
+        
 
 	@auto_sanitize 
 	def isUser(self, username: str = None):
+        cur = self.connection.cursor()
+        query = ("SELECT username "
+                 "FROM users "
+                 "WHERE username = %s")
+        cur.execute(query, username)
+        row = cur.fetchone()
+        cur.close()
+        if (row is not None) and (row[0] == username):
+            return True
+        else:
+            return False
 		#returns true if the user exists 
-		pass 
 
 	#Tables needed Users, Readings, Plants, Images
 	#### Users needs columns: id, username, password, unit of temp prefference, climate, whatever else you can thing of
 	#### Readings needs columns: id, moistureLevel, plantId, timestamp
-	#### Plants needs columns: id, plantName, mostRecentMoistureLevel(maybe?), room, plantSpecies, plantImage, status
+	#### Plants needs columns: id, plantName, plantID, mostRecentMoistureLevel(maybe?), room, plantSpecies, plantImage, status
 	#### Images needs columns: id, plantSpecies, filepath, (some kind of hash so you can check if the image is still at that location, optional tho cause i have no idea how to do that)
 	#### ----Note: Images only stores the file path of the images as that just stores better, like its possible to store the images in the database but it would make the code alot more annoying and slower    
 	
