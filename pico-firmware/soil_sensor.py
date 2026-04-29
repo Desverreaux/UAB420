@@ -17,8 +17,13 @@ def _read_raw(n_samples=5):
 
 
 def raw_to_pct(raw, dry_raw, wet_raw):
-    return (dry_raw - raw) / (dry_raw - wet_raw)
-
+    value = (dry_raw - raw) / (dry_raw - wet_raw)
+    if (value > 1):
+        return 1.0
+    elif (value < 0):
+        return 0.0
+    else:
+        return value
 
 def read(cfg):
     dry_raw = cfg["sensor"]["calibration"]["dry_raw"]
