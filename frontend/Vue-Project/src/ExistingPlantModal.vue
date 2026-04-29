@@ -61,6 +61,9 @@ export default {
           data_points = result.data
           labels = result.labels
 
+          console.log(data_points) //DEBUG
+          console.log(labels)
+
           this.loading = false
           
 
