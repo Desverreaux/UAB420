@@ -347,13 +347,6 @@ body {
   background-color: #dedbd5;
 }
 
-.chart_card {
-  width: 50%;
-  background-color: #FFFFFF;
-  border-radius: 25px;
-  padding: 1.5rem;
-  margin-top: 1rem;
-}
 
 .no-scroll {
   overflow: hidden;
