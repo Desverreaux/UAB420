@@ -196,7 +196,7 @@ body {
   height: 100vh; /*__vh = percentage of viewport height*/
   width: 100%;
 
-	background-color: #14591D;
+	background-color: #A6B07E;
 
   background-image: url("/src/assets/Images/leaf-pattern.svg");
 
