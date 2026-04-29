@@ -17,8 +17,7 @@ def _read_raw(n_samples=5):
 
 
 def raw_to_pct(raw, dry_raw, wet_raw):
-    pct = (dry_raw - raw) / (dry_raw - wet_raw) * 100
-    return max(0.0, min(100.0, round(pct, 1)))
+    return (dry_raw - raw) / (dry_raw - wet_raw)
 
 
 def read(cfg):
