@@ -7,10 +7,28 @@
         </header>
       
         <div class="main">
-          <input v-model="search_bar" placeholder="Search for plant" />
-            <button class="search_button" @click="search_command">🔍</button>  
+            <div class="search_row">
+                <input v-model="search_bar" placeholder="Search for plant" @keyup.enter="submit" />
+
+                <button class="search_button" @click="submit">🔍</button>  
+            </div>
+
+            <p v-if="loading">Searching...</p>
+            <p v-if="error_message" class="error_message">{{ error_message }}</p>
+
+            <div class-results="results">
+                <div v-for="plant in search_results" :key="plant.slug || plant.scientific_name" class="result_card">
+                
+                    <img v-if="plant.image_url" :src="plant.image_url" :alt="plant.common_name || plant.scientific_name" class="plant_image"/>
+
+                    <div class="plant_info">
+                        <strong>{{ plant.common_name || "Unknown Common Name" }}</strong>
+                        <span>{{ plant.scientific_name || "Unknown Scientific Name" }}</span>
+                        <span v-if="plant.family"> Family: {{ plant.family || "Unknown Plant Family" }}</span>
+                    </div>
+                </div>
+            </div>
         </div>
-    
     </Modal>
 </template>
 
@@ -24,15 +42,41 @@ export default {
 
     data() {
         return {
-            search_bar: ""
+            search_bar: "",
+
+            search_results: [],
+            loading: false, 
+            error_mesage: ""
+
         }
     },
 
     methods: {
-        submit() {
+        async submit() {
             if (!this.search_bar) return
             this.$emit("query", this.search_bar)
-            this.search_bar = ""
+
+            this.loading = true
+            this.error_message = ""
+            this.search_results = []
+
+            try {
+                const response = await fetch(`/api/searchPlants?q${encodeURIComponent(this.search_bar)}`)
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error --> Status: ${response.status}`)
+                }
+
+                const result = await response.json()
+
+                this.search_results = result.data || []
+            
+            } catch (err) {
+                console.error("Plant Search Failed: ", err)
+                this.error_message = "Failed to search for plant."
+            } finally {
+                this.loading = false
+            }
         }
     }
 }
@@ -72,7 +116,52 @@ export default {
 
 .main{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    gap: 1rem;
     cursor: default;
+    color: #0E2F15;
+}
+
+.search_row {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}
+
+.search_button {
+    cursor: pointer;
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.result_card {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+
+  padding: 0.75rem;
+  border: 2px solid #0E2F15;
+  border-radius: 12px;
+  background-color: #FFFFFF;
+}
+
+.plant_image {
+  width: 75px;
+  height: 75px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.plant_info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 </style>

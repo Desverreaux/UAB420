@@ -16,13 +16,16 @@
           @click="openModal('Search')">Search
         </button>
 
-        <div>
-          <a href="http://uab420.desverreaux.com:8978" target="_blank" rel="noopener">Database</a>
-        </div> 
+        <a 
+          class="Database"
+          href="http://uab420.desverreaux.com:8978" 
+          target="_blank" 
+          rel="noopener">Database
+        </a> 
 
         <button
-          class="PFP"
-          @click="openModal('PFP')">👤
+          class="Profile"
+          @click="openModal('Profile')">👤
         </button>
 
       </div>
@@ -62,9 +65,9 @@
       @close="closeModal"
     />
 
-    <!--PFP Modal-->
-    <PFPModal 
-      :show="activeModal === 'PFP'" 
+    <!--Profile Modal-->
+    <ProfileModal 
+      :show="activeModal === 'Profile'" 
       @close="closeModal"
     />
     
@@ -87,7 +90,7 @@
 <script>
 import GuideModal from "./GuideModal.vue"
 import SearchModal from "./SearchModal.vue"
-import PFPModal from "./PFPModal.vue"
+import ProfileModal from "./ProfileModal.vue"
 import ExistingPlantModal from "./ExistingPlantModal.vue"
 import CriticalErrorModal from "./CriticalErrorModal.vue"
 
@@ -95,7 +98,7 @@ export default { // JavaScript
   components: {
     GuideModal,
     SearchModal,
-    PFPModal, 
+    ProfileModal, 
     ExistingPlantModal,
     CriticalErrorModal,
   },
@@ -111,7 +114,6 @@ export default { // JavaScript
       //Placeholder plant status: "good" | "warning" | "critical"
       plant_status: "good", 
 
-      // Bar chart data
 		}
 	},
 
@@ -218,7 +220,7 @@ body {
   gap: 1rem;
 }
 
-.Guide, .Search, .PFP {
+.Guide, .Search, .Profile, .Database {
   border-radius: 25px;
   background-color: #A6B07E;
 
@@ -226,7 +228,7 @@ body {
   transition: background-color 0.2s ease;
 }
 
-.Guide:hover, .Search:hover, .PFP:hover{
+.Guide:hover, .Search:hover, .Profile:hover, .Database:hover{
   background-color: #7d855f;
 }
 
@@ -353,9 +355,31 @@ body {
 
 /*
 TO-DO:
+ - Title: 
+    - The site is still showing the original logo. 
+    - [Q]: Cecil it looked like you had added it, was that in your branch specifically or just overlaid on an image?
+      - If not, if youll send me that file and ill figure out how to add it in. 
 
-Stretch:
- - Add scalability for smaller devices
+ - Plant Card:
+    - Left Corner --> Need to use fetch to live-update moisture percentage
+    - Right Corner --> Need to use the fetched moisture update to change the status icon
+    - On Click:
+      - The graph is pulling dummy data from the backend but nothing is populating. [Q]: Do we want the site to pull dummy data for demo purposes? Or do we wanna go ahead and modify to pull real data?
+      - I still need to format the graph to stay within the modal.
+    
+ - New Plant:
+    - Currently does nothing, but im gonna add functionality. The new plants will not have moisture or status icons. The graphs within will use purely dummy data that ill hardcode.
+    - [Q]: Seth if you can type out an improved guide since youre knowledgeable about the probe?
+
+ - Search:
+    - There is no database of plants, so this is currently useless.
+    - [Q]: Do we want to try to add a plant database, or scrap the feature entirely?
+
+ - Database button needs to be removed. LET ME KNOW WHEN TO DO SO
+
+ - Profile:
+    - Currently doesnt do much, but I can set it up such that the true plant card uses dummy data until logged in, and uses real data afterwards. I'd also change the modal to show some logged in status.
+    - The login button is currently NOT linked to the database. I also need to add functionality for new users.
 */
 </style>
 
