@@ -55,3 +55,7 @@ def entering_ap_mode():
     blink(250, 500)
     blink(1000, 100)
     time.sleep_ms(1000)
+
+def normal_mode():
+    LED.off()
+    LED.on()
