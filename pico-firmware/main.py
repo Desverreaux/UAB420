@@ -5,19 +5,25 @@ import wifi
 import soil_sensor as sensor
 import api
 import captive_portal as portal
+import status_led 
+
 
 CONNECT_WIFI_ATTEMPTS = 3
 
+
 def start_ap_mode():
     print("[main] starting AP mode")
+    status_led.entering_ap_mode()
     portal.start_portal()
 
     time.sleep(2)
     machine.reset()
 
 def connect_to_wifi(cfg, attempts=CONNECT_WIFI_ATTEMPTS):
+
     print("[main] connecting to WiFi")
     for attempt in range(attempts):
+        status_led.wifi_connecting()
         if wifi.connect(cfg):
             return True
         print(f"[main] WiFi connection attempt {attempt + 1} failed")
@@ -29,6 +35,8 @@ def boot():
     print("\n" + "=" * 50)
     print("Soil sensor firmware v1.0.0 — booting")
     print("=" * 50)
+
+    status_led.boot()
 
     cfg = cfg_mod.load()
     # print(cfg)
@@ -44,6 +52,8 @@ def boot():
 
     if not connect_to_wifi(cfg):
         print("[main] WiFi failed — starting AP mode.")
+        status_led.wifi_connect_failed()
+        time.sleep(2)
         start_ap_mode()
 
     wifi.sync_time()
@@ -60,12 +70,15 @@ def run(cfg):
 
         timestamp = wifi.timestamp_iso()
         reading = sensor.read(cfg)
-
+        status_led.post_data_started()
         success = api.post_reading(cfg, reading, timestamp)
         if not success:
             print("[main] POST failed")
+            status_led.post_data_failed()
 
+        status_led.normal_mode()
         time.sleep(cfg["sensor"]["interval_minutes"] * 60)
+
 
 
 cfg = boot()
