@@ -197,6 +197,14 @@ body {
   width: 100%;
 
 	background-color: #14591D;
+
+  background-image:
+    radial-gradient(rgba(166, 176, 126, 0.16) 1px, transparent 1px),
+    radial-gradient(rgba(14, 47, 21, 0.22) 1px, transparent 1px);
+
+  background-size: 28px 28px, 42px 42px;
+
+  background-position: 0 0, 14px 14px;
 }
 
 .logo {
