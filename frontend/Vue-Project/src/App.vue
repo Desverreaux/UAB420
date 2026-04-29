@@ -20,7 +20,7 @@
 
         <button 
           class="Database"
-          @click="window.open('http://uab420.desverreaux.com:8978', '_blank')">
+          @click="openDatabase">
           Database
         </button> 
 
@@ -159,6 +159,15 @@ export default { // JavaScript
       this.activeModal = null
       document.body.classList.remove("no-scroll")
     },
+
+    openDatabase() {
+      const url = "http://uab420.desverreaux.com:8978"
+      const newTab = window.open(url, "_blank")
+
+      if (!newTab) {
+        window.location.href = url
+      }
+    }
 
     //addPlant() {}
 	}
