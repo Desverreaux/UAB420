@@ -24,12 +24,10 @@ from pydantic import BaseModel
 
 REPO_PATH = "/sharedFiles/Server"
 
-# class MoistureData(BaseModel):
-#     plantIdentifier: str
-#     moistureLevel: float
-#     timestamp: float = None  # optional, defaults to None
-
-
+class MoistureData(BaseModel):
+    plantIdentifier: str
+    moistureLevel: float
+    timestamp: float = None  # optional, defaults to None
 
 load_dotenv()  # Load environment variables from .env file
 app = FastAPI() # Create FastAPI app
@@ -86,7 +84,7 @@ async def get_plant_data(plantIdentifier):
 @auto_validate
 async def send_moisture_data(moistureData: dict = Body()):
 
-	console.log(moistureData)
+	print(moistureData)
 
 	if "timestamp" not in moistureData or moistureData["timestamp"] is None:
 		moistureData["timestamp"] = time.time()
