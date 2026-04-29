@@ -1,0 +1,13 @@
+<!-- CHANGE: Smaller, denser repeating leaf pattern -->
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
+  <g fill="#A6B07E" fill-opacity="0.12">
+
+    <!-- small leaves scattered -->
+    <path d="M10 20 Q20 5 30 15 Q20 30 10 20 Z"/>
+    <path d="M50 10 Q65 0 70 15 Q60 25 50 10 Z"/>
+    <path d="M25 55 Q35 40 45 50 Q35 65 25 55 Z"/>
+    <path d="M60 45 Q75 35 75 55 Q65 65 60 45 Z"/>
+    <path d="M5 65 Q15 55 25 65 Q15 75 5 65 Z"/>
+
+  </g>
+</svg>
