@@ -353,7 +353,7 @@ class Database:
         cur = self.connection.cursor()
         query = ("INSERT INTO users "
                  "VALUES (DEFAULT, %s, %s, %s, %s")
-        parameters = (userName, password, tempUnit, climate)
+        parameters = (userName, password, 0, 0)
         cur.execute(query, parameters)
         cur.close()
 
