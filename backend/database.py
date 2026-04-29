@@ -193,7 +193,7 @@ class Database:
         #events could be: Last time watered, last time it was really dry, ... i feel like there would be others but can't think of any 
         #return type should be a timestamp
         pass
-
+        
     @auto_sanitize
     def logMeasurement(self, plantID: int = None, moistureLevel: float = None):
         #so the main.py (name might have changed) is going to get moisture data from the pico, its then gonna call this function to save that data to the database
@@ -204,17 +204,18 @@ class Database:
         if not (isinstance(plantID, int)) or not (isinstance(moistureLevel, float)):
             raise ValueError("PlantID must be an int and Moisture Level must be a float")
         cur = self.connection.cursor(dictionary = True)
-        query = ("INSERT INTO readings (id, moistureLevel, plantID, reading_at) "
-                 "VALUES (DEFAULT, %s, %s, DEFAULT)")
+        query = ("INSERT INTO readings (moistureLevel, plantID, reading_at) "
+                 "VALUES (%s, %s, NOW())")
         parameters = (moistureLevel, plantID)
         cur.execute(query, parameters)
+        inserted_id = cur.lastrowid
         # verifyQuery = ("SELECT * "
         #                "FROM readings "
         #                "ORDER BY id DESC")
         # cur.execute(verifyQuery)
         # data = cur.fetchone()
         cur.close()
-        return True
+        return inserted_id
         # if ( data['plantID'] == plantID ) and ( abs((data['moistureLevel'] - moistureLevel)) <= FLOAT_DELTA ):
         #     return True
         # else:
