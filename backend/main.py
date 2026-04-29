@@ -86,6 +86,8 @@ async def get_plant_data(plantIdentifier):
 @auto_validate
 async def send_moisture_data(moistureData: dict = Body()):
 
+	console.log(moistureData)
+
 	if "timestamp" not in moistureData or moistureData["timestamp"] is None:
 		moistureData["timestamp"] = time.time()
 
