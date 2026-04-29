@@ -352,7 +352,7 @@ class Database:
         #this will add a username and password to your implementation of a users table 
         cur = self.connection.cursor()
         query = ("INSERT INTO users "
-                 "VALUES (DEFAULT, %s, %s, %s, %s")
+                 "VALUES (DEFAULT, %s, %s, %s, %s)")
         parameters = (userName, password, tempUnit, climate)
         cur.execute(query, parameters)
         cur.close()
