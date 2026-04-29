@@ -130,7 +130,7 @@ export default { // JavaScript
         throw new Error(`HTTP error --> Status: ${res.status}`)
       }
 
-      this.moisture_percentage = 78
+      this.moisture_percentage = 77
 
       if (this.moisture_percentage > 60) {
         this.plant_status = "good"
