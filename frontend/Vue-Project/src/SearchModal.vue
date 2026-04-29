@@ -16,7 +16,7 @@
             <p v-if="loading">Searching...</p>
             <p v-if="error_message" class="error_message">{{ error_message }}</p>
 
-            <div class-results="results">
+            <div class="results">
                 <div v-for="plant in search_results" :key="plant.slug || plant.scientific_name" class="result_card">
                 
                     <img v-if="plant.image_url" :src="plant.image_url" :alt="plant.common_name || plant.scientific_name" class="plant_image"/>
@@ -46,7 +46,7 @@ export default {
 
             search_results: [],
             loading: false, 
-            error_mesage: ""
+            error_message: ""
 
         }
     },
@@ -61,7 +61,7 @@ export default {
             this.search_results = []
 
             try {
-                const response = await fetch(`/api/searchPlants?q${encodeURIComponent(this.search_bar)}`)
+                const response = await fetch(`/api/searchPlants?q=${encodeURIComponent(this.search_bar)}`)
 
                 if (!response.ok) {
                     throw new Error(`HTTP error --> Status: ${response.status}`)

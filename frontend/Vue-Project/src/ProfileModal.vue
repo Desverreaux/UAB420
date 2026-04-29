@@ -38,11 +38,11 @@ export default {
   data() {
     return {
       user_name: "",
-      user_password: ""
+      user_password: "",
 
       logged_in: false,
       logged_in_user: "",
-      error_message = ""
+      error_message: ""
     }
   },
 
@@ -52,7 +52,7 @@ export default {
 
       try {
         const response = await fetch(
-          `/api/login?username=${encodeURIComponent(this.user_name)}&password=${encodeURIComponent(this.user_password)}`
+          `/api/login?username=${encodeURIComponent(this.user_name)}&password=${encodeURIComponent(this.user_password)}`,
         {
           method: "POST"
         }
@@ -79,7 +79,8 @@ export default {
       this.error_message = ""
 
       try {
-        const response = await fetch(`/api/createUser?username=${encodeURIComponent(this.user_name)}&password=${encodeURIComponent(this.user_password)}`
+        const response = await fetch(
+          `/api/createUser?username=${encodeURIComponent(this.user_name)}&password=${encodeURIComponent(this.user_password)}`,
 
         {
           method: "POST"
