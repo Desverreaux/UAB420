@@ -67,6 +67,7 @@ export default {
         this.logged_in = true
         this.logged_in_user = this.user_name
 
+        this.user_name = ""
         this.user_password = ""
 
       } catch (err) {
