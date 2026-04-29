@@ -196,7 +196,7 @@ body {
   height: 100vh; /*__vh = percentage of viewport height*/
   width: 100%;
 
-	background-color: #A6B07E;
+	background-color: #14591D;
 
   background-image: url("/src/assets/Images/leaf-pattern.svg");
 
@@ -228,7 +228,7 @@ body {
 
 .Guide, .Search, .Profile, .Database {
   border-radius: 25px;
-  background-color: #A6B07E;
+  background-color: #0E2F15;
 
   cursor: pointer;
   transition: background-color 0.2s ease;
