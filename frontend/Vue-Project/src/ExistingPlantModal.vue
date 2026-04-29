@@ -88,6 +88,17 @@ export default {
             options: {
               responsive: true, 
               maintainAspectRatio: false
+            },
+
+            layout: {
+              padding: o
+            },
+
+            scales: {
+              y: {
+                min: 0,
+                max: 20 // If fucked fix this
+              }
             }
 
           })
@@ -116,7 +127,7 @@ export default {
   justify-content: space-between;
   align-items: flex-start;
 
-  padding: 0.5rem 1rem 0.25rem 1rem;
+  padding: 0..25rem 1rem 0.25rem 1rem;
 }
 
 .modal_title {
@@ -145,23 +156,33 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0 1rem 1rem 1rem;
+  gap: 0.5rem;
+  padding: 0.25rem 1rem 0.75rem 1rem;
   color: #0E2F15;
   cursor: default;
+  box-sizing: border-box;
 }
 
 .plant_status {
-  width: 65%;
-  height: 20vh;
-  resize: none;
+  width: 75%;
+  height: 50px;
+
+  padding: 0.75rem;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  
+  overflow-y: auto;
 }
 
 .plant_graph {
   width: 75%;
   height: 250px;
 
-  padding: 1rem;
+  padding: 0.75rem;
 
   border-radius: 12px;
   border: 2px solid #0E2F15;
