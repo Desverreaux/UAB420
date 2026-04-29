@@ -28,6 +28,38 @@ def has_wifi(cfg):
         return bool(cfg["wifi"]["ssid"] and cfg["wifi"]["password"])
     except (KeyError, TypeError):
         return False
+    
+def create_default_config():
+    data = {
+        "wifi": {
+            "ssid": "YOUR_WIFI_SSID",
+            "password": "YOUR_WIFI_PASSWORD"
+        },
+        "api": {
+            "base_url": "http://192.168.1.96:5000",
+            "endpoint_reading": "/api/sensor/reading",
+            "key": ""
+        },
+        "sensor": {
+            "id": "sensor-01",
+            "interval_minutes": 1,
+            "calibration": {
+                "dry_raw": 45000,
+                "wet_raw": 19000
+            }
+        },
+        "firmware_version": "1.0.0"
+    }
+    try:
+        with open("config.json", "w") as f:
+            json.dump(data, f)
+            f.close()
+    except OSError as e:
+        print(f"[config] failed to create default config: {e}")
+        return False
+    else:
+        print("[config] default config created")
+        return True
 
 def wipe_wifi(cfg):
     cfg["wifi"]["ssid"] = ""

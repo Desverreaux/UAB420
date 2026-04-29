@@ -41,10 +41,11 @@ def boot():
     cfg = cfg_mod.load()
     # print(cfg)
 
-    # TODO: handle this better by maybe creating a config file if it doesn't exist.
     if cfg is None:
-        print("[main] no config found — halting. Upload config.json and reboot.")
-        raise SystemExit
+        print("[main] no config found. Creating default config file.")
+        if not cfg_mod.create_default_config():
+            print("[main] failed to create default config file. Upload config.json and reboot.")
+            raise SystemExit
 
     if not cfg_mod.has_wifi(cfg):
         print("[main] no WiFi config found — starting AP mode.")
