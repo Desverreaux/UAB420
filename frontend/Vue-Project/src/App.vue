@@ -228,7 +228,7 @@ body {
 
 .Guide, .Search, .Profile, .Database {
   border-radius: 25px;
-  background-color: #0E2F15;
+  background-color: #A6B07E;
 
   cursor: pointer;
   transition: background-color 0.2s ease;
