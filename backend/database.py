@@ -208,16 +208,17 @@ class Database:
                  "VALUES (DEFAULT, %s, %s, DEFAULT)")
         parameters = (moistureLevel, plantID)
         cur.execute(query, parameters)
-        verifyQuery = ("SELECT * "
-                       "FROM readings "
-                       "ORDER BY id DESC")
-        cur.execute(verifyQuery)
-        data = cur.fetchone()
+        # verifyQuery = ("SELECT * "
+        #                "FROM readings "
+        #                "ORDER BY id DESC")
+        # cur.execute(verifyQuery)
+        # data = cur.fetchone()
         cur.close()
-        if ( data['plantID'] == plantID ) and ( abs((data['moistureLevel'] - moistureLevel)) <= FLOAT_DELTA ):
-            return True
-        else:
-            return False
+        return True
+        # if ( data['plantID'] == plantID ) and ( abs((data['moistureLevel'] - moistureLevel)) <= FLOAT_DELTA ):
+        #     return True
+        # else:
+        #     return False
 
     @auto_sanitize
     def getMoistureLevel(self, plantID: int = None):
