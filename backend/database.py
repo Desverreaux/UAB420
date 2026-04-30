@@ -152,24 +152,39 @@ class Database:
         #return type should be a json file 
         UPPER_LIMIT = 20 #Edit this to change when the cursor has to break when iterating through results
         resultDict = {}
+
+        if isinstance(plantID, str):
+            plantID = self.getPlantIdByName(plantID)
+
+        if fromDate is None:
+            fromDate = 0
+        if toDate is None:
+            toDate = time.time()
+
+        if isinstance(fromDate, (int, float)):
+            fromDate = datetime.fromtimestamp(fromDate)
+        if isinstance(toDate, (int, float)):
+            toDate = datetime.fromtimestamp(toDate)
+
         query = ("SELECT * " 
                  "FROM readings "
                  "WHERE plantID = %s "
                  "AND reading_at BETWEEN %s AND %s "
-                 "ORDER BY reading_at DESC")
+                 "ORDER BY reading_at DESC "
+                 "LIMIT %s")
         cur = self.connection.cursor(dictionary = True)
-        parameters = (plantID, fromDate, toDate)
+        parameters = (plantID, fromDate, toDate, UPPER_LIMIT)
         readingNum = 1
         cur.execute(query, parameters)
+        
         #The results are ordered from newest to oldest based off fromDate and toDate 
         #reading_1 will always be newest result based off fromDate and toDate
+        
         for row in cur:
             currentReadingKey = "reading_" + str(readingNum)
             resultDict[currentReadingKey] = row
             resultDict[currentReadingKey]['reading_at'] = resultDict[currentReadingKey]['reading_at'].isoformat()
             readingNum = readingNum + 1
-            if readingNum > UPPER_LIMIT:
-                break
         cur.close()
         return json.dumps(resultDict)
         
@@ -209,7 +224,7 @@ class Database:
         parameters = (moistureLevel, plantID)
 
         print(f"Executing query: {query} with parameters {parameters}") # Debugging log to see the final query and parameters
-        
+
         cur.execute(query, parameters)
         inserted_id = cur.lastrowid
         # verifyQuery = ("SELECT * "
