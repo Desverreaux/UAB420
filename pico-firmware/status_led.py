@@ -21,20 +21,20 @@ def boot():
     blink(1000, 1000)
     blink(1000, 1000)
     blink(1000, 1000)
-    time.sleep_ms(2000)
+    time.sleep_ms(500)
 
 def wifi_connecting():
     LED.off()
     blink(500, 500)
     blink(500, 500)
     blink(500, 500)
-    time.sleep_ms(1000)
+    time.sleep_ms(500)
 
 def wifi_connect_failed():
     LED.off()
     for _ in range(6):
         blink(100, 100)
-    time.sleep_ms(1000)
+    time.sleep_ms(500)
 
 def post_data_started():
     LED.off()
@@ -45,7 +45,7 @@ def post_data_failed():
     blink(100, 100)
     blink(100, 100)
     blink(100, 100)
-    time.sleep_ms(1000)
+    time.sleep_ms(500)
 
 def entering_ap_mode():
     LED.off()
@@ -54,7 +54,7 @@ def entering_ap_mode():
     blink(250, 250)
     blink(250, 500)
     blink(1000, 100)
-    time.sleep_ms(1000)
+    time.sleep_ms(500)
 
 def normal_mode():
     LED.off()
