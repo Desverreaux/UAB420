@@ -1,3 +1,7 @@
+'''
+Module containing necessary functions to communicate with the API.
+'''
+
 import urequests
 import json
 import config as cfg_mod

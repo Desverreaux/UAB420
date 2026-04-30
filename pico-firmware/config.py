@@ -1,8 +1,17 @@
+'''
+Functions to save, load, and modify the config.json file.
+'''
+
 import json
 
 CONFIG_PATH = "config.json"
 
 def load():
+    '''
+    Attempts to open the config.json file.
+    Returns the values from the JSON as a dictionary on success.
+    Returns None on failure. 
+    '''
     try:
         with open(CONFIG_PATH, "r") as f:
             return json.load(f)
@@ -14,6 +23,10 @@ def load():
         return None
 
 def save(cfg):
+    '''
+    Saves the config file if changes have been made.
+    Return True on success and False on failure.
+    '''
     try:
         with open(CONFIG_PATH, "w") as f:
             json.dump(cfg, f)
@@ -24,12 +37,21 @@ def save(cfg):
         return False
 
 def has_wifi(cfg):
+    '''
+    Checks if the config file has WiFi credentials.
+    Returns True if so and False if not.
+    '''
     try:
         return bool(cfg["wifi"]["ssid"] and cfg["wifi"]["password"])
     except (KeyError, TypeError):
         return False
     
 def create_default_config():
+    '''
+    Creates a new config file if it happens to be missing.
+    This config file contains default values. 
+    Returns True on success and False on failure.
+    '''
     data = {
         "wifi": {
             "ssid": "YOUR_WIFI_SSID",
@@ -41,7 +63,7 @@ def create_default_config():
             "key": ""
         },
         "sensor": {
-            "id": "sensor-01",
+            "id": "6",
             "interval_minutes": 1,
             "calibration": {
                 "dry_raw": 45000,
@@ -62,6 +84,9 @@ def create_default_config():
         return True
 
 def wipe_wifi(cfg):
+    '''
+    Clears the WiFi information from the config file.
+    '''
     cfg["wifi"]["ssid"] = ""
     cfg["wifi"]["password"] = ""
     save(cfg)

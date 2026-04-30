@@ -1,3 +1,9 @@
+'''
+Module that creates and runs a captive portal.
+The Pico will create a WiFi access point to be connected to by the user.
+The user can enter their WiFi SSID and password and this information will be saved to the config.json
+'''
+
 import network
 import socket
 import time

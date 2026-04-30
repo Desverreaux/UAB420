@@ -1,3 +1,7 @@
+'''
+Various LED blinking patterns to signify different actions the Pico is taking. 
+'''
+
 import machine
 import time
 

@@ -1,3 +1,7 @@
+'''
+Module containing necessary functions for connecting to WiFi.
+'''
+
 import network
 import ntptime
 import time
