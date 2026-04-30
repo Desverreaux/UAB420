@@ -170,24 +170,21 @@ class Database:
                  "FROM readings "
                  "WHERE plantID = %s "
                  "AND reading_at BETWEEN %s AND %s "
-                 "ORDER BY reading_at DESC")
+                 "ORDER BY reading_at DESC "
+                 "LIMIT %s")
         cur = self.connection.cursor(dictionary = True)
-        parameters = (plantID, fromDate, toDate)
+        parameters = (plantID, fromDate, toDate, UPPER_LIMIT)
         readingNum = 1
         cur.execute(query, parameters)
         
         #The results are ordered from newest to oldest based off fromDate and toDate 
         #reading_1 will always be newest result based off fromDate and toDate
         
-        
-
         for row in cur:
             currentReadingKey = "reading_" + str(readingNum)
             resultDict[currentReadingKey] = row
             resultDict[currentReadingKey]['reading_at'] = resultDict[currentReadingKey]['reading_at'].isoformat()
             readingNum = readingNum + 1
-            if readingNum > UPPER_LIMIT:
-                break
         cur.close()
         return json.dumps(resultDict)
         
