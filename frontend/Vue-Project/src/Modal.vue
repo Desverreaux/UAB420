@@ -51,9 +51,6 @@ export default {
     width: 100%;
     animation: fadeIn 0.3s ease;
 
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
 }
 
 @keyframes fadeIn {
