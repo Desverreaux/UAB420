@@ -36,8 +36,8 @@
       <div v-for="plant in plant_cards" :key="plant.id" class="plant_card" @click="openPlantModal(plant)">
 
         <div v-if="plant.isProbe" class="status_icon" :class="plant.status">
-          <span v-if="plant_status === 'good'">✓</span>
-          <span v-else-if="plant_status === 'warning'">⚠️</span>
+          <span v-if="plant.status === 'good'">✓</span>
+          <span v-else-if="plant.status === 'warning'">⚠️</span>
           <span v-else>❗</span>
         </div>
 
@@ -150,13 +150,15 @@ export default { // JavaScript
 
         const result = await res.json()
 
+        const plantData = result.data || {}
+
         const moisture = 
           result.data.moistureLevel ??
           result.data.moisture_percentage ??
           result.data.moisture ??
           78
 
-        const probePlant = this.plant_cards.find(plany => plant.isProbe)
+        const probePlant = this.plant_cards.find(plant => plant.isProbe)
 
         if (!probePlant) return
 
