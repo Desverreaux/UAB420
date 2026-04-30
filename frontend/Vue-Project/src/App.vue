@@ -13,11 +13,6 @@
           @click="openModal('Guide')">Guide
         </button>
 
-        <button
-          class="Search"
-          @click="openModal('Search')">Search
-        </button>
-
         <button 
           class="Database"
           @click="openDatabase">
@@ -112,7 +107,7 @@ export default { // JavaScript
 
       plant_cards: [
         {
-          id: 1,
+          id: 6,
           name: "Soil Probe Plant",
           isProbe: true,
           moisture: 78,
