@@ -122,7 +122,7 @@ export default { // JavaScript
         }
       ],
 
-      //moistureInterval: null
+      moistureInterval: null
 
 		}
 	},
@@ -153,9 +153,9 @@ export default { // JavaScript
         const plantData = result.data || {}
 
         const moisture = 
-          result.data.moistureLevel ??
-          result.data.moisture_percentage ??
-          result.data.moisture ??
+          plantData.data.moistureLevel ??
+          plantData.data.moisture_percentage ??
+          plantData.data.moisture ??
           78
 
         const probePlant = this.plant_cards.find(plant => plant.isProbe)
@@ -185,12 +185,11 @@ export default { // JavaScript
 
     addDemoPlant() {
       const demoPlantNumber = this.plant_cards.length
-
       const demoGraph = this.generateSmoothDemoMoistureData()
 
       this.plant_cards.push({
         id: `demo-plant-${Date.now()}`,
-        name: `Demo Plant ${fakePlantNumber}`,
+        name: `Demo Plant ${demoPlantNumber}`,
         isProbe: false,
         moisture: null,
         status: null,
@@ -214,6 +213,11 @@ export default { // JavaScript
         if (currentMoisture < 20) currentMoisture = 20
 
         data.push(currentMoisture)
+      }
+
+      return {
+        labels, 
+        data
       }
     },
 
