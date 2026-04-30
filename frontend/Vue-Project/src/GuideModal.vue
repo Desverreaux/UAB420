@@ -13,6 +13,34 @@
         <span>4. Hang out, have a good time.</span>
       </div>
 
+      <header class="header">
+        <div class="modal_title">Connect to WiFi</div>
+      </header>
+
+      <div class="guide_text">
+        <span>- When the device is in access point mode, connect to it on a phone or computer with the following credentials.</span>
+        <span>- SSID: ThirstyPlant-Setup </span>
+        <span>- Password: ThirstyPlant123 </span>
+        <span>- When connected, open your phone or computer browser and navigate to the following url. </span>
+        <span>- http://192.168.4.1 </span>
+        <span>- Enter your WiFi credentials into the corresponding text fields, and confirm by pressing submit.</span>
+        <span>- The confirmation page will save your WiFi credentials and restart the probe.</span>
+      </div>
+
+      <header class="header">
+        <div class="modal_title">LED Status Legend</div>
+      </header>
+
+      <div class="guide_text">
+        <span>- 4 long blinks: device is booting. </span>
+        <span>- 3 medium blinks: attempting WiFi connect. </span>
+        <span>- 6 fast blinks: WiFi connection failed. </span>
+        <span>- 1 blink: probe sending data to web application. </span>
+        <span>- 3 fast blinks: probe sending data failed. </span>
+        <span>- 2 short blinks, pause, 2 short blinks, pause, 1 long blink: AP mode starting. </span>
+        <span>- LED light on (persistent): normal mode </span>
+      </div>
+
     </Modal>
 </template>
 
