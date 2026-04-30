@@ -157,12 +157,6 @@ export default {
               y: {
                 min: 0,
                 max: 100,
-
-                ticks: {
-                  callback: function(value) {
-                    return `${Math.round(value * 100)}%`
-                  }
-                }
               },
 
               x: {
