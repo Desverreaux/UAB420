@@ -153,9 +153,9 @@ export default { // JavaScript
         const plantData = result.data || {}
 
         const moisture = 
-          plantData.data.moistureLevel ??
-          plantData.data.moisture_percentage ??
-          plantData.data.moisture ??
+          plantData.moistureLevel ??
+          plantData.moisture_percentage ??
+          plantData.moisture ??
           78
 
         const probePlant = this.plant_cards.find(plant => plant.isProbe)
