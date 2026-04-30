@@ -70,47 +70,29 @@ export default {
           const readingsArray = Object.values(readingsObject)
             .filter(reading => reading && reading.reading_at && reading.moistureLevel !== undefined)
 
-          if (readingsArray.length === 0) {
-            throw new Error("No valid readings found")
-          }
-
           readingsArray.sort((a, b) => {
             return new Date(a.reading_at) - new Date(b.reading_at)
           })
 
-          const latestReadingDate = new Date(readingsArray[readingsArray.length - 1].reading_at)
-
-          const sevenDaysAgo = new Date(latestReadingDate)
-          sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
-
-          const filteredReadings = readingsArray.filter(reading => {
-            const readingDate = new Date(reading.reading_at)
-            return readingDate >= sevenDaysAgo
-          })
-
-          const MAX_POINTS = 40
-          const finalReadings = filteredReadings.slice(-MAX_POINTS)
-
-          labels = finalReadings.map(reading => {
+          labels = readingsArray.map(reading => {
             const date = new Date(reading.reading_at)
 
             return date.toLocaleString([], {
               month: "short",
               day: "numeric",
-              hour: "numeric",
-              minute: "2-digit"
+              hour: "numeric"
             })
           })
 
-          data_points = finalReadings.map(reading => {
-            return Math.round(Number(reading.moistureLevel) * 100)
+          data_points = readingsArray.map(reading => {
+            return Number(reading.moistureLevel)
           })
 
           const latestMoisture = data_points[data_points.length - 1]
 
-          if (latestMoisture > 0.6) {
+          if (latestMoisture > .60) {
             this.plantStatusMessage = "Your probe-connected plant is doing well. Moisture levels are healthy."
-          } else if (latestMoisture > 0.3) {
+          } else if (latestMoisture > .30) {
             this.plantStatusMessage = "Your probe-connected plant may need water soon."
           } else {
             this.plantStatusMessage = "Your probe-connected plant needs water soon. Moisture levels are low."
@@ -118,16 +100,16 @@ export default {
 
         } else {
           labels = this.plant.graphLabels
-
-          data_points = this.plant.graphData.map(value => {
+          data_points = this.plant.graphData,map(value => {
             return value > 1 ? value / 100 : value
           })
+          
 
           this.plantStatusMessage = "This is a demo plant. Its graph uses randomly generated smooth fake data."
         }
 
         this.loading = false
-
+         
         if (this.chart) {
           this.chart.destroy()
         }
@@ -135,18 +117,19 @@ export default {
         this.chart = new Chart(context, {
           type: "line",
           data: {
-            labels,
+            labels, 
             datasets: [{
-              label: "Moisture",
+              label: "Moisture %",
               data: data_points,
               borderColor: "#0E2F15",
               backgroundColor: "rgba(14, 47, 21, 0.2)",
-              tension: 0.4,
+              tension: 0.3, 
               fill: true
             }]
           },
+
           options: {
-            responsive: true,
+            responsive: true, 
             maintainAspectRatio: false,
 
             layout: {
@@ -156,7 +139,13 @@ export default {
             scales: {
               y: {
                 min: 0,
-                max: 100,
+                max: 1,
+
+                ticks : {
+                  callback: function(value) {
+                    return `${Math.round(value * 100)}%`
+                  }
+                }
               },
 
               x: {
