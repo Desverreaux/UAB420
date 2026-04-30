@@ -1,33 +1,58 @@
-from machine import ADC, Pin
+'''
+Functions to take readings from the moisture sensor and convert them from
+analog values into percentage values.
+'''
+
+from machine import ADC
 import time
 
 
-class SoilSensor:
-    def __init__(self, adc_pin_number, power_pin_number, dry_raw=50000, wet_raw=20000):
-        self.adc = ADC(Pin(adc_pin_number))
-        self.power = Pin(power_pin_number, Pin.OUT, value=0)
-        self.dry_raw = dry_raw
-        self.wet_raw = wet_raw
+ADC_PIN = 26
 
-    def _to_percent(self, raw):
-        span = self.dry_raw - self.wet_raw
-        if span == 0:
-            return 0
-        percent = int((self.dry_raw - raw) * 100 / span)
-        return max(0, min(100, percent))
 
-    def read(self, samples=6, gap_ms=2):
-        total = 0
-        for _ in range(samples):
-            total += self.adc.read_u16()
-            time.sleep_ms(gap_ms)
-        raw = total // samples
-        percent = self._to_percent(raw)
-        return raw, percent
+_adc = ADC(ADC_PIN)
 
-    def power_on(self, settle_ms=80):
-        self.power.value(1)
-        time.sleep_ms(settle_ms)
 
-    def power_off(self):
-        self.power.value(0)
+def _read_raw(n_samples=5):
+    '''
+    Reads a given number of samples from the moisture sensor and takes the average.
+    Returns the average.
+    '''
+    total = 0
+    for _ in range(n_samples):
+        total += _adc.read_u16()
+        time.sleep_ms(10)
+    return total // n_samples
+
+
+def raw_to_pct(raw, dry_raw, wet_raw):
+    '''
+    Takes a raw value reading and dry_raw and wet_raw calibration values.
+    and returns a value as a float from 0 to 1 as expected by the API.
+    If the value ever ends up outside that range, it simply returns 0 or 1.
+    '''
+    value = (dry_raw - raw) / (dry_raw - wet_raw)
+    if (value > 1):
+        return 1.0
+    elif (value < 0):
+        return 0.0
+    else:
+        return value
+
+def read(cfg):
+    '''
+    Takes a moisture reading. 
+    Takes calibration values from the config file (dry_raw and wet_raw, being the readings for most dry and most wet respectively)
+    and readings from the sensor to return both the raw reading and a moisture percentage.
+    '''
+    dry_raw = cfg["sensor"]["calibration"]["dry_raw"]
+    wet_raw = cfg["sensor"]["calibration"]["wet_raw"]
+
+
+    raw = _read_raw(n_samples=5)
+    pct = raw_to_pct(raw, dry_raw, wet_raw)
+
+    return {
+        "raw_adc": raw,
+        "moisture_pct": pct
+    }
