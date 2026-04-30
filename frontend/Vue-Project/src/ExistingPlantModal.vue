@@ -74,6 +74,16 @@ export default {
             return new Date(a.reading_at) - new Date(b.reading_at)
           })
 
+          const latestReadingDate = new Date(readingsArray[readingsArray.length - 1].reading_at)
+
+          const sevenDaysAgo = new Date(latestReadingDate)
+          sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+
+          const filteredReadings = readingsArray.filter(reading => {
+            const readingDate = new Date(reading.reading_at)
+            return readingDate >= sevenDaysAgo
+          })
+
           labels = readingsArray.map(reading => {
             const date = new Date(reading.reading_at)
 
