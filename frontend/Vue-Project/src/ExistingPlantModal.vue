@@ -100,7 +100,7 @@ export default {
 
         } else {
           labels = this.plant.graphLabels
-          data_points = this.plant.graphData,map(value => {
+          data_points = this.plant.graphData.map(value => {
             return value > 1 ? value / 100 : value
           })
           
