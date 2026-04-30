@@ -54,12 +54,6 @@
       @close="closeModal"
     />
 
-    <!--Search Modal-->
-    <SearchModal 
-      :show="activeModal === 'Search'" 
-      @close="closeModal"
-    />
-
     <!--Profile Modal-->
     <ProfileModal 
       :show="activeModal === 'Profile'" 
@@ -73,8 +67,6 @@
       @close="closeModal"
     />
 
-    <!--new_plant Modal [IM NOT SURE YET IF THIS WILL BE NEEDED SINCE THIS ROUTES TO THE SEARCH FEATURE]-->
-
     <CriticalErrorModal 
       :show="activeModal === 'critical_error'" 
       :error="errorMessage"
@@ -85,7 +77,6 @@
 
 <script>
 import GuideModal from "./GuideModal.vue"
-import SearchModal from "./SearchModal.vue"
 import ProfileModal from "./ProfileModal.vue"
 import ExistingPlantModal from "./ExistingPlantModal.vue"
 import CriticalErrorModal from "./CriticalErrorModal.vue"
@@ -93,7 +84,6 @@ import CriticalErrorModal from "./CriticalErrorModal.vue"
 export default { // JavaScript
   components: {
     GuideModal,
-    SearchModal,
     ProfileModal, 
     ExistingPlantModal,
     CriticalErrorModal,
@@ -107,7 +97,7 @@ export default { // JavaScript
 
       plant_cards: [
         {
-          id: 1,
+          id: 6,
           name: "Soil Probe Plant",
           isProbe: true,
           moisture: 78,
@@ -252,8 +242,6 @@ export default { // JavaScript
         window.location.href = url
       }
     }
-
-    //addPlant() {}
 	}
 }
 
@@ -318,7 +306,7 @@ body {
   gap: 1rem;
 }
 
-.Guide, .Search, .Profile, .Database {
+.Guide, .Profile, .Database {
   border-radius: 25px;
   background-color: #A6B07E;
   color: #000000;
@@ -327,7 +315,7 @@ body {
   transition: background-color 0.2s ease;
 }
 
-.Guide:hover, .Search:hover, .Profile:hover, .Database:hover{
+.Guide:hover, .Profile:hover, .Database:hover{
   background-color: #7d855f;
 }
 
@@ -469,10 +457,6 @@ TO-DO:
  - New Plant:
     - Currently does nothing, but im gonna add functionality. The new plants will not have moisture or status icons. The graphs within will use purely dummy data that ill hardcode.
     - [Q]: Seth if you can type out an improved guide since youre knowledgeable about the probe?
-
- - Search:
-    - There is no database of plants, so this is currently useless.
-    - [Q]: Do we want to try to add a plant database, or scrap the feature entirely?
 
  - Database button needs to be removed. LET ME KNOW WHEN TO DO SO
 
