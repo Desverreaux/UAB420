@@ -38,7 +38,7 @@
         <div v-if="plant.isProbe" class="status_icon" :class="plant.status">
           <span v-if="plant.status === 'good'">✓</span>
           <span v-else-if="plant.status === 'warning'">⚠️</span>
-          <span v-else>❗</span>
+          <span v-else>!</span>
         </div>
 
         <div class="plant_icon">🪴</div>
