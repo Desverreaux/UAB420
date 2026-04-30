@@ -61,8 +61,14 @@ export default {
 
           const result = await response.json()
 
-          const readingsObject = result.data || {}
+          let readingsObject = result.data || {}
+
+          if (typeof readingsObject === "string") {
+            readingsObject = JSON.parse(readingsObject)
+          }
+
           const readingsArray = Object.values(readingsObject)
+            .filter(reading => reading && reading.reading_at && reading.moistureLevel !== undefined)
 
           readingsArray.sort((a, b) => {
             return new Date(a.reading_at) - new Date(b.reading_at)
@@ -79,22 +85,25 @@ export default {
           })
 
           data_points = readingsArray.map(reading => {
-            return Math.round(reading.moistureLevel * 100)
+            return Number(reading.moistureLevel)
           })
 
           const latestMoisture = data_points[data_points.length - 1]
 
-          if (latestMoisture > 60) {
+          if (latestMoisture > .60) {
             this.plantStatusMessage = "Your probe-connected plant is doing well. Moisture levels are healthy."
-          } else if (latestMoisture > 30) {
+          } else if (latestMoisture > .30) {
             this.plantStatusMessage = "Your probe-connected plant may need water soon."
           } else {
             this.plantStatusMessage = "Your probe-connected plant needs water soon. Moisture levels are low."
           }
 
         } else {
-          data_points = this.plant.graphData
           labels = this.plant.graphLabels
+          data_points = this.plant.graphData,map(value => {
+            return value > 1 ? value / 100 : value
+          })
+          
 
           this.plantStatusMessage = "This is a demo plant. Its graph uses randomly generated smooth fake data."
         }
@@ -118,6 +127,7 @@ export default {
               fill: true
             }]
           },
+
           options: {
             responsive: true, 
             maintainAspectRatio: false,
@@ -129,7 +139,22 @@ export default {
             scales: {
               y: {
                 min: 0,
-                max: 1
+                max: 1,
+
+                ticks : {
+                  callback: function(value) {
+                    return `${Math.round(value * 100)}%`
+                  }
+                }
+              },
+
+              x: {
+                ticks: {
+                  autoSkip: true,
+                  maxTicksLimit: 8,
+                  maxRotation: 45,
+                  minRotation: 45
+                }
               }
             }
           }
