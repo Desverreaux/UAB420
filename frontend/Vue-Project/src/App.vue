@@ -142,7 +142,11 @@ export default { // JavaScript
 	methods: {
     async fetchProbePlantData() {
       try {
-        const res = await fetch ("/api/getPlantData?plantIdentifier=plant1") 
+        const probePlant = this.plant_cards.find(plant => plant.isProbe)
+
+        if (!probePlant) return
+
+        const res = await fetch(`/api/getHistoricalData?plantIdentifier=${probePlant.id}`)
 
         if (!res.ok) {
           throw new Error(`HTTP error --> Status: ${res.status}`)
@@ -150,20 +154,29 @@ export default { // JavaScript
 
         const result = await res.json()
 
-        const plantData = result.data || {}
+        let readingsObject = result.data || {}
 
-        const moisture = 
-          plantData.moistureLevel ??
-          plantData.moisture_percentage ??
-          plantData.moisture ??
-          78
+        if (typeof readingsObject === "string") {
+          readingsObject = JSON.parse(readingsObject)
+        }
 
-        const probePlant = this.plant_cards.find(plant => plant.isProbe)
+        const readingsArray = Object.values(readingsObject)
+          .filter(reading => reading && reading.reading_at && reading.moistureLevel !== undefined)
 
-        if (!probePlant) return
+        if (readingsArray.length === 0) {
+          throw new Error("No valid moisture readings found")
+        }
 
-        probePlant.moisture = moisture
-        probePlant.status = this.getPlantStatus(moisture)
+        readingsArray.sort((a, b) => {
+          return new Date(a.reading_at) - new Date(b.reading_at)
+        })
+
+        const latestReading = readingsArray[readingsArray.length - 1]
+
+        const moisturePercent = Math.round(Number(latestReading.moistureLevel) * 100)
+
+        probePlant.moisture = moisturePercent
+        probePlant.status = this.getPlantStatus(moisturePercent)
 
       } catch (err) {
         console.log("Fetch Request Failed: ", err)
@@ -173,10 +186,10 @@ export default { // JavaScript
       }
     },
 
-    getPlantStatus(moisture) {
-      if (moisture > 60) {
+    getPlantStatus(moisturePercent) {
+      if (moisturePercent > 60) {
         return "good"
-      } else if (moisture > 30) {
+      } else if (moisturePercent > 30) {
         return "warning"
       } else {
         return "critical"
