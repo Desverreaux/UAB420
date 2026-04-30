@@ -27,7 +27,6 @@ def connect_to_wifi(cfg, attempts=CONNECT_WIFI_ATTEMPTS):
         if wifi.connect(cfg):
             return True
         print(f"[main] WiFi connection attempt {attempt + 1} failed")
-        time.sleep(1)
     return False
     
 
@@ -54,7 +53,6 @@ def boot():
     if not connect_to_wifi(cfg):
         print("[main] WiFi failed — starting AP mode.")
         status_led.wifi_connect_failed()
-        time.sleep(2)
         start_ap_mode()
 
     wifi.sync_time()
