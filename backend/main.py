@@ -71,6 +71,7 @@ async def lorem_ipsum(wordCount: int = 20):
 @auto_validate
 async def get_historical_data(plantIdentifier, fromDate = 0, toDate = 99999999999):
 	data = db.getHistoricalData(plantIdentifier, fromDate, toDate)
+	print (f"Retrieved historical data for plantIdentifier '{plantIdentifier}' from {fromDate} to {toDate}: {data}") # Debugging log to see the retrieved data
 	return {"data": data}
 
 @app.get("/api/getPlantData")
