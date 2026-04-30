@@ -52,7 +52,7 @@ export default {
           
           this.loading = true
 
-          const response = await fetch(`/api/getHistoricalData?plantIdentifier=plant1`)
+          const response = await fetch(`/api/getHistoricalData?plantIdentifier=1`)
           const result = await response.json() 
           //Should be formatted as:
           // data: [1, 2, 3, 4, 5]
