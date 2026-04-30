@@ -107,7 +107,7 @@ export default { // JavaScript
 
       plant_cards: [
         {
-          id: 6,
+          id: 1,
           name: "Soil Probe Plant",
           isProbe: true,
           moisture: 78,
