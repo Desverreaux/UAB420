@@ -54,10 +54,33 @@ export default {
 
         if (this.plant.isProbe) {
           const response = await fetch(`/api/getHistoricalData?plantIdentifier=${this.plant.id}`)
+
+          if (!response.ok) {
+            throw new Error(`HTTP error --> Status: ${response.status}`)
+          }
+
           const result = await response.json()
 
-          data_points = result.data
-          labels = result.labels
+          const readingsObject = result.data || {}
+          const readingsArray = Object.values(readingsObject)
+
+          readingsArray.sort((a, b) => {
+            return new Date(a.reading_at) - new Date(b.reading_at)
+          })
+
+          labels = readingsArray.map(reading => {
+            const date = new Date(reading.reading_at)
+
+            return date.toLocaleString([], {
+              month: "short",
+              day: "numeric",
+              hour: "numeric"
+            })
+          })
+
+          data_points = readingsArray.map(reading => {
+            return Math.round(reading.moistureLevel * 100)
+          })
 
           const latestMoisture = data_points[data_points.length - 1]
 
@@ -68,6 +91,7 @@ export default {
           } else {
             this.plantStatusMessage = "Your probe-connected plant needs water soon. Moisture levels are low."
           }
+
         } else {
           data_points = this.plant.graphData
           labels = this.plant.graphLabels
@@ -110,6 +134,7 @@ export default {
             }
           }
         })
+
       } catch (err) {
         console.error("Failed to load chart data: ", err)
         this.plantStatusMessage = "Failed to load graph data."
