@@ -97,12 +97,13 @@ export default {
             return date.toLocaleString([], {
               month: "short",
               day: "numeric",
-              hour: "numeric"
+              hour: "numeric",
+              minute: "2-digit"
             })
           })
 
           data_points = finalReadings.map(reading => {
-            return Number(reading.moistureLevel)
+            return Math.round(Number(reading.moistureLevel) * 100)
           })
 
           const latestMoisture = data_points[data_points.length - 1]
@@ -140,7 +141,7 @@ export default {
               data: data_points,
               borderColor: "#0E2F15",
               backgroundColor: "rgba(14, 47, 21, 0.2)",
-              tension: 0.3,
+              tension: 0.4,
               fill: true
             }]
           },
@@ -155,7 +156,7 @@ export default {
             scales: {
               y: {
                 min: 0,
-                max: 1,
+                max: 100,
 
                 ticks: {
                   callback: function(value) {
