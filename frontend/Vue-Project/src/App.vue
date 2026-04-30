@@ -33,8 +33,9 @@
     </header>
 		
     <main class="main">
-      <div class="plant_card" @click="openModal('existing_plant')">
-        <div class="status_icon" :class="plant_status">
+      <div v-for="plant in plant_cards" :key="plant.id" class="plant_card" @click="openPlantModal(plant)">
+
+        <div v-if="plant.isProbe" class="status_icon" :class="plant.status">
           <span v-if="plant_status === 'good'">✓</span>
           <span v-else-if="plant_status === 'warning'">⚠️</span>
           <span v-else>❗</span>
@@ -42,15 +43,13 @@
 
         <div class="plant_icon">🪴</div>
 
-        <div class="moisture_percentage">
-          {{ moisture_percentage }}
-        </div>
+        <div v-if="plant.isProbe" class="moisture_percentage"> {{ plant.moisture }}% </div>
+
+        <div v-else class = "demo_plant_label">Demo Plant</div>
+
       </div>
 
-      <button 
-        class="new_plant"
-        @click="openModal('new_plant')">+
-      </button>
+      <button class="new_plant" @click="addDemoPlant">+</button>
 
     </main>
 
@@ -75,6 +74,7 @@
     <!--existing_plant Modal-->
     <ExistingPlantModal 
       :show="activeModal === 'existing_plant'" 
+      :plant="selectedPlant"
       @close="closeModal"
     />
 
@@ -108,48 +108,118 @@ export default { // JavaScript
 		return {
       activeModal: null, 
       errorMessage: null,
+      selectedPlant: null, 
 
-      //Placeholder moisture percentage
-      moisture_percentage: 78,
+      plant_cards: [
+        {
+          id: "plant1",
+          name: "Soil Probe Plant",
+          isProbe: true,
+          moisture: 78,
+          status: "good",
+          graphLabels: [],
+          graphData: []
+        }
+      ],
 
-      //Placeholder plant status: "good" | "warning" | "critical"
-      plant_status: "good", 
+      //moistureInterval: null
 
 		}
 	},
 
 	async mounted() {
-    try {
-      const res = await fetch ("/api/loremIpsum?wordCount=30")
-      /*Broken Link:  http://thisdoesnotexist123456.com*/
-      /*LIP:  /api/loremIpsum?wordCount=30*/
-      /*DB port: uab420.desverreaux.com:8978/api/*/ 
+    await this.fetchProbePlantData()
 
-      if (!res.ok) {
-        throw new Error(`HTTP error --> Status: ${res.status}`)
-      }
+    this.moistureInterval = setInterval(this.fetchProbePlantData, 5000)
+    },
 
-      this.moisture_percentage = 77
+    beforeUnmount() {
+      clearInterval(this.moistureInterval)
+    },
 
-      if (this.moisture_percentage > 60) {
-        this.plant_status = "good"
-      } else if (this.moisture_percentage > 30) {
-        this.plant_status = "warning"
-      } else {
-        this.plant_status = "critical"
-      }
-
-      const data = await res.json()
-
-	  } catch (err) {
-      console.log("Fetch Request Failed: ", err)
-
-      this.errorMessage = err.message || "Unknown error"
-      this.openModal("critical_error")
-    }
-  },
+    
  
 	methods: {
+    async fetchProbePlantData() {
+      try {
+        const res = await fetch ("/api/getPlantData?plantIdentifier=plant1") 
+
+        if (!res.ok) {
+          throw new Error(`HTTP error --> Status: ${res.status}`)
+        }
+
+        const result = await res.json()
+
+        const moisture = 
+          result.data.moistureLevel ??
+          result.data.moisture_percentage ??
+          result.data.moisture ??
+          78
+
+        const probePlant = this.plant_cards.find(plany => plant.isProbe)
+
+        if (!probePlant) return
+
+        probePlant.moisture = moisture
+        probePlant.status = this.getPlantStatus(moisture)
+
+      } catch (err) {
+        console.log("Fetch Request Failed: ", err)
+
+        this.errorMessage = err.message || "Unknown error"
+        this.openModal("critical_error")
+      }
+    },
+
+    getPlantStatus(moisture) {
+      if (moisture > 60) {
+        return "good"
+      } else if (moisture > 30) {
+        return "warning"
+      } else {
+        return "critical"
+      }
+    },
+
+    addDemoPlant() {
+      const demoPlantNumber = this.plant_cards.length
+
+      const demoGraph = this.generateSmoothDemoMoistureData()
+
+      this.plant_cards.push({
+        id: `demo-plant-${Date.now()}`,
+        name: `Demo Plant ${fakePlantNumber}`,
+        isProbe: false,
+        moisture: null,
+        status: null,
+        graphLabels: demoGraph.labels,
+        graphData: demoGraph.data
+      })
+    },
+
+    generateSmoothDemoMoistureData() {
+      const labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+
+      let currentMoisture = Math.floor(Math.random() * 31) + 45
+      const data = []
+
+      for (let i = 0; i < labels.length; i++) {
+        const change = Math.floor(Math.random() * 11) - 5
+
+        currentMoisture += change
+
+        if (currentMoisture > 90) currentMoisture = 90
+        if (currentMoisture < 20) currentMoisture = 20
+
+        data.push(currentMoisture)
+      }
+    },
+
+    openPlantModal(plant) {
+      this.selectedPlant = plant
+      this.openModal("existing_plant")
+    },
+
     openModal(name) {
       this.activeModal = name
       document.body.classList.add("no-scroll")
@@ -336,6 +406,13 @@ body {
   color: #000000;
 }
 
+.demo_plant_label {
+  position: absolute;
+  bottom: 15px;
+
+  color: #0E2F15;
+  font-weight: bold;
+}
 
 .new_plant{
   width: 25%;

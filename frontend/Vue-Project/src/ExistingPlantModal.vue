@@ -3,17 +3,16 @@
     <Modal :show="show" @close="$emit('close')">
 
       <header class="header">
-        <span class="modal_title">Existing Plant</span>  
+        <span class="modal_title">{{ plant ? plant.name : "Existing Plant" }}</span>  
         <button class="close_button" @click="$emit('close')">X</button>
       </header>
       
       <div class="main">
-        <span class="plant_status">This should say something about the overall status of your plant</span>
+        <span class="plant_status"> {{ plantStatusMessage }} </span>
 
         <div class="plant_graph">
           <canvas ref="plant_chart"></canvas>
           
-
         </div>
 
       </div>
@@ -41,38 +40,43 @@ export default {
 
     methods: {
       async render_chart() {
+        if (!this.plant) return
+
         const context = this.$refs.plant_chart.getContext("2d")
 
-        let data_points
-        let labels
+        let data_points = []
+        let labels = []
 
         try {
-          // RESERVED FOR ONCE BACKEND FETCHING IS LIVE
-
-          
-          this.loading = true
-
-          const response = await fetch(`/api/getHistoricalData?plantIdentifier=plant1`)
-          const result = await response.json() 
-          //Should be formatted as:
-          // data: [1, 2, 3, 4, 5]
-          // labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+          if (this.plant.isProbe) {
+          const response = await fetch(`/api/getHistoricalData?plantIdentifier=${this.plant.id}`)
+          const result = await response.json()
 
           data_points = result.data
           labels = result.labels
 
-          console.log(data_points) //DEBUG
-          console.log(labels)
+          const latestMoisture = data_points[data_points.length - 1]
 
-          this.loading = false
-          
-
-          // Test data that can be deleted later
-          
-
-          if (this.chart) {
-            this.chart.destroy()
+          if (latestMoisture > 60) {
+            this.plantStatusMessage = "Your probe-connected plant is doing well. Moisture levels are healthy."
+          } else if (latestMoisture > 30) {
+            this.plantStatusMessage = "Your probe-connected plant may need water soon."
+          } else {
+            this.plantStatusMessage = "Your probe-connected plant needs water soon. Moisture levels are low."
           }
+
+        } else {
+          data_points = this.plant.graphData
+          labels = this.plant.graphLabels
+
+          this.plantStatusMessage = "This is a demo plant. Its graph uses randomly generated smooth fake data."
+        }
+          
+        this.loading = false
+         
+        if (this.chart) {
+          this.chart.destroy()
+        }
 
           this.chart = new Chart(context, {
             type: "line",
@@ -90,24 +94,25 @@ export default {
             
             options: {
               responsive: true, 
-              maintainAspectRatio: false
-            },
+              maintainAspectRatio: false,
 
-            layout: {
-              padding: o
-            },
+              layout: {
+                padding: o
+              },
 
-            scales: {
-              y: {
-                min: 0,
-                max: 20 // If fucked fix this
+              scales: {
+                y: {
+                  min: 0,
+                  max: 100
+                }
               }
             }
-
           })
           
         } catch (err) {
           console.error("Failed to load chart data: ", err)
+          this.plantStatusMessage = "Failed to load graph data."
+          this.loading = false
         }
       }
     },
