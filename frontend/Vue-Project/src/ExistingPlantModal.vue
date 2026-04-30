@@ -27,28 +27,32 @@ import { Chart, registerables } from "chart.js"
 Chart.register(...registerables)
 
 export default {
-    props: ["show"],
-    emits: ["close"],
-    components: { Modal },
+  props: ["show", "plant"],
 
-    data() {
-      return {
-        chart: null,
-        loading: false // Loads stuff in real-time once we have backend fetching
-      }
-    },
+  emits: ["close"],
+  components: { Modal },
 
-    methods: {
-      async render_chart() {
-        if (!this.plant) return
+  data() {
+    return {
+      chart: null,
+      loading: false,
+      plantStatusMessage: "Loading plant data..."
+    }
+  },
 
-        const context = this.$refs.plant_chart.getContext("2d")
+  methods: {
+    async render_chart() {
+      if (!this.plant) return
 
-        let data_points = []
-        let labels = []
+      const context = this.$refs.plant_chart.getContext("2d")
 
-        try {
-          if (this.plant.isProbe) {
+      let data_points = []
+      let labels = []
+
+      try {
+        this.loading = true
+
+        if (this.plant.isProbe) {
           const response = await fetch(`/api/getHistoricalData?plantIdentifier=${this.plant.id}`)
           const result = await response.json()
 
@@ -64,68 +68,73 @@ export default {
           } else {
             this.plantStatusMessage = "Your probe-connected plant needs water soon. Moisture levels are low."
           }
-
         } else {
           data_points = this.plant.graphData
           labels = this.plant.graphLabels
 
           this.plantStatusMessage = "This is a demo plant. Its graph uses randomly generated smooth fake data."
         }
-          
+
         this.loading = false
          
         if (this.chart) {
           this.chart.destroy()
         }
 
-          this.chart = new Chart(context, {
-            type: "line",
-            data: {
-              labels, 
-              datasets: [{
-                label: "Moisture %",
-                data: data_points,
-                borderColor: "#0E2F15",
-                backgroundColor: "rgba(14, 47, 21, 0.2)",
-                tension: 0.3, 
-                fill: true
-              }]
+        this.chart = new Chart(context, {
+          type: "line",
+          data: {
+            labels, 
+            datasets: [{
+              label: "Moisture %",
+              data: data_points,
+              borderColor: "#0E2F15",
+              backgroundColor: "rgba(14, 47, 21, 0.2)",
+              tension: 0.3, 
+              fill: true
+            }]
+          },
+          options: {
+            responsive: true, 
+            maintainAspectRatio: false,
+
+            layout: {
+              padding: 0
             },
-            
-            options: {
-              responsive: true, 
-              maintainAspectRatio: false,
 
-              layout: {
-                padding: o
-              },
-
-              scales: {
-                y: {
-                  min: 0,
-                  max: 100
-                }
+            scales: {
+              y: {
+                min: 0,
+                max: 100
               }
             }
-          })
-          
-        } catch (err) {
-          console.error("Failed to load chart data: ", err)
-          this.plantStatusMessage = "Failed to load graph data."
-          this.loading = false
-        }
+          }
+        })
+      } catch (err) {
+        console.error("Failed to load chart data: ", err)
+        this.plantStatusMessage = "Failed to load graph data."
+        this.loading = false
+      }
+    }
+  },
+
+  watch: {
+    show(val) {
+      if (val) {
+        this.$nextTick(() => {
+          this.render_chart()
+        })
       }
     },
 
-    watch: {
-      show(val) {
-        if (val) {
-          this.$nextTick(() => {
-            this.render_chart()
-          })
-        }
+    plant() {
+      if (this.show) {
+        this.$nextTick(() => {
+          this.render_chart()
+        })
       }
     }
+  }
 }
 </script>
 
@@ -135,7 +144,7 @@ export default {
   justify-content: space-between;
   align-items: flex-start;
 
-  padding: 0..25rem 1rem 0.25rem 1rem;
+  padding: 0.25rem 1rem 0.25rem 1rem;
 }
 
 .modal_title {
